@@ -1,0 +1,164 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]: Free shipping on orders above Rs. 15,000 · Eid Collection now live · COD available nationwide
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - link "Singhar by Sidra home" [ref=f2e9] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e10]: سنگھار
+        - strong [ref=f2e11]: Singhar by Sidra
+      - navigation "Primary navigation" [ref=f2e150]:
+        - generic [ref=f2e152]:
+          - link "Luxury Pret" [ref=f2e153] [cursor=pointer]:
+            - /url: /collections/luxury-pret
+          - button "Open Luxury Pret menu" [ref=f2e154] [cursor=pointer]
+        - link "Casual Wear" [ref=f2e159] [cursor=pointer]:
+          - /url: /collections/casual-wear
+        - generic [ref=f2e161]:
+          - link "Wedding Collection" [ref=f2e162] [cursor=pointer]:
+            - /url: /collections/wedding-collection
+          - button "Open Wedding Collection menu" [ref=f2e163] [cursor=pointer]
+        - generic [ref=f2e167]:
+          - link "Festive Collection" [ref=f2e168] [cursor=pointer]:
+            - /url: /collections/festive-collection
+          - button "Open Festive Collection menu" [ref=f2e169] [cursor=pointer]
+      - navigation "Store actions" [ref=f2e12]:
+        - button "Search" [ref=f2e13] [cursor=pointer]
+        - button "Account" [ref=f2e17] [cursor=pointer]
+        - button "Open bag, 0 items" [ref=f2e21] [cursor=pointer]
+  - main [ref=f2e25]:
+    - generic [ref=f2e26]:
+      - generic [ref=f2e27]:
+        - link "Home" [ref=f2e28] [cursor=pointer]:
+          - /url: /
+        - generic [aria-hidden] [ref=f2e29]: /
+        - generic [ref=f2e30]: All Products
+      - region [ref=f2e31]:
+        - generic [ref=f2e32]:
+          - generic [ref=f2e33]: The complete edit
+          - heading "All Products" [level=1] [ref=f2e34]
+          - paragraph [ref=f2e35]: Explore handcrafted eastern wear, from everyday pret to occasion-ready ensembles.
+      - region [ref=f2e37]:
+        - heading "All products" [level=2] [ref=f2e38]
+        - generic [ref=f2e39]:
+          - article [ref=f2e40]:
+            - link "View pret" [ref=f2e42] [cursor=pointer]:
+              - /url: /products/pret
+              - img "pret" [ref=f2e43]
+            - generic [ref=f2e44]:
+              - link "pret" [ref=f2e45] [cursor=pointer]:
+                - /url: /products/pret
+              - generic [ref=f2e46]: PKR 5,000
+          - article [ref=f2e48]:
+            - link "View EMBROIDERED SUIT" [ref=f2e50] [cursor=pointer]:
+              - /url: /products/embroidered-suit
+              - img "EMBROIDERED SUIT" [ref=f2e51]
+            - generic [ref=f2e52]:
+              - link "EMBROIDERED SUIT" [ref=f2e53] [cursor=pointer]:
+                - /url: /products/embroidered-suit
+              - generic [ref=f2e54]: PKR 14,000
+          - article [ref=f2e56]:
+            - link "View EMBROIDERED SUIT" [ref=f2e58] [cursor=pointer]:
+              - /url: /products/embroidered-suit-1
+              - img "EMBROIDERED SUIT" [ref=f2e59]
+            - generic [ref=f2e60]:
+              - link "EMBROIDERED SUIT" [ref=f2e61] [cursor=pointer]:
+                - /url: /products/embroidered-suit-1
+              - generic [ref=f2e62]: PKR 39,000
+          - article [ref=f2e64]:
+            - link "View Printed Raw Silk Kurta" [ref=f2e66] [cursor=pointer]:
+              - /url: /products/printed-raw-silk-kurta
+              - img "Printed Raw Silk Kurta" [ref=f2e67]
+            - generic [ref=f2e68]:
+              - link "Printed Raw Silk Kurta" [ref=f2e69] [cursor=pointer]:
+                - /url: /products/printed-raw-silk-kurta
+              - generic [ref=f2e70]: PKR 7,500
+          - article [ref=f2e72]:
+            - generic [ref=f2e73]:
+              - link "View PRINTED KAFTAN" [ref=f2e74] [cursor=pointer]:
+                - /url: /products/printed-kaftan
+                - img "PRINTED KAFTAN" [ref=f2e75]
+              - status [ref=f2e76]:
+                - generic [ref=f2e77]: Sold Out
+            - generic [ref=f2e78]:
+              - link "PRINTED KAFTAN" [ref=f2e79] [cursor=pointer]:
+                - /url: /products/printed-kaftan
+              - generic [ref=f2e80]: PKR 7,990
+          - article [ref=f2e82]:
+            - generic [ref=f2e83]:
+              - link "View Three Piece" [ref=f2e84] [cursor=pointer]:
+                - /url: /products/three-piece
+                - img "Blue grey three-piece women's outfit" [ref=f2e85]
+              - status [ref=f2e86]:
+                - generic [ref=f2e87]: Sold Out
+            - generic [ref=f2e88]:
+              - link "Three Piece" [ref=f2e89] [cursor=pointer]:
+                - /url: /products/three-piece
+              - generic [ref=f2e90]: PKR 13,000
+          - article [ref=f2e92]:
+            - link "View Luxury Print - Black" [ref=f2e94] [cursor=pointer]:
+              - /url: /products/luxury-print-black
+              - img "Black luxury women's dress with embellished detailing" [ref=f2e95]
+            - generic [ref=f2e96]:
+              - link "Luxury Print - Black" [ref=f2e97] [cursor=pointer]:
+                - /url: /products/luxury-print-black
+              - generic [ref=f2e98]: PKR 24,000
+          - article [ref=f2e100]:
+            - link "View Luxury Embroidered Dress - Olive" [ref=f2e102] [cursor=pointer]:
+              - /url: /products/luxury-embroidered-dress-olive
+              - img "Olive luxury embroidered three-piece dress" [ref=f2e103]
+            - generic [ref=f2e104]:
+              - link "Luxury Embroidered Dress - Olive" [ref=f2e105] [cursor=pointer]:
+                - /url: /products/luxury-embroidered-dress-olive
+              - generic [ref=f2e106]: PKR 10,000
+        - link "Load more" [ref=f2e109] [cursor=pointer]:
+          - /url: /collections/all?direction=next&cursor=eyJsYXN0X2lkIjo5NjYxMzg4MjI2ODE1LCJsYXN0X3ZhbHVlIjo5NjYxMzg4MjI2ODE1LCJvZmZzZXQiOjd9
+  - contentinfo [ref=f2e110]:
+    - generic [ref=f2e111]:
+      - generic [ref=f2e112]:
+        - generic [ref=f2e113]:
+          - generic [ref=f2e114]: سنگھار
+          - strong [ref=f2e115]: Singhar by Sidra
+          - paragraph [ref=f2e116]: Luxury eastern wear, handcrafted for the moments that matter.
+        - navigation "Footer navigation" [ref=f2e117]:
+          - generic [ref=f2e118]:
+            - heading "Shop" [level=2] [ref=f2e119]
+            - link "New Arrivals" [ref=f2e120] [cursor=pointer]:
+              - /url: /collections/new-arrivals
+            - link "Luxury Pret" [ref=f2e121] [cursor=pointer]:
+              - /url: /collections/luxury-pret
+            - link "Wedding Collection" [ref=f2e122] [cursor=pointer]:
+              - /url: /collections/wedding-collection
+            - link "Festive Collection" [ref=f2e123] [cursor=pointer]:
+              - /url: /collections/festive-collection
+            - link "Sale" [ref=f2e124] [cursor=pointer]:
+              - /url: /collections/sale
+          - generic [ref=f2e125]:
+            - heading "Customer Care" [level=2] [ref=f2e126]
+            - link "Contact Us" [ref=f2e127] [cursor=pointer]:
+              - /url: /pages/contact
+            - link "Returns & Exchanges" [ref=f2e128] [cursor=pointer]:
+              - /url: /policies/refund-policy
+            - link "Shipping Policy" [ref=f2e129] [cursor=pointer]:
+              - /url: /policies/shipping-policy
+          - generic [ref=f2e130]:
+            - heading "Company" [level=2] [ref=f2e131]
+            - link "Our Story" [ref=f2e132] [cursor=pointer]:
+              - /url: /pages/about
+            - link "Privacy Policy" [ref=f2e133] [cursor=pointer]:
+              - /url: /policies/privacy-policy
+            - link "Terms of Service" [ref=f2e134] [cursor=pointer]:
+              - /url: /policies/terms-of-service
+      - generic "Shopping assurances" [ref=f2e135]:
+        - generic [ref=f2e136]:
+          - generic [aria-hidden] [ref=f2e137]: ✓
+          - paragraph [ref=f2e138]: Secure Payment
+        - generic [ref=f2e139]:
+          - generic [aria-hidden] [ref=f2e140]: ✓
+          - paragraph [ref=f2e141]: Easy Returns
+        - generic [ref=f2e142]:
+          - generic [aria-hidden] [ref=f2e143]: ✓
+          - paragraph [ref=f2e144]: 100% Authentic
+        - generic [ref=f2e145]:
+          - generic [aria-hidden] [ref=f2e146]: ✓
+          - paragraph [ref=f2e147]: Cash on Delivery
+      - paragraph [ref=f2e148]: © 2026 Singhar by Sidra. All rights reserved.

@@ -1,31 +1,30 @@
 import {Link, useNavigate} from 'react-router';
 import {type MappedProductOptions} from '@shopify/hydrogen';
-import type {
-  Maybe,
-  ProductOptionValueSwatch,
-} from '@shopify/hydrogen/storefront-api-types';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
-import type {ProductFragment} from 'storefrontapi.generated';
 
 export function ProductForm({
+  className,
   productOptions,
-  selectedVariant,
 }: {
+  className?: string;
   productOptions: MappedProductOptions[];
-  selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
 }) {
   const navigate = useNavigate();
-  const {open} = useAside();
   return (
-    <div className="product-form">
+    <div className={`product-form${className ? ` ${className}` : ''}`}>
       {productOptions.map((option) => {
         // If there is only a single value in the option values, don't display the option
         if (option.optionValues.length === 1) return null;
 
+        const selectedOption = option.optionValues.find((value) => value.selected);
+
         return (
           <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
+            <div className="product-option-heading">
+              <h5>
+                {option.name}
+                {selectedOption ? <span> — {selectedOption.name}</span> : null}
+              </h5>
+            </div>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {
@@ -36,7 +35,6 @@ export function ProductForm({
                   available,
                   exists,
                   isDifferentProduct,
-                  swatch,
                 } = value;
 
                 if (isDifferentProduct) {
@@ -58,8 +56,9 @@ export function ProductForm({
                           : '1px solid transparent',
                         opacity: available ? 1 : 0.3,
                       }}
+                      aria-current={selected ? 'true' : undefined}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      {name}
                     </Link>
                   );
                 } else {
@@ -81,6 +80,7 @@ export function ProductForm({
                           : '1px solid transparent',
                         opacity: available ? 1 : 0.3,
                       }}
+                      aria-pressed={selected}
                       disabled={!exists}
                       onClick={() => {
                         if (!selected) {
@@ -91,60 +91,15 @@ export function ProductForm({
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      {name}
                     </button>
                   );
                 }
               })}
             </div>
-            <br />
           </div>
         );
       })}
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          open('cart');
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-      </AddToCartButton>
-    </div>
-  );
-}
-
-function ProductOptionSwatch({
-  swatch,
-  name,
-}: {
-  swatch?: Maybe<ProductOptionValueSwatch> | undefined;
-  name: string;
-}) {
-  const image = swatch?.image?.previewImage?.url;
-  const color = swatch?.color;
-
-  if (!image && !color) return name;
-
-  return (
-    <div
-      aria-label={name}
-      className="product-option-label-swatch"
-      style={{
-        backgroundColor: color || 'transparent',
-      }}
-    >
-      {!!image && <img src={image} alt={name} />}
     </div>
   );
 }

@@ -1,0 +1,214 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]: Free shipping over Rs. 15,000 · Eid Collection now live
+  - banner [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - button "Open menu" [ref=f1e6] [cursor=pointer]
+      - link "Singhar by Sidra home" [ref=f1e9] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f1e10]: سنگھار
+        - strong [ref=f1e11]: Singhar by Sidra
+      - navigation "Store actions" [ref=f1e12]:
+        - button "Search" [ref=f1e13] [cursor=pointer]
+        - button "Account" [ref=f1e17] [cursor=pointer]
+        - button "Open bag, 0 items" [ref=f1e21] [cursor=pointer]
+  - main [ref=f1e25]:
+    - generic [ref=f1e26]:
+      - generic [ref=f1e27]:
+        - link "Home" [ref=f1e28] [cursor=pointer]:
+          - /url: /
+        - generic [aria-hidden] [ref=f1e29]: /
+        - generic [ref=f1e30]: All Products
+      - region [ref=f1e31]:
+        - generic [ref=f1e32]:
+          - generic [ref=f1e33]: The complete edit
+          - heading "All Products" [level=1] [ref=f1e34]
+          - paragraph [ref=f1e35]: Explore handcrafted eastern wear, from everyday pret to occasion-ready ensembles.
+      - region [ref=f1e37]:
+        - heading "All products" [level=2] [ref=f1e38]
+        - generic [ref=f1e39]:
+          - article [ref=f1e40]:
+            - link "View pret" [ref=f1e42] [cursor=pointer]:
+              - /url: /products/pret
+              - img "pret" [ref=f1e43]
+            - generic [ref=f1e44]:
+              - link "pret" [ref=f1e45] [cursor=pointer]:
+                - /url: /products/pret
+              - generic [ref=f1e46]: PKR 5,000
+          - article [ref=f1e48]:
+            - link "View EMBROIDERED SUIT" [ref=f1e50] [cursor=pointer]:
+              - /url: /products/embroidered-suit
+              - img "EMBROIDERED SUIT" [ref=f1e51]
+            - generic [ref=f1e52]:
+              - link "EMBROIDERED SUIT" [ref=f1e53] [cursor=pointer]:
+                - /url: /products/embroidered-suit
+              - generic [ref=f1e54]: PKR 14,000
+          - article [ref=f1e56]:
+            - link "View EMBROIDERED SUIT" [ref=f1e58] [cursor=pointer]:
+              - /url: /products/embroidered-suit-1
+              - img "EMBROIDERED SUIT" [ref=f1e59]
+            - generic [ref=f1e60]:
+              - link "EMBROIDERED SUIT" [ref=f1e61] [cursor=pointer]:
+                - /url: /products/embroidered-suit-1
+              - generic [ref=f1e62]: PKR 39,000
+          - article [ref=f1e64]:
+            - link "View Printed Raw Silk Kurta" [ref=f1e66] [cursor=pointer]:
+              - /url: /products/printed-raw-silk-kurta
+              - img "Printed Raw Silk Kurta" [ref=f1e67]
+            - generic [ref=f1e68]:
+              - link "Printed Raw Silk Kurta" [ref=f1e69] [cursor=pointer]:
+                - /url: /products/printed-raw-silk-kurta
+              - generic [ref=f1e70]: PKR 7,500
+          - article [ref=f1e72]:
+            - generic [ref=f1e73]:
+              - link "View PRINTED KAFTAN" [ref=f1e74] [cursor=pointer]:
+                - /url: /products/printed-kaftan
+                - img "PRINTED KAFTAN" [ref=f1e75]
+              - status [ref=f1e76]:
+                - generic [ref=f1e77]: Sold Out
+            - generic [ref=f1e78]:
+              - link "PRINTED KAFTAN" [ref=f1e79] [cursor=pointer]:
+                - /url: /products/printed-kaftan
+              - generic [ref=f1e80]: PKR 7,990
+          - article [ref=f1e82]:
+            - generic [ref=f1e83]:
+              - link "View Three Piece" [ref=f1e84] [cursor=pointer]:
+                - /url: /products/three-piece
+                - img "Blue grey three-piece women's outfit" [ref=f1e85]
+              - status [ref=f1e86]:
+                - generic [ref=f1e87]: Sold Out
+            - generic [ref=f1e88]:
+              - link "Three Piece" [ref=f1e89] [cursor=pointer]:
+                - /url: /products/three-piece
+              - generic [ref=f1e90]: PKR 13,000
+          - article [ref=f1e92]:
+            - link "View Luxury Print - Black" [ref=f1e94] [cursor=pointer]:
+              - /url: /products/luxury-print-black
+              - img "Black luxury women's dress with embellished detailing" [ref=f1e95]
+            - generic [ref=f1e96]:
+              - link "Luxury Print - Black" [ref=f1e97] [cursor=pointer]:
+                - /url: /products/luxury-print-black
+              - generic [ref=f1e98]: PKR 24,000
+          - article [ref=f1e100]:
+            - link "View Luxury Embroidered Dress - Olive" [ref=f1e102] [cursor=pointer]:
+              - /url: /products/luxury-embroidered-dress-olive
+              - img "Olive luxury embroidered three-piece dress" [ref=f1e103]
+            - generic [ref=f1e104]:
+              - link "Luxury Embroidered Dress - Olive" [ref=f1e105] [cursor=pointer]:
+                - /url: /products/luxury-embroidered-dress-olive
+              - generic [ref=f1e106]: PKR 10,000
+          - article [ref=f1e149]:
+            - link "View Printed Lawn Three Piece - Light Blue" [ref=f1e151] [cursor=pointer]:
+              - /url: /products/printed-lawn-three-piece-light-blue
+              - img "Light blue printed lawn three-piece women's outfit" [ref=f1e152]
+            - generic [ref=f1e153]:
+              - link "Printed Lawn Three Piece - Light Blue" [ref=f1e154] [cursor=pointer]:
+                - /url: /products/printed-lawn-three-piece-light-blue
+              - generic [ref=f1e155]: PKR 10,500
+          - article [ref=f1e157]:
+            - link "View Printed Lawn Three Piece - Purple" [ref=f1e159] [cursor=pointer]:
+              - /url: /products/printed-lawn-three-piece-purple
+              - img "Purple printed lawn three-piece women's outfit" [ref=f1e160]
+            - generic [ref=f1e161]:
+              - link "Printed Lawn Three Piece - Purple" [ref=f1e162] [cursor=pointer]:
+                - /url: /products/printed-lawn-three-piece-purple
+              - generic [ref=f1e163]: PKR 9,500
+          - article [ref=f1e165]:
+            - link "View Printed Cambric Kurta - Light Green" [ref=f1e167] [cursor=pointer]:
+              - /url: /products/printed-cambric-kurta-light-green
+              - img "Light green printed cambric women's kurta" [ref=f1e168]
+            - generic [ref=f1e169]:
+              - link "Printed Cambric Kurta - Light Green" [ref=f1e170] [cursor=pointer]:
+                - /url: /products/printed-cambric-kurta-light-green
+              - generic [ref=f1e171]: PKR 4,500
+          - article [ref=f1e173]:
+            - link "View Printed Cambric Kurta - Black" [ref=f1e175] [cursor=pointer]:
+              - /url: /products/printed-cambric-kurta-black
+              - img "Black printed cambric women's kurta" [ref=f1e176]
+            - generic [ref=f1e177]:
+              - link "Printed Cambric Kurta - Black" [ref=f1e178] [cursor=pointer]:
+                - /url: /products/printed-cambric-kurta-black
+              - generic [ref=f1e179]: PKR 4,500
+          - article [ref=f1e181]:
+            - link "View Raw Silk Printed Kurta - Red" [ref=f1e183] [cursor=pointer]:
+              - /url: /products/raw-silk-printed-kurta-red
+              - img "Red raw silk printed women's kurta" [ref=f1e184]
+            - generic [ref=f1e185]:
+              - link "Raw Silk Printed Kurta - Red" [ref=f1e186] [cursor=pointer]:
+                - /url: /products/raw-silk-printed-kurta-red
+              - generic [ref=f1e187]: PKR 5,000
+          - article [ref=f1e189]:
+            - link "View Embroidered Two Piece Set - Black" [ref=f1e191] [cursor=pointer]:
+              - /url: /products/embroidered-two-piece-set-black
+              - img "Black embroidered two-piece women's top and bottom set" [ref=f1e192]
+            - generic [ref=f1e193]:
+              - link "Embroidered Two Piece Set - Black" [ref=f1e194] [cursor=pointer]:
+                - /url: /products/embroidered-two-piece-set-black
+              - generic [ref=f1e195]: PKR 15,000
+          - article [ref=f1e197]:
+            - link "View Printed Lawn Two Piece Set - Light Pink" [ref=f1e199] [cursor=pointer]:
+              - /url: /products/printed-lawn-two-piece-set-light-pink
+              - img "Light pink printed lawn two-piece women's set" [ref=f1e200]
+            - generic [ref=f1e201]:
+              - link "Printed Lawn Two Piece Set - Light Pink" [ref=f1e202] [cursor=pointer]:
+                - /url: /products/printed-lawn-two-piece-set-light-pink
+              - generic [ref=f1e203]: PKR 7,000
+          - article [ref=f1e205]:
+            - link "View Embroidered Raw Silk Two Piece Set - White" [ref=f1e207] [cursor=pointer]:
+              - /url: /products/embroidered-raw-silk-two-piece-set-white
+              - img "White embroidered raw silk two-piece women's set" [ref=f1e208]
+            - generic [ref=f1e209]:
+              - link "Embroidered Raw Silk Two Piece Set - White" [ref=f1e210] [cursor=pointer]:
+                - /url: /products/embroidered-raw-silk-two-piece-set-white
+              - generic [ref=f1e211]: PKR 7,000
+        - link "Load more" [ref=f1e213] [cursor=pointer]:
+          - /url: /collections/all?direction=next&cursor=eyJsYXN0X2lkIjo5NjYxNDE3NTg2OTQzLCJsYXN0X3ZhbHVlIjo5NjYxNDE3NTg2OTQzLCJvZmZzZXQiOjE1fQ%3D%3D
+  - contentinfo [ref=f1e110]:
+    - generic [ref=f1e111]:
+      - generic [ref=f1e112]:
+        - generic [ref=f1e113]:
+          - generic [ref=f1e114]: سنگھار
+          - strong [ref=f1e115]: Singhar by Sidra
+          - paragraph [ref=f1e116]: Luxury eastern wear, handcrafted for the moments that matter.
+        - navigation "Footer navigation" [ref=f1e117]:
+          - generic [ref=f1e118]:
+            - heading "Shop" [level=2] [ref=f1e119]
+            - link "New Arrivals" [ref=f1e120] [cursor=pointer]:
+              - /url: /collections/new-arrivals
+            - link "Luxury Pret" [ref=f1e121] [cursor=pointer]:
+              - /url: /collections/luxury-pret
+            - link "Wedding Collection" [ref=f1e122] [cursor=pointer]:
+              - /url: /collections/wedding-collection
+            - link "Festive Collection" [ref=f1e123] [cursor=pointer]:
+              - /url: /collections/festive-collection
+            - link "Sale" [ref=f1e124] [cursor=pointer]:
+              - /url: /collections/sale
+          - generic [ref=f1e125]:
+            - heading "Customer Care" [level=2] [ref=f1e126]
+            - link "Contact Us" [ref=f1e127] [cursor=pointer]:
+              - /url: /pages/contact
+            - link "Returns & Exchanges" [ref=f1e128] [cursor=pointer]:
+              - /url: /policies/refund-policy
+            - link "Shipping Policy" [ref=f1e129] [cursor=pointer]:
+              - /url: /policies/shipping-policy
+          - generic [ref=f1e130]:
+            - heading "Company" [level=2] [ref=f1e131]
+            - link "Our Story" [ref=f1e132] [cursor=pointer]:
+              - /url: /pages/about
+            - link "Privacy Policy" [ref=f1e133] [cursor=pointer]:
+              - /url: /policies/privacy-policy
+            - link "Terms of Service" [ref=f1e134] [cursor=pointer]:
+              - /url: /policies/terms-of-service
+      - generic "Shopping assurances" [ref=f1e135]:
+        - generic [ref=f1e136]:
+          - generic [aria-hidden] [ref=f1e137]: ✓
+          - paragraph [ref=f1e138]: Secure Payment
+        - generic [ref=f1e139]:
+          - generic [aria-hidden] [ref=f1e140]: ✓
+          - paragraph [ref=f1e141]: Easy Returns
+        - generic [ref=f1e142]:
+          - generic [aria-hidden] [ref=f1e143]: ✓
+          - paragraph [ref=f1e144]: 100% Authentic
+        - generic [ref=f1e145]:
+          - generic [aria-hidden] [ref=f1e146]: ✓
+          - paragraph [ref=f1e147]: Cash on Delivery
+      - paragraph [ref=f1e148]: © 2026 Singhar by Sidra. All rights reserved.

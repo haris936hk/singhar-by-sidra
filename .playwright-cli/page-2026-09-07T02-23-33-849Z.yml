@@ -1,0 +1,154 @@
+- generic [ref=f2e1]:
+  - generic [ref=f2e2]: Free shipping on orders above Rs. 15,000 · Eid Collection now live · COD available nationwide
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - link "Singhar by Sidra home" [ref=f2e9] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e10]: سنگھار
+        - strong [ref=f2e11]: Singhar by Sidra
+      - navigation "Primary navigation" [ref=f2e149]:
+        - generic [ref=f2e151]:
+          - link "Luxury Pret" [ref=f2e152] [cursor=pointer]:
+            - /url: /collections/luxury-pret
+          - button "Open Luxury Pret menu" [ref=f2e153] [cursor=pointer]
+        - link "Casual Wear" [ref=f2e169] [cursor=pointer]:
+          - /url: /collections/casual-wear
+        - generic [ref=f2e171]:
+          - link "Wedding Collection" [ref=f2e172] [cursor=pointer]:
+            - /url: /collections/wedding-collection
+          - button "Open Wedding Collection menu" [ref=f2e173] [cursor=pointer]
+        - generic [ref=f2e177]:
+          - link "Festive Collection" [ref=f2e178] [cursor=pointer]:
+            - /url: /collections/festive-collection
+          - button "Open Festive Collection menu" [ref=f2e179] [cursor=pointer]
+      - navigation "Store actions" [ref=f2e12]:
+        - button "Search" [active] [ref=f2e13] [cursor=pointer]
+        - button "Account" [ref=f2e17] [cursor=pointer]
+        - button "Open bag, 0 items" [ref=f2e21] [cursor=pointer]
+  - main [ref=f2e25]:
+    - generic [ref=f2e26]:
+      - navigation "Breadcrumb" [ref=f2e27]:
+        - link "Home" [ref=f2e28] [cursor=pointer]:
+          - /url: /
+        - generic [aria-hidden] [ref=f2e29]: /
+        - link "Luxury Pret" [ref=f2e30] [cursor=pointer]:
+          - /url: /collections
+        - generic [aria-hidden] [ref=f2e31]: /
+        - generic [ref=f2e32]: Barat Net & Jamawar Lehenga - Deep Red
+      - generic [ref=f2e33]:
+        - region "Barat Net & Jamawar Lehenga - Deep Red images" [ref=f2e34]:
+          - generic [ref=f2e182]:
+            - list "Product image thumbnails" [ref=f2e183]:
+              - button "View product image 1" [ref=f2e184] [cursor=pointer]:
+                - img "Deep red Barat bridal dress with net blouse, Jamawar lehenga and silk lining" [ref=f2e185]
+            - generic "Product image zoom" [ref=f2e186]:
+              - img "Deep red Barat bridal dress with net blouse, Jamawar lehenga and silk lining" [ref=f2e187]
+        - generic [ref=f2e40]:
+          - generic [ref=f2e41]:
+            - generic [ref=f2e42]:
+              - heading "Barat Net & Jamawar Lehenga - Deep Red" [level=1] [ref=f2e43]
+              - generic [ref=f2e44]: PKR 295,000
+            - generic [ref=f2e47]:
+              - heading "Size — Extra Small" [level=5] [ref=f2e49]:
+                - text: Size
+                - generic [ref=f2e50]: — Extra Small
+              - generic [ref=f2e51]:
+                - button "Extra Small" [pressed] [ref=f2e52] [cursor=pointer]
+                - button "Small" [ref=f2e53] [cursor=pointer]
+                - button "Medium" [ref=f2e54] [cursor=pointer]
+            - button "Add to Cart" [ref=f2e57]
+            - generic "Shopping assurances" [ref=f2e58]:
+              - generic [ref=f2e59]:
+                - generic [aria-hidden] [ref=f2e60]: ✓
+                - paragraph [ref=f2e61]: Secure Payment
+              - generic [ref=f2e62]:
+                - generic [aria-hidden] [ref=f2e63]: ✓
+                - paragraph [ref=f2e64]: Easy Returns
+              - generic [ref=f2e65]:
+                - generic [aria-hidden] [ref=f2e66]: ✓
+                - paragraph [ref=f2e67]: Cash on Delivery
+              - generic [ref=f2e68]:
+                - generic [aria-hidden] [ref=f2e69]: ✓
+                - paragraph [ref=f2e70]: 100% Authentic
+          - generic [ref=f2e71]:
+            - generic [ref=f2e72]:
+              - button "Fabric Details" [expanded] [ref=f2e73] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f2e75]: +
+              - paragraph [ref=f2e77]: Please refer to the product description for the fabric, finish, and construction details of this piece.
+            - button "Care Instructions" [ref=f2e79] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f2e81]: +
+            - button "Description" [ref=f2e83] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f2e85]: +
+      - region [ref=f2e86]:
+        - heading "You May Also Like" [level=2] [ref=f2e87]
+        - generic [ref=f2e88]:
+          - link "Ice blue Walima dress with organza shirt and net dupatta Walima Organza Dress - Ice Blue PKR 260,000" [ref=f2e89] [cursor=pointer]:
+            - /url: /products/walima-organza-dress-ice-blue
+            - img "Ice blue Walima dress with organza shirt and net dupatta" [ref=f2e91]
+            - heading "Walima Organza Dress - Ice Blue" [level=3] [ref=f2e92]
+            - generic [ref=f2e93]: PKR 260,000
+          - link "Soft sage Walima dress with net collar, tissue frock and net dupatta Walima Tissue Frock - Soft Sage PKR 295,000" [ref=f2e94] [cursor=pointer]:
+            - /url: /products/walima-tissue-frock-soft-sage
+            - img "Soft sage Walima dress with net collar, tissue frock and net dupatta" [ref=f2e96]
+            - heading "Walima Tissue Frock - Soft Sage" [level=3] [ref=f2e97]
+            - generic [ref=f2e98]: PKR 295,000
+          - link "Deep red Barat dress with pure organza shirt, silk lehenga and net dupatta Barat Pure Organza & Silk Lehenga - Deep Red PKR 320,000" [ref=f2e99] [cursor=pointer]:
+            - /url: /products/barat-pure-organza-silk-lehenga-deep-red
+            - img "Deep red Barat dress with pure organza shirt, silk lehenga and net dupatta" [ref=f2e101]
+            - heading "Barat Pure Organza & Silk Lehenga - Deep Red" [level=3] [ref=f2e102]
+            - generic [ref=f2e103]: PKR 320,000
+          - link "Mehndi dress with velvet shirt, raw silk sharara and silk dupatta Mehndi Velvet & Raw Silk Sharara Set - Deep Pink PKR 150,000" [ref=f2e104] [cursor=pointer]:
+            - /url: /products/mehndi-velvet-raw-silk-sharara-set-deep-pink
+            - img "Mehndi dress with velvet shirt, raw silk sharara and silk dupatta" [ref=f2e106]
+            - heading "Mehndi Velvet & Raw Silk Sharara Set - Deep Pink" [level=3] [ref=f2e107]
+            - generic [ref=f2e108]: PKR 150,000
+  - contentinfo [ref=f2e109]:
+    - generic [ref=f2e110]:
+      - generic [ref=f2e111]:
+        - generic [ref=f2e112]:
+          - generic [ref=f2e113]: سنگھار
+          - strong [ref=f2e114]: Singhar by Sidra
+          - paragraph [ref=f2e115]: Luxury eastern wear, handcrafted for the moments that matter.
+        - navigation "Footer navigation" [ref=f2e116]:
+          - generic [ref=f2e117]:
+            - heading "Shop" [level=2] [ref=f2e118]
+            - link "New Arrivals" [ref=f2e119] [cursor=pointer]:
+              - /url: /collections/new-arrivals
+            - link "Luxury Pret" [ref=f2e120] [cursor=pointer]:
+              - /url: /collections/luxury-pret
+            - link "Wedding Collection" [ref=f2e121] [cursor=pointer]:
+              - /url: /collections/wedding-collection
+            - link "Festive Collection" [ref=f2e122] [cursor=pointer]:
+              - /url: /collections/festive-collection
+            - link "Sale" [ref=f2e123] [cursor=pointer]:
+              - /url: /collections/sale
+          - generic [ref=f2e124]:
+            - heading "Customer Care" [level=2] [ref=f2e125]
+            - link "Contact Us" [ref=f2e126] [cursor=pointer]:
+              - /url: /pages/contact
+            - link "Returns & Exchanges" [ref=f2e127] [cursor=pointer]:
+              - /url: /policies/refund-policy
+            - link "Shipping Policy" [ref=f2e128] [cursor=pointer]:
+              - /url: /policies/shipping-policy
+          - generic [ref=f2e129]:
+            - heading "Company" [level=2] [ref=f2e130]
+            - link "Our Story" [ref=f2e131] [cursor=pointer]:
+              - /url: /pages/about
+            - link "Privacy Policy" [ref=f2e132] [cursor=pointer]:
+              - /url: /policies/privacy-policy
+            - link "Terms of Service" [ref=f2e133] [cursor=pointer]:
+              - /url: /policies/terms-of-service
+      - generic "Shopping assurances" [ref=f2e134]:
+        - generic [ref=f2e135]:
+          - generic [aria-hidden] [ref=f2e136]: ✓
+          - paragraph [ref=f2e137]: Secure Payment
+        - generic [ref=f2e138]:
+          - generic [aria-hidden] [ref=f2e139]: ✓
+          - paragraph [ref=f2e140]: Easy Returns
+        - generic [ref=f2e141]:
+          - generic [aria-hidden] [ref=f2e142]: ✓
+          - paragraph [ref=f2e143]: 100% Authentic
+        - generic [ref=f2e144]:
+          - generic [aria-hidden] [ref=f2e145]: ✓
+          - paragraph [ref=f2e146]: Cash on Delivery
+      - paragraph [ref=f2e147]: © 2026 Singhar by Sidra. All rights reserved.

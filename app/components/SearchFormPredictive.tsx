@@ -31,16 +31,15 @@ export function SearchFormPredictive({
 }: SearchFormPredictiveProps) {
   const fetcher = useFetcher<PredictiveSearchReturn>({key: 'search'});
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const wasSearchOpen = useRef(false);
   const navigate = useNavigate();
   const aside = useAside();
 
-  /** Reset the input value and blur the input */
-  function resetInput(event: React.FormEvent<HTMLFormElement>) {
+  /** Submit the current input value to the full search results page. */
+  function submitSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     event.stopPropagation();
-    if (inputRef?.current?.value) {
-      inputRef.current.blur();
-    }
+    goToSearch();
   }
 
   /** Navigate to the search page with the current input value */
@@ -64,12 +63,26 @@ export function SearchFormPredictive({
     inputRef?.current?.setAttribute('type', 'search');
   }, []);
 
+  useEffect(() => {
+    if (aside.type === 'search') {
+      wasSearchOpen.current = true;
+      return;
+    }
+    if (!wasSearchOpen.current) return;
+    wasSearchOpen.current = false;
+    if (inputRef.current) inputRef.current.value = '';
+    void fetcher.submit(
+      {q: '', limit: 5, predictive: true},
+      {method: 'GET', action: SEARCH_ENDPOINT},
+    );
+  }, [aside.type, fetcher]);
+
   if (typeof children !== 'function') {
     return null;
   }
 
   return (
-    <fetcher.Form {...props} className={className} onSubmit={resetInput}>
+    <fetcher.Form {...props} className={className} onSubmit={submitSearch}>
       {children({inputRef, fetcher, fetchResults, goToSearch})}
     </fetcher.Form>
   );

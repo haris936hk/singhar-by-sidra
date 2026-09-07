@@ -2,7 +2,8 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
-import {useFetcher} from 'react-router';
+import {Link, useFetcher} from 'react-router';
+import {useAside} from './Aside';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -25,36 +26,31 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
         <dt>Subtotal</dt>
         <dd>
           {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
+            <Money data={cart?.cost?.subtotalAmount} withoutTrailingZeros />
           ) : (
             '-'
           )}
         </dd>
       </dl>
-      <CartDiscounts
-        discountCodes={cart?.discountCodes}
-        discountsHeadingId={discountsHeadingId}
-        discountCodeInputId={discountCodeInputId}
-      />
-      <CartGiftCard
-        giftCardCodes={cart?.appliedGiftCards}
-        giftCardHeadingId={giftCardHeadingId}
-        giftCardInputId={giftCardInputId}
-      />
-      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
+      {layout === 'page' ? (
+        <>
+          <CartDiscounts discountCodes={cart?.discountCodes} discountsHeadingId={discountsHeadingId} discountCodeInputId={discountCodeInputId} />
+          <CartGiftCard giftCardCodes={cart?.appliedGiftCards} giftCardHeadingId={giftCardHeadingId} giftCardInputId={giftCardInputId} />
+        </>
+      ) : <p className="checkout-note">Shipping &amp; taxes calculated at checkout.</p>}
+      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} layout={layout} />
     </div>
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({checkoutUrl, layout}: {checkoutUrl?: string; layout: CartLayout}) {
+  const {close} = useAside();
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
-      </a>
-      <br />
+    <div className="cart-checkout-actions">
+      <a className="button button-dark" href={checkoutUrl} target="_self">Proceed to Checkout</a>
+      {layout === 'aside' ? <><Link className="button button-outline" onClick={close} to="/cart">View Cart</Link><button className="continue-shopping" onClick={close}>Continue Shopping</button><p className="cart-trust">Secure Payment <span>·</span> Easy Returns <span>·</span> Cash on Delivery</p></> : null}
     </div>
   );
 }
@@ -213,7 +209,7 @@ function CartGiftCard({
               >
                 <code>***{giftCard.lastCharacters}</code>
                 &nbsp;
-                <Money data={giftCard.amountUsed} />
+                <Money data={giftCard.amountUsed} withoutTrailingZeros />
               </RemoveGiftCardForm>
             </dd>
           ))}

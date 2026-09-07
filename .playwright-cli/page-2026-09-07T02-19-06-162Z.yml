@@ -1,0 +1,125 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: Free shipping on orders above Rs. 15,000 · Eid Collection now live · COD available nationwide
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Singhar by Sidra home" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e7]: سنگھار
+        - strong [ref=e8]: Singhar by Sidra
+      - navigation "Primary navigation" [ref=e9]:
+        - generic [ref=e11]:
+          - link "Luxury Pret" [ref=e12] [cursor=pointer]:
+            - /url: /collections/luxury-pret
+          - button "Open Luxury Pret menu" [ref=e13] [cursor=pointer]
+        - link "Casual Wear" [ref=e18] [cursor=pointer]:
+          - /url: /collections/casual-wear
+        - generic [ref=e20]:
+          - link "Wedding Collection" [ref=e21] [cursor=pointer]:
+            - /url: /collections/wedding-collection
+          - button "Open Wedding Collection menu" [ref=e22] [cursor=pointer]
+        - generic [ref=e26]:
+          - link "Festive Collection" [ref=e27] [cursor=pointer]:
+            - /url: /collections/festive-collection
+          - button "Open Festive Collection menu" [ref=e28] [cursor=pointer]
+      - navigation "Store actions" [ref=e31]:
+        - button "Search" [ref=e32] [cursor=pointer]
+        - button "Account" [ref=e36] [cursor=pointer]
+        - button "Open bag, 0 items" [ref=e40] [cursor=pointer]
+  - main [ref=e44]:
+    - generic [ref=e45]:
+      - heading "Products" [level=1] [ref=e46]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - link "pret pret PKR 5,000" [ref=e49] [cursor=pointer]:
+            - /url: /products/pret
+            - img "pret" [ref=e50]
+            - heading "pret" [level=4] [ref=e51]
+            - generic [ref=e52]: PKR 5,000
+          - link "EMBROIDERED SUIT EMBROIDERED SUIT PKR 14,000" [ref=e54] [cursor=pointer]:
+            - /url: /products/embroidered-suit
+            - img "EMBROIDERED SUIT" [ref=e55]
+            - heading "EMBROIDERED SUIT" [level=4] [ref=e56]
+            - generic [ref=e57]: PKR 14,000
+          - link "EMBROIDERED SUIT EMBROIDERED SUIT PKR 39,000" [ref=e59] [cursor=pointer]:
+            - /url: /products/embroidered-suit-1
+            - img "EMBROIDERED SUIT" [ref=e60]
+            - heading "EMBROIDERED SUIT" [level=4] [ref=e61]
+            - generic [ref=e62]: PKR 39,000
+          - link "Printed Raw Silk Kurta Printed Raw Silk Kurta PKR 7,500" [ref=e64] [cursor=pointer]:
+            - /url: /products/printed-raw-silk-kurta
+            - img "Printed Raw Silk Kurta" [ref=e65]
+            - heading "Printed Raw Silk Kurta" [level=4] [ref=e66]
+            - generic [ref=e67]: PKR 7,500
+          - link "PRINTED KAFTAN PRINTED KAFTAN PKR 7,990" [ref=e69] [cursor=pointer]:
+            - /url: /products/printed-kaftan
+            - img "PRINTED KAFTAN" [ref=e70]
+            - heading "PRINTED KAFTAN" [level=4] [ref=e71]
+            - generic [ref=e72]: PKR 7,990
+          - link "Blue grey three-piece women's outfit Three Piece PKR 13,000" [ref=e74] [cursor=pointer]:
+            - /url: /products/three-piece
+            - img "Blue grey three-piece women's outfit" [ref=e75]
+            - heading "Three Piece" [level=4] [ref=e76]
+            - generic [ref=e77]: PKR 13,000
+          - link "Black luxury women's dress with embellished detailing Luxury Print - Black PKR 24,000" [ref=e79] [cursor=pointer]:
+            - /url: /products/luxury-print-black
+            - img "Black luxury women's dress with embellished detailing" [ref=e80]
+            - heading "Luxury Print - Black" [level=4] [ref=e81]
+            - generic [ref=e82]: PKR 24,000
+          - link "Olive luxury embroidered three-piece dress Luxury Embroidered Dress - Olive PKR 10,000" [ref=e84] [cursor=pointer]:
+            - /url: /products/luxury-embroidered-dress-olive
+            - img "Olive luxury embroidered three-piece dress" [ref=e85]
+            - heading "Luxury Embroidered Dress - Olive" [level=4] [ref=e86]
+            - generic [ref=e87]: PKR 10,000
+        - link "Load more" [ref=e89] [cursor=pointer]:
+          - /url: /collections/all?direction=next&cursor=eyJsYXN0X2lkIjo5NjYxMzg4MjI2ODE1LCJsYXN0X3ZhbHVlIjo5NjYxMzg4MjI2ODE1LCJvZmZzZXQiOjd9
+          - generic [ref=e90]: Load more ↓
+  - contentinfo [ref=e91]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - generic [ref=e95]: سنگھار
+          - strong [ref=e96]: Singhar by Sidra
+          - paragraph [ref=e97]: Luxury eastern wear, handcrafted for the moments that matter.
+        - navigation "Footer navigation" [ref=e98]:
+          - generic [ref=e99]:
+            - heading "Shop" [level=2] [ref=e100]
+            - link "New Arrivals" [ref=e101] [cursor=pointer]:
+              - /url: /collections/new-arrivals
+            - link "Luxury Pret" [ref=e102] [cursor=pointer]:
+              - /url: /collections/luxury-pret
+            - link "Wedding Collection" [ref=e103] [cursor=pointer]:
+              - /url: /collections/wedding-collection
+            - link "Festive Collection" [ref=e104] [cursor=pointer]:
+              - /url: /collections/festive-collection
+            - link "Sale" [ref=e105] [cursor=pointer]:
+              - /url: /collections/sale
+          - generic [ref=e106]:
+            - heading "Customer Care" [level=2] [ref=e107]
+            - link "Contact Us" [ref=e108] [cursor=pointer]:
+              - /url: /pages/contact
+            - link "Returns & Exchanges" [ref=e109] [cursor=pointer]:
+              - /url: /policies/refund-policy
+            - link "Shipping Policy" [ref=e110] [cursor=pointer]:
+              - /url: /policies/shipping-policy
+          - generic [ref=e111]:
+            - heading "Company" [level=2] [ref=e112]
+            - link "Our Story" [ref=e113] [cursor=pointer]:
+              - /url: /pages/about
+            - link "Privacy Policy" [ref=e114] [cursor=pointer]:
+              - /url: /policies/privacy-policy
+            - link "Terms of Service" [ref=e115] [cursor=pointer]:
+              - /url: /policies/terms-of-service
+      - generic "Shopping assurances" [ref=e116]:
+        - generic [ref=e117]:
+          - generic [aria-hidden] [ref=e118]: ✓
+          - paragraph [ref=e119]: Secure Payment
+        - generic [ref=e120]:
+          - generic [aria-hidden] [ref=e121]: ✓
+          - paragraph [ref=e122]: Easy Returns
+        - generic [ref=e123]:
+          - generic [aria-hidden] [ref=e124]: ✓
+          - paragraph [ref=e125]: 100% Authentic
+        - generic [ref=e126]:
+          - generic [aria-hidden] [ref=e127]: ✓
+          - paragraph [ref=e128]: Cash on Delivery
+      - paragraph [ref=e129]: © 2026 Singhar by Sidra. All rights reserved.

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#FFFFF5;--beige:#E8DCC8;--gold:#C9A25D;--nude:#D8B8A0;--brown:#8A6A50;--ink:#1A1A1A;}
+  *{box-sizing:border-box;}
+  body{margin:0;-webkit-font-smoothing:antialiased;}
+  a{color:var(--ink);text-decoration:none;}
+  a:hover{color:var(--gold);}
+  ::-webkit-scrollbar{height:0;width:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+<div style="background:#F4F0E8;min-height:100vh;padding:56px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:72px;font-family:'Inter',sans-serif;overflow-x:auto;">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Mobile — 390 × 844</span>
+    <div style="position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:10px 16px;text-align:center;">
+          <span style="font:500 10.5px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping over Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 12px;display:flex;align-items:center;justify-content:space-between;">
+          <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;">
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+          </button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+            <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <button style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:0;">
+              <div style="width:14px;height:14px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:14px;right:11px;"></div>
+            </button>
+            <button onClick="{{ toggleAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;">
+              <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+            </button>
+            <button style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;">
+              <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+              <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+            </button>
+          </div>
+        </div>
+
+        <div style="padding:14px 16px 0;">
+          <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Home / My Account / <span style="color:#1A1A1A;">Addresses</span></span>
+        </div>
+
+        <div style="padding:20px 20px 8px;display:flex;align-items:center;justify-content:space-between;">
+          <h1 style="margin:0;font:500 26px 'Playfair Display',serif;color:#1A1A1A;">Addresses</h1>
+        </div>
+
+        <sc-if value="{{ hasAddresses }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:8px 20px;display:flex;flex-direction:column;gap:14px;">
+            <sc-for list="{{ addresses }}" as="addr" hint-placeholder-count="3">
+              <div style="border:1px solid rgba(0,0,0,.1);border-radius:2px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="font:500 14px 'Playfair Display',serif;color:#1A1A1A;">{{ addr.label }}</span>
+                    <sc-if value="{{ addr.isDefault }}" hint-placeholder-val="{{ false }}">
+                      <span style="font:600 9.5px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;color:#8A6A50;background:#E8DCC8;padding:3px 8px;border-radius:20px;">Default</span>
+                    </sc-if>
+                  </div>
+                  <span style="font:11px 'Inter',sans-serif;color:#8A6A50;text-transform:uppercase;letter-spacing:.3px;">{{ addr.type }}</span>
+                </div>
+                <span style="font:13px/1.6 'Inter',sans-serif;color:#1A1A1A;">{{ addr.name }}<br>{{ addr.line }}<br>{{ addr.city }}<br>{{ addr.phone }}</span>
+                <div style="display:flex;gap:16px;margin-top:2px;">
+                  <button onClick="{{ addr.onEdit }}" style="border:none;background:none;padding:0;font:500 11.5px 'Inter',sans-serif;color:#1A1A1A;text-decoration:underline;cursor:pointer;">Edit</button>
+                  <sc-if value="{{ addr.canSetDefault }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ addr.onSetDefault }}" style="border:none;background:none;padding:0;font:500 11.5px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">Set as Default</button>
+                  </sc-if>
+                  <button onClick="{{ addr.onRemove }}" style="border:none;background:none;padding:0;font:500 11.5px 'Inter',sans-serif;color:#7B2D26;text-decoration:underline;cursor:pointer;">Remove</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:6px 20px 0;padding:18px;border:1px solid rgba(0,0,0,.1);background:#FFFFF5;display:flex;flex-direction:column;gap:12px;animation:fadeIn .15s ease;">
+              <span style="font:500 15px 'Playfair Display',serif;color:#1A1A1A;">{{ formTitle }}</span>
+              <input value="{{ form.label }}" onChange="{{ updateForm_label }}" placeholder="Label (e.g. Home, Office)" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <input value="{{ form.name }}" onChange="{{ updateForm_name }}" placeholder="Full Name" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <input value="{{ form.line }}" onChange="{{ updateForm_line }}" placeholder="Street Address" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <input value="{{ form.city }}" onChange="{{ updateForm_city }}" placeholder="City, Country" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <input value="{{ form.phone }}" onChange="{{ updateForm_phone }}" placeholder="Phone Number" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <div style="display:flex;gap:10px;margin-top:4px;">
+                <button onClick="{{ saveForm }}" style="flex:1;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:13px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Save Address</button>
+                <button onClick="{{ closeForm }}" style="flex:1;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:12px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Cancel</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showAddButton }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:16px 20px 8px;">
+              <button onClick="{{ openAddForm }}" style="width:100%;border:1px solid #C9A25D;background:none;border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;">+ Add New Address</button>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px 32px;text-align:center;">
+            <span style="font:400 22px 'Playfair Display',serif;color:#1A1A1A;">No saved addresses</span>
+            <span style="font:13.5px/1.5 'Inter',sans-serif;color:#8A6A50;max-width:260px;">Add an address to speed up checkout next time.</span>
+            <button onClick="{{ openAddForm }}" style="margin-top:14px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px 32px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Add Address</button>
+          </div>
+        </sc-if>
+
+        <div style="background:#1A1A1A;margin-top:24px;padding:48px 24px 28px;display:flex;flex-direction:column;gap:36px;">
+          <div style="display:flex;flex-direction:column;gap:1px;text-align:center;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+            <span style="font:500 18px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+          </div>
+          <span style="text-align:center;font:11px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+        </div>
+
+      </div>
+
+      <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:60;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:26px;padding:8px 32px;overflow-y:auto;">
+            <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+              <a href="#" style="font:400 22px 'Playfair Display',serif;color:#1A1A1A;">{{ cat }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:63;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ closeAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 32px;text-align:center;">
+            <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ true }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+              <span style="font:15px 'Inter',sans-serif;color:#C9A25D;">Addresses</span>
+              <button onClick="{{ logOut }}" style="border:none;background:none;padding:0;font:15px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+            </sc-if>
+            <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ false }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+              <button style="width:100%;max-width:260px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Log In</button>
+              <button style="width:100%;max-width:260px;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+            </sc-if>
+            <button onClick="{{ toggleLoginPreview }}" style="margin-top:10px;border:none;background:none;padding:0;font:12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:20px;right:20px;width:52px;height:52px;border-radius:16px 16px 16px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;">
+        <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+      </a>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Desktop — 1440 × 900</span>
+    <div style="position:relative;width:1440px;height:900px;border-radius:10px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:9px 0;text-align:center;">
+          <span style="font:500 11px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping on orders above Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live &nbsp;·&nbsp; COD available nationwide</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:0 64px;" onMouseLeave="{{ clearMegaMenu }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;height:88px;">
+            <div style="display:flex;flex-direction:column;gap:1px;">
+              <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+              <span style="font:500 21px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+            </div>
+            <nav style="display:flex;gap:36px;">
+              <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="7">
+                <a href="#" onMouseEnter="{{ item.enter }}" style="font:500 13px 'Inter',sans-serif;letter-spacing:.2px;color:#1A1A1A;padding:6px 0;border-bottom:1px solid transparent;">{{ item.name }}</a>
+              </sc-for>
+            </nav>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <button style="width:40px;height:40px;border:none;background:none;cursor:pointer;position:relative;">
+                <div style="width:15px;height:15px;border:1.4px solid #1A1A1A;border-radius:50%;margin:0 auto;"></div>
+                <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:11px;right:9px;"></div>
+              </button>
+              <div style="position:relative;">
+                <button onClick="{{ toggleAccount }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+                  <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+                  <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+                </button>
+                <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:calc(100% + 12px);right:0;width:260px;background:#FFFFF5;border:1px solid rgba(0,0,0,.1);box-shadow:0 20px 40px -18px rgba(0,0,0,.25);padding:24px;z-index:55;animation:fadeIn .15s ease;">
+                    <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+                        <span style="font:13px 'Inter',sans-serif;color:#C9A25D;">Addresses</span>
+                        <button onClick="{{ logOut }}" style="text-align:left;border:none;background:none;padding:0;font:13px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+                        <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:12px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Log In</button>
+                        <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:11px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+                      </div>
+                    </sc-if>
+                    <button onClick="{{ toggleLoginPreview }}" style="margin-top:16px;border:none;background:none;padding:0;font:11px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+                  </div>
+                </sc-if>
+              </div>
+              <button style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+                <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+              </button>
+            </div>
+          </div>
+
+          <sc-if value="{{ activeMegaMenu }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:88px;background:#FFFFF5;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 20px 30px -20px rgba(0,0,0,.12);padding:40px 64px;display:flex;gap:64px;animation:fadeIn .15s ease;">
+              <div style="display:flex;flex-direction:column;gap:14px;min-width:200px;">
+                <sc-for list="{{ megaSubs }}" as="sub" hint-placeholder-count="4">
+                  <a href="#" style="font:14px 'Inter',sans-serif;color:#1A1A1A;">{{ sub }}</a>
+                </sc-for>
+              </div>
+              <div style="width:220px;height:150px;border-radius:2px;background:repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 14px,#C9A25D 14px,#C9A25D 28px);display:flex;align-items:flex-end;padding:12px;">
+                <span style="font:500 12px 'Inter',sans-serif;color:#FFFFF5;letter-spacing:.3px;">{{ megaPromo }}</span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="padding:28px 64px 0;">
+          <span style="font:12.5px 'Inter',sans-serif;color:#8A6A50;">Home / My Account / <span style="color:#1A1A1A;">Addresses</span></span>
+        </div>
+
+        <div style="padding:24px 64px 80px;display:flex;gap:56px;max-width:1312px;margin:0 auto;">
+
+          <div style="flex:0 0 240px;display:flex;flex-direction:column;gap:4px;">
+            <span style="font:500 22px 'Playfair Display',serif;color:#1A1A1A;margin-bottom:14px;">My Account</span>
+            <a href="#" style="font:14px 'Inter',sans-serif;color:#8A6A50;padding:10px 0;">Orders</a>
+            <a href="#" style="font:14px 'Inter',sans-serif;color:#8A6A50;padding:10px 0;">My Details</a>
+            <a href="#" style="font:14px 'Inter',sans-serif;color:#1A1A1A;padding:10px 0;border-bottom:1.5px solid #C9A25D;">Addresses</a>
+            <a href="#" style="font:14px 'Inter',sans-serif;color:#8A6A50;padding:10px 0;">Wishlist</a>
+            <button onClick="{{ logOut }}" style="text-align:left;border:none;background:none;padding:10px 0;font:14px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+          </div>
+
+          <div style="flex:1;display:flex;flex-direction:column;gap:28px;min-width:0;max-width:760px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;">
+              <h1 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">Addresses</h1>
+              <sc-if value="{{ showAddButton }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ openAddForm }}" style="border:1px solid #C9A25D;background:none;border-radius:2px;padding:11px 20px;font:500 12px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;">+ Add New Address</button>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:24px;border:1px solid rgba(0,0,0,.1);background:#FFFFF5;display:flex;flex-direction:column;gap:14px;animation:fadeIn .15s ease;">
+                <span style="font:500 16px 'Playfair Display',serif;color:#1A1A1A;">{{ formTitle }}</span>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                  <input value="{{ form.label }}" onChange="{{ updateForm_label }}" placeholder="Label (e.g. Home, Office)" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13.5px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+                  <input value="{{ form.name }}" onChange="{{ updateForm_name }}" placeholder="Full Name" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13.5px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+                  <input value="{{ form.line }}" onChange="{{ updateForm_line }}" placeholder="Street Address" style="width:100%;grid-column:1/3;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13.5px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+                  <input value="{{ form.city }}" onChange="{{ updateForm_city }}" placeholder="City, Country" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13.5px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+                  <input value="{{ form.phone }}" onChange="{{ updateForm_phone }}" placeholder="Phone Number" style="width:100%;border:1px solid rgba(0,0,0,.15);border-radius:2px;padding:12px 13px;font:13.5px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:4px;">
+                  <button onClick="{{ saveForm }}" style="background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:13px 26px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Save Address</button>
+                  <button onClick="{{ closeForm }}" style="background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:12px 22px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Cancel</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ hasAddresses }}" hint-placeholder-val="{{ true }}">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <sc-for list="{{ addresses }}" as="addr" hint-placeholder-count="3">
+                  <div style="border:1px solid rgba(0,0,0,.1);border-radius:2px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="font:500 15px 'Playfair Display',serif;color:#1A1A1A;">{{ addr.label }}</span>
+                        <sc-if value="{{ addr.isDefault }}" hint-placeholder-val="{{ false }}">
+                          <span style="font:600 9.5px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;color:#8A6A50;background:#E8DCC8;padding:3px 8px;border-radius:20px;">Default</span>
+                        </sc-if>
+                      </div>
+                      <span style="font:11px 'Inter',sans-serif;color:#8A6A50;text-transform:uppercase;letter-spacing:.3px;">{{ addr.type }}</span>
+                    </div>
+                    <span style="font:13.5px/1.6 'Inter',sans-serif;color:#1A1A1A;">{{ addr.name }}<br>{{ addr.line }}<br>{{ addr.city }}<br>{{ addr.phone }}</span>
+                    <div style="display:flex;gap:16px;margin-top:2px;">
+                      <button onClick="{{ addr.onEdit }}" style="border:none;background:none;padding:0;font:500 12px 'Inter',sans-serif;color:#1A1A1A;text-decoration:underline;cursor:pointer;">Edit</button>
+                      <sc-if value="{{ addr.canSetDefault }}" hint-placeholder-val="{{ true }}">
+                        <button onClick="{{ addr.onSetDefault }}" style="border:none;background:none;padding:0;font:500 12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">Set as Default</button>
+                      </sc-if>
+                      <button onClick="{{ addr.onRemove }}" style="border:none;background:none;padding:0;font:500 12px 'Inter',sans-serif;color:#7B2D26;text-decoration:underline;cursor:pointer;">Remove</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px;text-align:center;border:1px solid rgba(0,0,0,.08);">
+                <span style="font:400 24px 'Playfair Display',serif;color:#1A1A1A;">No saved addresses</span>
+                <span style="font:14px/1.5 'Inter',sans-serif;color:#8A6A50;max-width:340px;">Add an address to speed up checkout next time.</span>
+                <button onClick="{{ openAddForm }}" style="margin-top:14px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px 32px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Add Address</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="background:#1A1A1A;padding:64px 64px 32px;display:flex;flex-direction:column;gap:44px;max-width:1312px;margin:0 auto;">
+          <div style="display:flex;justify-content:space-between;gap:40px;">
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <span style="font:400 12px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+              <span style="font:500 22px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+              <p style="font:13px/1.6 'Inter',sans-serif;color:rgba(255,255,245,.55);max-width:260px;margin-top:10px;">Luxury eastern wear, handcrafted for the moments that matter.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">FAQs</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Company</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Our Story</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Careers</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Store Locator</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Connect</span>
+              <div style="display:flex;gap:10px;">
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,245,.12);padding-top:28px;">
+            <div style="display:flex;gap:32px;">
+              <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <div style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,245,.3);display:flex;align-items:center;justify-content:center;flex:none;">
+                    <div style="width:8px;height:5px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                  </div>
+                  <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.7);">{{ tb }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:32px;right:32px;width:58px;height:58px;border-radius:18px 18px 18px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;">
+        <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mobileMenuOpen: false,
+      activeMegaMenu: null,
+      accountOpen: false,
+      accountLoggedIn: true,
+      addresses: [
+        { id: 1, label: 'Home', type: 'Shipping', isDefault: true, name: 'Ayesha Khan', line: 'House 12, Street 4, DHA Phase 6', city: 'Lahore, Pakistan', phone: '+92 300 1234567' },
+        { id: 2, label: 'Office', type: 'Shipping', isDefault: false, name: 'Ayesha Khan', line: 'Flat 3B, Clifton Block 5', city: 'Karachi, Pakistan', phone: '+92 321 7654321' }
+      ],
+      formOpen: false,
+      editingId: null,
+      form: { label: '', name: '', line: '', city: '', phone: '' }
+    };
+    this.nextId = 3;
+  }
+
+  navCategories = ['New Arrivals', 'Luxury Pret', 'Casual Wear', 'Formal Wear', 'Wedding Collection', 'Festive Collection', 'Sale'];
+  megaMenu = {
+    'Luxury Pret': { sub: ['2-Piece Sets', '3-Piece Sets', 'Kurtas', 'Trousers & Palazzos'], promo: 'LUXURY PRET LOOKBOOK' },
+    'Wedding Collection': { sub: ['Bridal Wear', 'Walima', 'Mehndi', 'Barat'], promo: 'BRIDAL EDIT' },
+    'Festive Collection': { sub: ['Eid Edit', 'Chikankari', 'Organza', 'Embroidered'], promo: 'FESTIVE EDIT' }
+  };
+  trustBadges = ['Secure Payment', 'Easy Returns', '100% Authentic', 'Cash on Delivery'];
+
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
+  setMegaMenu = (name) => this.setState({ activeMegaMenu: name });
+  clearMegaMenu = () => this.setState({ activeMegaMenu: null });
+  toggleAccount = () => this.setState(s => ({ accountOpen: !s.accountOpen }));
+  closeAccount = () => this.setState({ accountOpen: false });
+  logOut = () => this.setState({ accountLoggedIn: false });
+  toggleLoginPreview = () => this.setState(s => ({ accountLoggedIn: !s.accountLoggedIn }));
+
+  openAddForm = () => this.setState({ formOpen: true, editingId: null, form: { label: '', name: '', line: '', city: '', phone: '' } });
+  openEditForm = (addr) => this.setState({ formOpen: true, editingId: addr.id, form: { label: addr.label, name: addr.name, line: addr.line, city: addr.city, phone: addr.phone } });
+  closeForm = () => this.setState({ formOpen: false, editingId: null });
+  updateFormField = (key, val) => this.setState(s => ({ form: { ...s.form, [key]: val } }));
+
+  saveForm = () => {
+    this.setState(s => {
+      if (s.editingId) {
+        return { addresses: s.addresses.map(a => a.id === s.editingId ? { ...a, ...s.form } : a), formOpen: false, editingId: null };
+      }
+      const newAddr = { id: this.nextId++, type: 'Shipping', isDefault: s.addresses.length === 0, ...s.form };
+      return { addresses: [...s.addresses, newAddr], formOpen: false };
+    });
+  };
+
+  setDefault = (id) => this.setState(s => ({ addresses: s.addresses.map(a => ({ ...a, isDefault: a.id === id })) }));
+  removeAddress = (id) => this.setState(s => {
+    const remaining = s.addresses.filter(a => a.id !== id);
+    if (remaining.length && !remaining.some(a => a.isDefault)) remaining[0].isDefault = true;
+    return { addresses: remaining };
+  });
+
+  renderVals() {
+    const navItems = this.navCategories.map(name => ({
+      name,
+      enter: () => (this.megaMenu[name] ? this.setMegaMenu(name) : this.clearMegaMenu())
+    }));
+    const active = this.state.activeMegaMenu ? this.megaMenu[this.state.activeMegaMenu] : null;
+
+    const addresses = this.state.addresses.map(addr => ({
+      ...addr,
+      onEdit: () => this.openEditForm(addr),
+      onSetDefault: () => this.setDefault(addr.id),
+      onRemove: () => this.removeAddress(addr.id),
+      canSetDefault: !addr.isDefault
+    }));
+
+    return {
+      navCategories: this.navCategories,
+      navItems,
+      activeMegaMenu: this.state.activeMegaMenu,
+      megaSubs: active ? active.sub : [],
+      megaPromo: active ? active.promo : '',
+      clearMegaMenu: this.clearMegaMenu,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: this.toggleMobileMenu,
+      accountOpen: this.state.accountOpen,
+      toggleAccount: this.toggleAccount,
+      closeAccount: this.closeAccount,
+      accountLoggedIn: this.state.accountLoggedIn,
+      accountLoggedOut: !this.state.accountLoggedIn,
+      logOut: this.logOut,
+      toggleLoginPreview: this.toggleLoginPreview,
+      loginPreviewLabel: this.state.accountLoggedIn ? 'Preview logged-out view' : 'Preview logged-in view',
+      trustBadges: this.trustBadges,
+      addresses,
+      hasAddresses: addresses.length > 0,
+      isEmpty: addresses.length === 0,
+      showAddButton: addresses.length > 0 && !this.state.formOpen,
+      formOpen: this.state.formOpen,
+      formTitle: this.state.editingId ? 'Edit Address' : 'Add New Address',
+      form: this.state.form,
+      updateForm_label: (e) => this.updateFormField('label', e.target.value),
+      updateForm_name: (e) => this.updateFormField('name', e.target.value),
+      updateForm_line: (e) => this.updateFormField('line', e.target.value),
+      updateForm_city: (e) => this.updateFormField('city', e.target.value),
+      updateForm_phone: (e) => this.updateFormField('phone', e.target.value),
+      openAddForm: this.openAddForm,
+      closeForm: this.closeForm,
+      saveForm: this.saveForm
+    };
+  }
+}
+
+</script>
+</body>
+</html>

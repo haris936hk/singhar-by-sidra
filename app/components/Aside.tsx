@@ -1,74 +1,126 @@
 import {
   createContext,
   type ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useId,
+  useRef,
   useState,
 } from 'react';
-import {useId} from 'react';
 
-type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
+export type AsideType = 'search' | 'cart' | 'mobile' | 'account' | 'closed';
 type AsideContextValue = {
   type: AsideType;
-  open: (mode: AsideType) => void;
+  open: (mode: Exclude<AsideType, 'closed'>) => void;
   close: () => void;
 };
 
-/**
- * A side bar component with Overlay
- * @example
- * ```jsx
- * <Aside type="search" heading="SEARCH">
- *  <input type="search" />
- *  ...
- * </Aside>
- * ```
- */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function Aside({
   children,
   heading,
   type,
 }: {
   children?: React.ReactNode;
-  type: AsideType;
+  type: Exclude<AsideType, 'closed'>;
   heading: React.ReactNode;
 }) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
-  const id = useId();
-  useEffect(() => {
-    const abortController = new AbortController();
+  const headingId = useId();
+  const panelRef = useRef<HTMLElement>(null);
+  const dialogLabel =
+    type === 'search'
+      ? {'aria-label': 'Search'}
+      : {'aria-labelledby': headingId};
 
-    if (expanded) {
-      document.addEventListener(
-        'keydown',
-        function handler(event: KeyboardEvent) {
-          if (event.key === 'Escape') {
-            close();
-          }
-        },
-        {signal: abortController.signal},
+  useEffect(() => {
+    if (!expanded) return;
+    const panel = panelRef.current;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    const previousOverflow = document.body.style.overflow;
+    const previousPadding = document.body.style.paddingRight;
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0)
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    requestAnimationFrame(() => {
+      const autofocusTarget =
+        panel?.querySelector<HTMLElement>('[data-autofocus]');
+      const fallbackTarget =
+        panel?.querySelector<HTMLElement>('input, button, a');
+      (autofocusTarget ?? fallbackTarget)?.focus();
+    });
+
+    function handleKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (event.key !== 'Tab' || !panel) return;
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(FOCUSABLE),
       );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
-    return () => abortController.abort();
+
+    document.addEventListener('keydown', handleKeydown);
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPadding;
+      previouslyFocused?.focus();
+    };
   }, [close, expanded]);
 
   return (
     <div
-      aria-modal
-      className={`overlay ${expanded ? 'expanded' : ''}`}
-      role="dialog"
-      aria-labelledby={id}
+      aria-hidden={!expanded}
+      className={`overlay overlay-${type} ${expanded ? 'expanded' : ''}`}
     >
-      <button className="close-outside" onClick={close} />
-      <aside>
-        <header>
-          <h3 id={id}>{heading}</h3>
-          <button className="close reset" onClick={close} aria-label="Close">
-            &times;
-          </button>
-        </header>
-        <main>{children}</main>
+      <button
+        aria-label={`Close ${String(heading).toLowerCase()}`}
+        className="close-outside"
+        onClick={close}
+        tabIndex={expanded ? 0 : -1}
+      />
+      <aside
+        {...dialogLabel}
+        aria-modal="true"
+        className="aside-panel"
+        ref={panelRef}
+        role="dialog"
+        tabIndex={-1}
+      >
+        {type !== 'search' ? (
+          <header className="aside-header">
+            <h2 id={headingId}>{heading}</h2>
+            <button
+              aria-label="Close"
+              className="icon-button aside-close"
+              data-autofocus={type === 'mobile' ? true : undefined}
+              onClick={close}
+            >
+              <span aria-hidden>×</span>
+            </button>
+          </header>
+        ) : null}
+        <div className="aside-content">{children}</div>
       </aside>
     </div>
   );
@@ -78,15 +130,13 @@ const AsideContext = createContext<AsideContextValue | null>(null);
 
 Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
-
+  const close = useCallback(() => setType('closed'), []);
+  const open = useCallback(
+    (mode: Exclude<AsideType, 'closed'>) => setType(mode),
+    [],
+  );
   return (
-    <AsideContext.Provider
-      value={{
-        type,
-        open: setType,
-        close: () => setType('closed'),
-      }}
-    >
+    <AsideContext.Provider value={{type, open, close}}>
       {children}
     </AsideContext.Provider>
   );
@@ -94,8 +144,6 @@ Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
 
 export function useAside() {
   const aside = useContext(AsideContext);
-  if (!aside) {
-    throw new Error('useAside must be used within an AsideProvider');
-  }
+  if (!aside) throw new Error('useAside must be used within an AsideProvider');
   return aside;
 }

@@ -1,12 +1,20 @@
 import type {Route} from './+types/collections.all';
-import {useLoaderData} from 'react-router';
-import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {ProductItem} from '~/components/ProductItem';
-import type {CollectionItemFragment} from 'storefrontapi.generated';
+import {Link, useLoaderData} from 'react-router';
+import {getPaginationVariables, Pagination} from '@shopify/hydrogen';
+import type {AllProductsItemFragment} from 'storefrontapi.generated';
+import {CollectionProductCard} from '~/components/CollectionProductCard';
+import {siteConfig} from '~/lib/site-config';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Products`}];
+  return [
+    {title: `All Products | ${siteConfig.brand.english}`},
+    {name: 'description', content: siteConfig.seo.description},
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: '/collections/all',
+    },
+  ];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -51,33 +59,71 @@ export default function Collection() {
   const {products} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>Products</h1>
-      <PaginatedResourceSection<CollectionItemFragment>
-        connection={products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
+    <div className="collection-page all-products-page">
+      <div className="collection-breadcrumbs">
+        <Link to="/">Home</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">All Products</span>
+      </div>
+
+      <section aria-labelledby="all-products-heading" className="collection-hero all-products-hero">
+        <div className="collection-hero-copy">
+          <span className="all-products-eyebrow">The complete edit</span>
+          <h1 id="all-products-heading">All Products</h1>
+          <p>
+            Explore handcrafted eastern wear, from everyday pret to occasion-ready ensembles.
+          </p>
+        </div>
+      </section>
+
+      <div className="all-products-content">
+        <section aria-labelledby="all-products-grid-heading" className="all-products-results">
+          <h2 className="sr-only" id="all-products-grid-heading">
+            All products
+          </h2>
+          <Pagination<AllProductsItemFragment> connection={products}>
+            {({nodes, isLoading, PreviousLink, NextLink}) => (
+              <>
+                <PreviousLink className="collection-pagination-previous">
+                  {isLoading ? 'Loading…' : <span>↑ Load previous</span>}
+                </PreviousLink>
+                <div className="collection-product-grid all-products-grid density-4">
+                  {nodes.map((product, index) => (
+                    <CollectionProductCard
+                      key={product.id}
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                      product={product}
+                    />
+                  ))}
+                </div>
+                <div className="collection-pagination">
+                  <NextLink className="collection-load-more">
+                    {isLoading ? 'Loading…' : 'Load more'}
+                  </NextLink>
+                  {!products.pageInfo.hasNextPage ? (
+                    <span>You&apos;ve reached the end of the collection.</span>
+                  ) : null}
+                </div>
+              </>
+            )}
+          </Pagination>
+        </section>
+      </div>
     </div>
   );
 }
 
 const COLLECTION_ITEM_FRAGMENT = `#graphql
-  fragment MoneyCollectionItem on MoneyV2 {
+  fragment AllProductsMoney on MoneyV2 {
     amount
     currencyCode
   }
-  fragment CollectionItem on Product {
+  fragment AllProductsItem on Product {
     id
     handle
     title
+    tags
+    availableForSale
     featuredImage {
       id
       altText
@@ -87,10 +133,24 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
     }
     priceRange {
       minVariantPrice {
-        ...MoneyCollectionItem
+        ...AllProductsMoney
       }
       maxVariantPrice {
-        ...MoneyCollectionItem
+        ...AllProductsMoney
+      }
+    }
+    selectedOrFirstAvailableVariant {
+      id
+      availableForSale
+      price {
+        ...AllProductsMoney
+      }
+      compareAtPrice {
+        ...AllProductsMoney
+      }
+      selectedOptions {
+        name
+        value
       }
     }
   }
@@ -108,7 +168,7 @@ const CATALOG_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
       nodes {
-        ...CollectionItem
+        ...AllProductsItem
       }
       pageInfo {
         hasPreviousPage

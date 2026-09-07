@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#FFFFF5;--beige:#E8DCC8;--gold:#C9A25D;--nude:#D8B8A0;--brown:#8A6A50;--ink:#1A1A1A;}
+  *{box-sizing:border-box;}
+  body{margin:0;-webkit-font-smoothing:antialiased;}
+  a{color:var(--ink);text-decoration:none;}
+  a:hover{color:var(--gold);}
+  ::-webkit-scrollbar{height:0;width:0;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+</style>
+</helmet>
+<div style="background:#F4F0E8;min-height:100vh;padding:56px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:72px;font-family:'Inter',sans-serif;overflow-x:auto;">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Mobile — 390 × 844</span>
+    <div style="position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+
+      <div style="background:#E8DCC8;padding:10px 16px;text-align:center;">
+        <span style="font:500 10.5px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping over Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live</span>
+      </div>
+      <div style="background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 12px;display:flex;align-items:center;justify-content:space-between;">
+        <button style="width:44px;height:44px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;">
+          <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+          <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+          <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+        </button>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+          <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+          <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+        </div>
+        <div style="display:flex;align-items:center;">
+          <button style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:0;">
+            <div style="width:14px;height:14px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+            <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:14px;right:11px;"></div>
+          </button>
+          <button onClick="{{ toggleAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;">
+            <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+            <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+          </button>
+          <button onClick="{{ toggleCart }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;position:relative;">
+            <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+            <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+            <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+              <span style="position:absolute;top:6px;right:6px;width:15px;height:15px;border-radius:50%;background:#C9A25D;color:#FFFFF5;font:600 9px 'Inter',sans-serif;display:flex;align-items:center;justify-content:center;">{{ itemCount }}</span>
+            </sc-if>
+          </button>
+        </div>
+      </div>
+
+      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:68;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ closeAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 32px;text-align:center;">
+            <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+              <button onClick="{{ logOut }}" style="border:none;background:none;padding:0;font:15px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+            </sc-if>
+            <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+              <button style="width:100%;max-width:260px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Log In</button>
+              <button style="width:100%;max-width:260px;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+            </sc-if>
+            <button onClick="{{ toggleLoginPreview }}" style="margin-top:10px;border:none;background:none;padding:0;font:12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="padding:60px 24px;display:flex;flex-direction:column;gap:16px;">
+        <span style="font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Page content behind drawer</span>
+        <div style="width:100%;height:420px;background:repeating-linear-gradient(160deg,#E8DCC8 0px,#E8DCC8 22px,#D8B8A0 22px,#D8B8A0 44px);"></div>
+      </div>
+
+      <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ closeCart }}" style="position:absolute;inset:0;background:rgba(26,26,26,.4);z-index:60;animation:fadeIn .2s ease;"></div>
+      </sc-if>
+
+      <div style="position:absolute;top:0;right:0;bottom:0;width:100%;background:#FFFFF5;z-index:65;display:flex;flex-direction:column;transform:{{ mobileDrawerTransform }};transition:transform .28s ease;box-shadow:-12px 0 30px -10px rgba(0,0,0,.25);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid rgba(0,0,0,.08);flex:none;">
+          <span style="font:500 19px 'Playfair Display',serif;color:#1A1A1A;">Your Bag ({{ itemCount }})</span>
+          <button onClick="{{ closeCart }}" style="width:36px;height:36px;border:none;background:none;cursor:pointer;position:relative;">
+            <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+            <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+          </button>
+        </div>
+
+        <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:1;overflow-y:auto;padding:8px 20px;display:flex;flex-direction:column;">
+            <sc-for list="{{ cartItems }}" as="item" hint-placeholder-count="3">
+              <div style="display:flex;gap:14px;padding:18px 0;border-bottom:1px solid rgba(0,0,0,.06);">
+                <div style="width:76px;height:96px;border-radius:2px;flex:none;background:{{ item.bg }};display:flex;align-items:center;justify-content:center;">
+                  <span style="font:9px ui-monospace,monospace;color:#8A6A50;background:rgba(255,255,245,.7);padding:2px 5px;border-radius:2px;">Photo</span>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;">
+                  <span style="font:400 14px/1.3 'Playfair Display',serif;color:#1A1A1A;">{{ item.name }}</span>
+                  <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">{{ item.color }} · {{ item.size }}</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                    <div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:4px 10px;">
+                      <button onClick="{{ item.onDecrement }}" style="border:none;background:none;font:14px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;padding:0;width:16px;">−</button>
+                      <span style="font:500 12px 'Inter',sans-serif;color:#1A1A1A;min-width:12px;text-align:center;">{{ item.qty }}</span>
+                      <button onClick="{{ item.onIncrement }}" style="border:none;background:none;font:14px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;padding:0;width:16px;">+</button>
+                    </div>
+                    <span style="font:600 13px 'Inter',sans-serif;color:#1A1A1A;">{{ item.lineTotal }}</span>
+                  </div>
+                  <button onClick="{{ item.onRemove }}" style="align-self:flex-start;border:none;background:none;font:11.5px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;padding:0;margin-top:2px;">Remove</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="flex:none;padding:18px 20px 24px;display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(0,0,0,.08);">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;">
+              <span style="font:500 15px 'Inter',sans-serif;color:#1A1A1A;">Subtotal</span>
+              <span style="font:600 17px 'Inter',sans-serif;color:#1A1A1A;">{{ subtotalFormatted }}</span>
+            </div>
+            <span style="font:11.5px 'Inter',sans-serif;color:#8A6A50;">Shipping &amp; taxes calculated at checkout.</span>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+              <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:16px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Proceed to Checkout</button>
+              <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">View Cart</button>
+              <button onClick="{{ closeCart }}" style="width:100%;background:none;border:none;color:#8A6A50;font:500 12.5px 'Inter',sans-serif;text-decoration:underline;cursor:pointer;padding:4px;">Continue Shopping</button>
+            </div>
+            <div style="display:flex;justify-content:center;gap:14px;padding-top:6px;flex-wrap:wrap;">
+              <span style="font:11px 'Inter',sans-serif;color:#8A6A50;">Secure Payment</span>
+              <span style="font:11px 'Inter',sans-serif;color:#D8B8A0;">·</span>
+              <span style="font:11px 'Inter',sans-serif;color:#8A6A50;">Easy Returns</span>
+              <span style="font:11px 'Inter',sans-serif;color:#D8B8A0;">·</span>
+              <span style="font:11px 'Inter',sans-serif;color:#8A6A50;">Cash on Delivery</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px 32px;text-align:center;">
+            <span style="font:400 20px 'Playfair Display',serif;color:#1A1A1A;">Your bag is empty</span>
+            <span style="font:13px/1.5 'Inter',sans-serif;color:#8A6A50;">Discover pieces you'll love and they'll appear here.</span>
+            <button onClick="{{ closeCart }}" style="margin-top:14px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:14px 30px;font:500 12px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Continue Shopping</button>
+            <button onClick="{{ restoreDemo }}" style="margin-top:10px;background:none;border:none;color:#8A6A50;font:11.5px 'Inter',sans-serif;text-decoration:underline;cursor:pointer;">Restore demo items</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Desktop — 1440 × 900</span>
+    <div style="position:relative;width:1440px;height:900px;border-radius:10px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+
+      <div style="background:#E8DCC8;padding:9px 0;text-align:center;">
+        <span style="font:500 11px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping on orders above Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live &nbsp;·&nbsp; COD available nationwide</span>
+      </div>
+      <div style="background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:0 64px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;height:88px;">
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+            <span style="font:500 21px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+          </div>
+          <nav style="display:flex;gap:36px;">
+            <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+              <a href="#" style="font:500 13px 'Inter',sans-serif;letter-spacing:.2px;color:#1A1A1A;">{{ cat }}</a>
+            </sc-for>
+          </nav>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button style="width:40px;height:40px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:15px;height:15px;border:1.4px solid #1A1A1A;border-radius:50%;margin:0 auto;"></div>
+              <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:11px;right:9px;"></div>
+            </button>
+            <div style="position:relative;">
+              <button onClick="{{ toggleAccount }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+                <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+                <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+              </button>
+              <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:calc(100% + 12px);right:0;width:260px;background:#FFFFF5;border:1px solid rgba(0,0,0,.1);box-shadow:0 20px 40px -18px rgba(0,0,0,.25);padding:24px;z-index:55;animation:fadeIn .15s ease;">
+                  <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                      <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+                      <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+                      <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+                      <button onClick="{{ logOut }}" style="text-align:left;border:none;background:none;padding:0;font:13px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                      <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+                      <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:12px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Log In</button>
+                      <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:11px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+                    </div>
+                  </sc-if>
+                  <button onClick="{{ toggleLoginPreview }}" style="margin-top:16px;border:none;background:none;padding:0;font:11px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+                </div>
+              </sc-if>
+            </div>
+            <button onClick="{{ toggleCart }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+              <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+              <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+              <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+                <span style="position:absolute;top:2px;right:2px;width:15px;height:15px;border-radius:50%;background:#C9A25D;color:#FFFFF5;font:600 9px 'Inter',sans-serif;display:flex;align-items:center;justify-content:center;">{{ itemCount }}</span>
+              </sc-if>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:60px 64px;display:flex;flex-direction:column;gap:16px;">
+        <span style="font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Page content behind drawer</span>
+        <div style="width:100%;height:520px;background:repeating-linear-gradient(160deg,#E8DCC8 0px,#E8DCC8 26px,#D8B8A0 26px,#D8B8A0 52px);"></div>
+      </div>
+
+      <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ closeCart }}" style="position:absolute;inset:0;background:rgba(26,26,26,.35);z-index:60;animation:fadeIn .2s ease;"></div>
+      </sc-if>
+
+      <div style="position:absolute;top:0;right:0;bottom:0;width:440px;background:#FFFFF5;z-index:65;display:flex;flex-direction:column;transform:{{ desktopDrawerTransform }};transition:transform .28s ease;box-shadow:-16px 0 40px -12px rgba(0,0,0,.3);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:26px 28px;border-bottom:1px solid rgba(0,0,0,.08);flex:none;">
+          <span style="font:500 22px 'Playfair Display',serif;color:#1A1A1A;">Your Bag ({{ itemCount }})</span>
+          <button onClick="{{ closeCart }}" style="width:36px;height:36px;border:none;background:none;cursor:pointer;position:relative;">
+            <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+            <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+          </button>
+        </div>
+
+        <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:1;overflow-y:auto;padding:8px 28px;display:flex;flex-direction:column;">
+            <sc-for list="{{ cartItems }}" as="item" hint-placeholder-count="3">
+              <div style="display:flex;gap:16px;padding:22px 0;border-bottom:1px solid rgba(0,0,0,.06);">
+                <div style="width:88px;height:110px;border-radius:2px;flex:none;background:{{ item.bg }};display:flex;align-items:center;justify-content:center;">
+                  <span style="font:9px ui-monospace,monospace;color:#8A6A50;background:rgba(255,255,245,.7);padding:2px 5px;border-radius:2px;">Photo</span>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:7px;min-width:0;">
+                  <span style="font:400 15px/1.3 'Playfair Display',serif;color:#1A1A1A;">{{ item.name }}</span>
+                  <span style="font:12.5px 'Inter',sans-serif;color:#8A6A50;">{{ item.color }} · {{ item.size }}</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                    <div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:5px 12px;">
+                      <button onClick="{{ item.onDecrement }}" style="border:none;background:none;font:14px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;padding:0;width:16px;">−</button>
+                      <span style="font:500 12.5px 'Inter',sans-serif;color:#1A1A1A;min-width:12px;text-align:center;">{{ item.qty }}</span>
+                      <button onClick="{{ item.onIncrement }}" style="border:none;background:none;font:14px 'Inter',sans-serif;color:#1A1A1A;cursor:pointer;padding:0;width:16px;">+</button>
+                    </div>
+                    <span style="font:600 14px 'Inter',sans-serif;color:#1A1A1A;">{{ item.lineTotal }}</span>
+                  </div>
+                  <button onClick="{{ item.onRemove }}" style="align-self:flex-start;border:none;background:none;font:12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;padding:0;margin-top:2px;">Remove</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="flex:none;padding:22px 28px 30px;display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(0,0,0,.08);">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;">
+              <span style="font:500 16px 'Inter',sans-serif;color:#1A1A1A;">Subtotal</span>
+              <span style="font:600 19px 'Inter',sans-serif;color:#1A1A1A;">{{ subtotalFormatted }}</span>
+            </div>
+            <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Shipping &amp; taxes calculated at checkout.</span>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+              <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:17px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Proceed to Checkout</button>
+              <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:15px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">View Cart</button>
+              <button onClick="{{ closeCart }}" style="width:100%;background:none;border:none;color:#8A6A50;font:500 12.5px 'Inter',sans-serif;text-decoration:underline;cursor:pointer;padding:4px;">Continue Shopping</button>
+            </div>
+            <div style="display:flex;justify-content:center;gap:14px;padding-top:6px;">
+              <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Secure Payment</span>
+              <span style="font:12px 'Inter',sans-serif;color:#D8B8A0;">·</span>
+              <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Easy Returns</span>
+              <span style="font:12px 'Inter',sans-serif;color:#D8B8A0;">·</span>
+              <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Cash on Delivery</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px 32px;text-align:center;">
+            <span style="font:400 22px 'Playfair Display',serif;color:#1A1A1A;">Your bag is empty</span>
+            <span style="font:13.5px/1.5 'Inter',sans-serif;color:#8A6A50;max-width:260px;">Discover pieces you'll love and they'll appear here.</span>
+            <button onClick="{{ closeCart }}" style="margin-top:14px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px 32px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Continue Shopping</button>
+            <button onClick="{{ restoreDemo }}" style="margin-top:10px;background:none;border:none;color:#8A6A50;font:12px 'Inter',sans-serif;text-decoration:underline;cursor:pointer;">Restore demo items</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  initialItems = () => ([
+    { id: 1, name: 'Noor Embroidered Kurta Set', color: 'Champagne Beige', size: 'M', qty: 1, price: 14500, bg: 'repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 12px,#D8B8A0 12px,#D8B8A0 24px)' },
+    { id: 2, name: 'Zara Silk Anarkali', color: 'Ink Black', size: 'L', qty: 2, price: 21900, bg: 'repeating-linear-gradient(120deg,#8A6A50 0px,#8A6A50 12px,#1A1A1A 12px,#1A1A1A 24px)' },
+    { id: 3, name: 'Alizeh Organza Saree', color: 'Champagne Gold', size: 'One Size', qty: 1, price: 18200, bg: 'repeating-linear-gradient(150deg,#C9A25D 0px,#C9A25D 12px,#E8DCC8 12px,#E8DCC8 24px)' }
+  ]);
+
+  state = { cartOpen: true, items: this.initialItems(), accountOpen: false, accountLoggedIn: false };
+
+  navCategories = ['New Arrivals', 'Luxury Pret', 'Casual Wear', 'Formal Wear', 'Wedding Collection', 'Festive Collection', 'Sale'];
+
+  toggleCart = () => this.setState(s => ({ cartOpen: !s.cartOpen }));
+  closeCart = () => this.setState({ cartOpen: false });
+  restoreDemo = () => this.setState({ items: this.initialItems() });
+  toggleAccount = () => this.setState(s => ({ accountOpen: !s.accountOpen }));
+  closeAccount = () => this.setState({ accountOpen: false });
+  logOut = () => this.setState({ accountLoggedIn: false });
+  toggleLoginPreview = () => this.setState(s => ({ accountLoggedIn: !s.accountLoggedIn }));
+
+  increment = (id) => this.setState(s => ({ items: s.items.map(it => it.id === id ? { ...it, qty: it.qty + 1 } : it) }));
+  decrement = (id) => this.setState(s => ({
+    items: s.items.flatMap(it => {
+      if (it.id !== id) return [it];
+      return it.qty > 1 ? [{ ...it, qty: it.qty - 1 }] : [];
+    })
+  }));
+  remove = (id) => this.setState(s => ({ items: s.items.filter(it => it.id !== id) }));
+
+  formatCurrency = (n) => 'Rs. ' + n.toLocaleString('en-US');
+
+  renderVals() {
+    const items = this.state.items;
+    const itemCount = items.reduce((sum, it) => sum + it.qty, 0);
+    const subtotal = items.reduce((sum, it) => sum + it.qty * it.price, 0);
+    const cartItems = items.map(it => ({
+      ...it,
+      lineTotal: this.formatCurrency(it.qty * it.price),
+      onIncrement: () => this.increment(it.id),
+      onDecrement: () => this.decrement(it.id),
+      onRemove: () => this.remove(it.id)
+    }));
+    const hasItems = items.length > 0;
+    return {
+      navCategories: this.navCategories,
+      cartOpen: this.state.cartOpen,
+      toggleCart: this.toggleCart,
+      closeCart: this.closeCart,
+      restoreDemo: this.restoreDemo,
+      hasItems,
+      isEmpty: !hasItems,
+      itemCount,
+      cartItems,
+      subtotalFormatted: this.formatCurrency(subtotal),
+      mobileDrawerTransform: this.state.cartOpen ? 'translateX(0%)' : 'translateX(100%)',
+      desktopDrawerTransform: this.state.cartOpen ? 'translateX(0%)' : 'translateX(100%)',
+      accountOpen: this.state.accountOpen,
+      toggleAccount: this.toggleAccount,
+      closeAccount: this.closeAccount,
+      accountLoggedIn: this.state.accountLoggedIn,
+      accountLoggedOut: !this.state.accountLoggedIn,
+      logOut: this.logOut,
+      toggleLoginPreview: this.toggleLoginPreview,
+      loginPreviewLabel: this.state.accountLoggedIn ? 'Preview logged-out view' : 'Preview logged-in view'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -12,13 +12,13 @@ export function ProductPrice({
     <div aria-label="Price" className="product-price" role="group">
       {compareAtPrice ? (
         <div className="product-price-on-sale">
-          {price ? <Money data={price} /> : null}
+          {price ? <Money data={price} withoutTrailingZeros /> : null}
           <s>
-            <Money data={compareAtPrice} />
+            <Money data={compareAtPrice} withoutTrailingZeros />
           </s>
         </div>
       ) : price ? (
-        <Money data={price} />
+        <Money data={price} withoutTrailingZeros />
       ) : (
         <span>&nbsp;</span>
       )}

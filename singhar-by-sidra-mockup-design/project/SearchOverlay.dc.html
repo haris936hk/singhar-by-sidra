@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<style>
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ true }}">
+  <div style="width:100%;height:100%;background:#FFFFF5;display:flex;flex-direction:column;animation:fadeIn .15s ease;">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(0,0,0,.08);">
+      <button onClick="{{ onClose }}" aria-label="Close search" style="width:32px;height:32px;border:none;background:none;cursor:pointer;flex:0 0 auto;position:relative;padding:0;">
+        <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+        <div style="width:16px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+      </button>
+      <input autoFocus placeholder="Search sarees, lehengas, kurtas..." value="{{ searchQuery }}" onChange="{{ onChange }}" style="flex:1;border:none;border-bottom:1px solid #1A1A1A;padding:8px 2px;font:400 16px 'Playfair Display',serif;background:none;color:#1A1A1A;outline:none;"></input>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:20px 16px 40px;">
+      <sc-if value="{{ searchEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:28px;">
+          <div>
+            <div style="font:500 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#8A6A50;margin-bottom:12px;">Trending Searches</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <sc-for list="{{ trendingSearches }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.onClick }}" style="border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:8px 14px;font:500 12px 'Inter',sans-serif;color:#1A1A1A;background:none;cursor:pointer;">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font:500 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#8A6A50;margin-bottom:12px;">Shop Collections</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <sc-for list="{{ collections }}" as="c" hint-placeholder-count="4">
+                <div style="position:relative;aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:{{ c.bg }};">
+                  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.45),transparent 55%);"></div>
+                  <span style="position:absolute;bottom:10px;left:10px;font:400 15px 'Playfair Display',serif;color:#FFFFF5;">{{ c.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="font:12px 'Inter',sans-serif;color:#8A6A50;">{{ resultCountLabel }}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <sc-for list="{{ searchResults }}" as="p" hint-placeholder-count="4">
+              <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="100%,220px"></dc-import>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:40px 0;">
+          <div style="font:400 17px 'Playfair Display',serif;color:#1A1A1A;">No results for "{{ searchQuery }}"</div>
+          <div style="font:13px 'Inter',sans-serif;color:#8A6A50;">Try a different search or browse trending picks below.</div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ false }}">
+  <div style="width:100%;height:100%;background:#FFFFF5;display:flex;flex-direction:column;animation:fadeIn .15s ease;">
+    <div style="display:flex;align-items:center;justify-content:center;padding:48px 64px 32px;position:relative;">
+      <input autoFocus placeholder="Search sarees, lehengas, kurtas..." value="{{ searchQuery }}" onChange="{{ onChange }}" style="width:100%;max-width:640px;border:none;border-bottom:1px solid #1A1A1A;padding:12px 4px;font:400 26px 'Playfair Display',serif;background:none;color:#1A1A1A;outline:none;text-align:center;"></input>
+      <button onClick="{{ onClose }}" aria-label="Close search" style="width:40px;height:40px;border:none;background:none;cursor:pointer;position:absolute;top:40px;right:64px;">
+        <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+        <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+      </button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:0 64px 60px;max-width:1000px;margin:0 auto;width:100%;">
+      <sc-if value="{{ searchEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:44px;">
+          <div>
+            <div style="font:500 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#8A6A50;margin-bottom:16px;text-align:center;">Trending Searches</div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+              <sc-for list="{{ trendingSearches }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.onClick }}" style="border:1px solid rgba(0,0,0,.15);border-radius:20px;padding:9px 18px;font:500 12.5px 'Inter',sans-serif;color:#1A1A1A;background:none;cursor:pointer;" style-hover="{&quot;background&quot;:&quot;#1A1A1A&quot;,&quot;color&quot;:&quot;#FFFFF5&quot;,&quot;borderColor&quot;:&quot;#1A1A1A&quot;}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font:500 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#8A6A50;margin-bottom:16px;text-align:center;">Shop Collections</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
+              <sc-for list="{{ collections }}" as="c" hint-placeholder-count="4">
+                <div style="position:relative;aspect-ratio:3/4;border-radius:2px;overflow:hidden;background:{{ c.bg }};cursor:pointer;">
+                  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.45),transparent 55%);"></div>
+                  <span style="position:absolute;bottom:14px;left:14px;font:400 18px 'Playfair Display',serif;color:#FFFFF5;">{{ c.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="font:12.5px 'Inter',sans-serif;color:#8A6A50;">{{ resultCountLabel }}</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px;">
+            <sc-for list="{{ searchResults }}" as="p" hint-placeholder-count="4">
+              <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="100%,360px"></dc-import>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:80px 0;">
+          <div style="font:400 24px 'Playfair Display',serif;color:#1A1A1A;">No results for "{{ searchQuery }}"</div>
+          <div style="font:14px 'Inter',sans-serif;color:#8A6A50;">Try a different search or browse trending picks above.</div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:700},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;mobile&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;searchQuery&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;onChange&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;function&quot;},&quot;onClose&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;function&quot;},&quot;trendingSearches&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;array&quot;},&quot;collections&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;array&quot;},&quot;searchResults&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;array&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const variant = this.props.variant || 'mobile';
+    const query = (this.props.searchQuery || '').trim();
+    const searchResults = this.props.searchResults || [];
+    return {
+      isMobile: variant === 'mobile',
+      isDesktop: variant === 'desktop',
+      searchQuery: this.props.searchQuery || '',
+      onChange: this.props.onChange,
+      onClose: this.props.onClose,
+      trendingSearches: this.props.trendingSearches || [],
+      collections: this.props.collections || [],
+      searchResults,
+      searchEmpty: !query,
+      hasResults: !!query && searchResults.length > 0,
+      noResults: !!query && searchResults.length === 0,
+      resultCountLabel: searchResults.length + ' result' + (searchResults.length === 1 ? '' : 's') + ' for "' + this.props.searchQuery + '"'
+    };
+  }
+}
+</script>
+</body>
+</html>

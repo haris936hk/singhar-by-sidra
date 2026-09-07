@@ -20,7 +20,7 @@ type UsePredictiveSearchReturn = {
 
 type SearchResultsPredictiveArgs = Pick<
   UsePredictiveSearchReturn,
-  'term' | 'total' | 'inputRef' | 'items'
+  'term' | 'total' | 'inputRef' | 'items' | 'fetcher'
 > & {
   state: Fetcher['state'];
   closeSearch: () => void;
@@ -65,6 +65,7 @@ export function SearchResultsPredictive({
 
   return children({
     items,
+    fetcher,
     closeSearch,
     inputRef,
     state: fetcher.state,
@@ -228,7 +229,7 @@ function SearchResultsPredictiveProducts({
                 )}
                 <div>
                   <p>{product.title}</p>
-                  <small>{price && <Money data={price} />}</small>
+                  <small>{price && <Money data={price} withoutTrailingZeros />}</small>
                 </div>
               </Link>
             </li>

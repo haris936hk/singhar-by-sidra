@@ -25,12 +25,21 @@ export async function loader({request, context}: Route.LoaderArgs) {
       ? predictiveSearch({request, context})
       : regularSearch({request, context});
 
-  searchPromise.catch((error: Error) => {
+  try {
+    return await searchPromise;
+  } catch (error) {
     console.error(error);
-    return {term: '', result: null, error: error.message};
-  });
-
-  return await searchPromise;
+    const term = String(url.searchParams.get('q') || '');
+    if (isPredictive) {
+      return {
+        type: 'predictive' as const,
+        term,
+        error: 'Search is temporarily unavailable.',
+        result: getEmptyPredictiveSearchResult(),
+      };
+    }
+    throw error;
+  }
 }
 
 /**

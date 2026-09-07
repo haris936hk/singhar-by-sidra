@@ -1,0 +1,48 @@
+[     265ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:17221
+[     327ms] [ERROR] Error: [h2:error:Analytics.Provider] - consent.checkoutDomain is required. Make sure PUBLIC_CHECKOUT_DOMAIN is defined in your environment variables. See https://h2o.fyi/analytics/consent to learn how to setup environment variables in the Shopify admin.
+    at errorOnce (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3542:17)
+    at AnalyticsProvider (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3618:33)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:9623:19)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:12117:19)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:13091:13)
+    at beginWork$1 (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15977:12)
+    at performUnitOfWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15560:12)
+    at workLoopSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15509:36)
+    at renderRootSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15492:6)
+    at performConcurrentWorkOnRoot (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15132:146) @ http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3541
+[    6777ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:17221
+[    6856ms] [ERROR] Error: [h2:error:Analytics.Provider] - consent.checkoutDomain is required. Make sure PUBLIC_CHECKOUT_DOMAIN is defined in your environment variables. See https://h2o.fyi/analytics/consent to learn how to setup environment variables in the Shopify admin.
+    at errorOnce (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3542:17)
+    at AnalyticsProvider (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3618:33)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:9623:19)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:12117:19)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:13091:13)
+    at beginWork$1 (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15977:12)
+    at performUnitOfWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15560:12)
+    at workLoopSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15509:36)
+    at renderRootSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15492:6)
+    at performConcurrentWorkOnRoot (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15132:146) @ http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3541
+[   72666ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:17221
+[   72738ms] [ERROR] Error: [h2:error:Analytics.Provider] - consent.checkoutDomain is required. Make sure PUBLIC_CHECKOUT_DOMAIN is defined in your environment variables. See https://h2o.fyi/analytics/consent to learn how to setup environment variables in the Shopify admin.
+    at errorOnce (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3542:17)
+    at AnalyticsProvider (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3618:33)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:9623:19)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:12117:19)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:13091:13)
+    at beginWork$1 (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15977:12)
+    at performUnitOfWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15560:12)
+    at workLoopSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15509:36)
+    at renderRootSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15492:6)
+    at performConcurrentWorkOnRoot (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15132:146) @ http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3541
+[  152653ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:17221
+[  152724ms] [ERROR] Error: [h2:error:Analytics.Provider] - consent.checkoutDomain is required. Make sure PUBLIC_CHECKOUT_DOMAIN is defined in your environment variables. See https://h2o.fyi/analytics/consent to learn how to setup environment variables in the Shopify admin.
+    at errorOnce (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3542:17)
+    at AnalyticsProvider (http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3618:33)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:9623:19)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:12117:19)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:13091:13)
+    at beginWork$1 (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15977:12)
+    at performUnitOfWork (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15560:12)
+    at workLoopSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15509:36)
+    at renderRootSync (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15492:6)
+    at performConcurrentWorkOnRoot (http://localhost:3000/node_modules/.vite/deps/react-dom-Ci198gni.js?v=77b43f06:15132:146) @ http://localhost:3000/node_modules/.vite/deps/@shopify_hydrogen.js?v=1c38c4c0:3541

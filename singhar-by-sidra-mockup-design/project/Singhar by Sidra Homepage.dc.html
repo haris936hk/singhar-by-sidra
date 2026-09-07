@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#FFFFF5;--beige:#E8DCC8;--gold:#C9A25D;--nude:#D8B8A0;--brown:#8A6A50;--ink:#1A1A1A;}
+  *{box-sizing:border-box;}
+  body{margin:0;-webkit-font-smoothing:antialiased;}
+  a{color:var(--ink);text-decoration:none;}
+  a:hover{color:var(--gold);}
+  ::-webkit-scrollbar{height:0;width:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+<div style="background:#F4F0E8;min-height:100vh;padding:56px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:72px;font-family:'Inter',sans-serif;overflow-x:auto;">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Mobile — 390 × 844</span>
+    <div style="position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:10px 16px;text-align:center;">
+          <span style="font:500 10.5px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping over Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 12px;display:flex;align-items:center;justify-content:space-between;">
+          <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;">
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+          </button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+            <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <button onClick="{{ toggleMobileSearch }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:0;">
+              <div style="width:14px;height:14px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:14px;right:11px;"></div>
+            </button>
+            <button onClick="{{ toggleAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;">
+              <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+            </button>
+            <button onClick="{{ toggleMobileCart }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;">
+              <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+              <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+            </button>
+          </div>
+        </div>
+
+        <sc-if value="{{ mobileSearchOpen }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SearchOverlay" variant="mobile" search-query="{{ searchQuery }}" on-change="{{ updateSearchQuery }}" on-close="{{ closeMobileSearch }}" trending-searches="{{ trendingSearches }}" collections="{{ collections }}" search-results="{{ searchResults }}" hint-size="100%,100%" style="position:absolute;inset:0;z-index:70;"></dc-import>
+        </sc-if>
+        <sc-if value="{{ mobileCartOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px 16px;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);text-align:center;animation:fadeIn .15s ease;">
+            <div style="font:400 14px 'Playfair Display',serif;color:#1A1A1A;margin-bottom:6px;">Your bag is empty</div>
+            <div style="font:12px 'Inter',sans-serif;color:#8A6A50;">Discover pieces you'll love below.</div>
+          </div>
+        </sc-if>
+
+        <div style="position:relative;width:100%;height:520px;background:repeating-linear-gradient(160deg,#E8DCC8 0px,#E8DCC8 22px,#D8B8A0 22px,#D8B8A0 44px);display:flex;align-items:flex-end;">
+          <span style="position:absolute;top:16px;left:16px;font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;background:rgba(255,255,245,.6);padding:5px 10px;border-radius:3px;">Editorial Lifestyle Shot</span>
+          <div style="padding:36px 24px 44px;display:flex;flex-direction:column;gap:16px;">
+            <h1 style="margin:0;font:500 40px/1.1 'Playfair Display',serif;color:#1A1A1A;">Latest<br>Collection</h1>
+            <p style="margin:0;font:400 13.5px/1.5 'Inter',sans-serif;color:#1A1A1A;max-width:260px;">Handcrafted eastern wear for the modern woman — timeless silhouettes, festive-ready detail.</p>
+            <a href="#" style="align-self:flex-start;margin-top:6px;background:#C9A25D;color:#FFFFF5;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:14px 26px;border-radius:2px;">Shop New Arrivals</a>
+          </div>
+        </div>
+
+        <div style="padding:44px 20px 8px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;">
+            <h2 style="margin:0;font:500 22px 'Playfair Display',serif;color:#1A1A1A;">New Arrivals</h2>
+            <a href="#" style="font:500 12px 'Inter',sans-serif;color:#8A6A50;letter-spacing:.3px;">View All →</a>
+          </div>
+          <div ref="{{ mobileNewArrivalsRef }}" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;">
+            <sc-for list="{{ newArrivals }}" as="p" hint-placeholder-count="4">
+              <div style="flex:0 0 auto;width:160px;scroll-snap-align:start;">
+                <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="160px,260px"></dc-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:8px 0 8px;display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:0 20px;">
+            <h2 style="margin:0;font:500 22px 'Playfair Display',serif;color:#1A1A1A;">Featured Collections</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;">
+            <sc-for list="{{ collections }}" as="c" hint-placeholder-count="4">
+              <a href="#" style="position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;background:{{ c.bg }};display:flex;align-items:flex-end;">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.42),transparent 55%);"></div>
+                <span style="position:relative;padding:14px;font:500 15px 'Playfair Display',serif;color:#FFFFF5;letter-spacing:.3px;">{{ c.label }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:20px 20px 8px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;">
+            <h2 style="margin:0;font:500 22px 'Playfair Display',serif;color:#1A1A1A;">Best Sellers</h2>
+            <a href="#" style="font:500 12px 'Inter',sans-serif;color:#8A6A50;letter-spacing:.3px;">View All →</a>
+          </div>
+          <div ref="{{ mobileBestSellersRef }}" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;">
+            <sc-for list="{{ bestSellers }}" as="p" hint-placeholder-count="4">
+              <div style="flex:0 0 auto;width:160px;scroll-snap-align:start;">
+                <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="160px,260px"></dc-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <a href="#" style="position:relative;display:block;width:100%;height:300px;margin-top:24px;background:repeating-linear-gradient(150deg,#D8B8A0 0px,#D8B8A0 20px,#8A6A50 20px,#8A6A50 40px);">
+          <div style="position:absolute;inset:0;background:rgba(26,26,26,.28);"></div>
+          <div style="position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:0 24px;">
+            <span style="font:400 22px 'Playfair Display',serif;color:#FFFFF5;">Timeless Elegance,<br>Handcrafted for You</span>
+            <span style="font:500 11.5px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#FFFFF5;border-bottom:1px solid #FFFFF5;padding-bottom:3px;">Explore</span>
+          </div>
+        </a>
+
+        <a href="#" style="position:relative;display:block;width:100%;height:180px;margin-top:24px;background:#E8DCC8;display:flex;align-items:center;">
+          <div style="width:40%;height:100%;background:repeating-linear-gradient(135deg,#D8B8A0 0px,#D8B8A0 14px,#E8DCC8 14px,#E8DCC8 28px);"></div>
+          <div style="flex:1;padding:0 20px;display:flex;flex-direction:column;gap:8px;">
+            <span style="font:400 17px 'Playfair Display',serif;color:#1A1A1A;">Not sure of your size?</span>
+            <span style="font:12.5px 'Inter',sans-serif;color:#8A6A50;">Find your perfect fit in seconds.</span>
+            <span style="font:600 11.5px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;color:#1A1A1A;border-bottom:1px solid #C9A25D;padding-bottom:2px;align-self:flex-start;margin-top:2px;">View Size Guide</span>
+          </div>
+        </a>
+
+        <div style="padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;">
+          <span style="font:italic 400 40px 'Playfair Display',serif;color:#C9A25D;line-height:1;">&ldquo;</span>
+          <p style="margin:0;font:400 18px/1.55 'Playfair Display',serif;color:#1A1A1A;max-width:280px;">{{ currentTestimonial.quote }}</p>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font:600 12px 'Inter',sans-serif;letter-spacing:.3px;color:#1A1A1A;">{{ currentTestimonial.name }}</span>
+            <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">{{ currentTestimonial.city }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:22px;margin-top:4px;">
+            <button onClick="{{ prevTestimonial }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">
+              <div style="width:7px;height:7px;border-left:1.4px solid #1A1A1A;border-bottom:1.4px solid #1A1A1A;transform:rotate(45deg);"></div>
+            </button>
+            <div style="display:flex;gap:7px;">
+              <sc-for list="{{ testimonialDots }}" as="d" hint-placeholder-count="3">
+                <button onClick="{{ d.onClick }}" style="width:6px;height:6px;border-radius:50%;border:none;padding:0;cursor:pointer;background:{{ d.dot }};"></button>
+              </sc-for>
+            </div>
+            <button onClick="{{ nextTestimonial }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">
+              <div style="width:7px;height:7px;border-right:1.4px solid #1A1A1A;border-top:1.4px solid #1A1A1A;transform:rotate(45deg);"></div>
+            </button>
+          </div>
+        </div>
+
+        <div style="padding:8px 20px 44px;display:flex;flex-direction:column;gap:16px;">
+          <h2 style="margin:0;font:500 20px 'Playfair Display',serif;color:#1A1A1A;text-align:center;">@singharbysidra</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <sc-for list="{{ instagramPosts }}" as="ig" hint-placeholder-count="6">
+              <a href="#" style="position:relative;aspect-ratio:1/1;background:{{ ig.bg }};display:block;"></a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#E8DCC8;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+          <h2 style="margin:0;font:500 24px 'Playfair Display',serif;color:#1A1A1A;">Stay In Style</h2>
+          <p style="margin:0;font:13px/1.5 'Inter',sans-serif;color:#8A6A50;max-width:260px;">Be the first to know about new collections and exclusive previews.</p>
+          <sc-if value="{{ newsletterSubmitted }}" hint-placeholder-val="{{ false }}">
+            <span style="font:600 13px 'Inter',sans-serif;color:#1A1A1A;margin-top:6px;">Thank you — you're on the list.</span>
+          </sc-if>
+          <sc-if value="{{ newsletterOpen }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ submitNewsletter }}" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-top:6px;">
+              <input value="{{ newsletterEmail }}" onChange="{{ updateNewsletterEmail }}" placeholder="Your email address" type="email" style="width:100%;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:13px 14px;font:13px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <button type="submit" style="background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:13px;font:500 12px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Subscribe</button>
+            </form>
+          </sc-if>
+        </div>
+
+        <div style="background:#1A1A1A;padding:48px 24px 28px;display:flex;flex-direction:column;gap:36px;">
+          <div style="display:flex;flex-direction:column;gap:1px;text-align:center;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+            <span style="font:500 18px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Company</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Our Story</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Careers</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Store Locator</a>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid rgba(255,255,245,.12);padding-top:24px;">
+            <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,245,.3);display:flex;align-items:center;justify-content:center;flex:none;">
+                  <div style="width:7px;height:4px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                </div>
+                <span style="font:11px 'Inter',sans-serif;color:rgba(255,255,245,.7);">{{ tb }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <span style="text-align:center;font:11px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+        </div>
+
+      </div>
+
+      <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:60;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:26px;padding:8px 32px;overflow-y:auto;">
+            <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+              <a href="#" style="font:400 22px 'Playfair Display',serif;color:#1A1A1A;">{{ cat }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:63;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ closeAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 32px;text-align:center;">
+            <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+              <button onClick="{{ logOut }}" style="border:none;background:none;padding:0;font:15px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+            </sc-if>
+            <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+              <button style="width:100%;max-width:260px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Log In</button>
+              <button style="width:100%;max-width:260px;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+            </sc-if>
+            <button onClick="{{ toggleLoginPreview }}" style="margin-top:10px;border:none;background:none;padding:0;font:12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:20px;right:20px;width:52px;height:52px;border-radius:16px 16px 16px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;">
+        <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+      </a>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Desktop — 1440 × 900</span>
+    <div style="position:relative;width:1440px;height:900px;border-radius:10px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:9px 0;text-align:center;">
+          <span style="font:500 11px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping on orders above Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live &nbsp;·&nbsp; COD available nationwide</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:0 64px;" onMouseLeave="{{ clearMegaMenu }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;height:88px;">
+            <div style="display:flex;flex-direction:column;gap:1px;">
+              <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+              <span style="font:500 21px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+            </div>
+            <nav style="display:flex;gap:36px;">
+              <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="7">
+                <a href="#" onMouseEnter="{{ item.enter }}" style="font:500 13px 'Inter',sans-serif;letter-spacing:.2px;color:#1A1A1A;padding:6px 0;border-bottom:1px solid transparent;">{{ item.name }}</a>
+              </sc-for>
+            </nav>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <button onClick="{{ toggleDesktopSearch }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;position:relative;">
+                <div style="width:15px;height:15px;border:1.4px solid #1A1A1A;border-radius:50%;margin:0 auto;"></div>
+                <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:11px;right:9px;"></div>
+              </button>
+              <div style="position:relative;">
+                <button onClick="{{ toggleAccount }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+                  <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+                  <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+                </button>
+                <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:calc(100% + 12px);right:0;width:260px;background:#FFFFF5;border:1px solid rgba(0,0,0,.1);box-shadow:0 20px 40px -18px rgba(0,0,0,.25);padding:24px;z-index:55;animation:fadeIn .15s ease;">
+                    <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+                        <button onClick="{{ logOut }}" style="text-align:left;border:none;background:none;padding:0;font:13px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+                        <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:12px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Log In</button>
+                        <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:11px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+                      </div>
+                    </sc-if>
+                    <button onClick="{{ toggleLoginPreview }}" style="margin-top:16px;border:none;background:none;padding:0;font:11px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+                  </div>
+                </sc-if>
+              </div>
+              <button onClick="{{ toggleDesktopCart }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+                <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+              </button>
+            </div>
+          </div>
+
+          <sc-if value="{{ activeMegaMenu }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:88px;background:#FFFFF5;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 20px 30px -20px rgba(0,0,0,.12);padding:40px 64px;display:flex;gap:64px;animation:fadeIn .15s ease;">
+              <div style="display:flex;flex-direction:column;gap:14px;min-width:200px;">
+                <sc-for list="{{ megaSubs }}" as="sub" hint-placeholder-count="4">
+                  <a href="#" style="font:14px 'Inter',sans-serif;color:#1A1A1A;">{{ sub }}</a>
+                </sc-for>
+              </div>
+              <div style="width:220px;height:150px;border-radius:2px;background:repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 14px,#C9A25D 14px,#C9A25D 28px);display:flex;align-items:flex-end;padding:12px;">
+                <span style="font:500 12px 'Inter',sans-serif;color:#FFFFF5;letter-spacing:.3px;">{{ megaPromo }}</span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ desktopSearchOpen }}" hint-placeholder-val="{{ false }}">
+          <dc-import name="SearchOverlay" variant="desktop" search-query="{{ searchQuery }}" on-change="{{ updateSearchQuery }}" on-close="{{ closeDesktopSearch }}" trending-searches="{{ trendingSearches }}" collections="{{ collections }}" search-results="{{ searchResults }}" hint-size="100%,100%" style="position:absolute;inset:0;z-index:70;"></dc-import>
+        </sc-if>
+        <sc-if value="{{ desktopCartOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:88px;right:64px;width:300px;background:#FFFFF5;border:1px solid rgba(0,0,0,.1);box-shadow:0 20px 40px -15px rgba(0,0,0,.2);padding:26px;text-align:center;z-index:45;animation:fadeIn .15s ease;">
+            <div style="font:400 15px 'Playfair Display',serif;color:#1A1A1A;margin-bottom:6px;">Your bag is empty</div>
+            <div style="font:12px 'Inter',sans-serif;color:#8A6A50;">Discover pieces you'll love below.</div>
+          </div>
+        </sc-if>
+
+        <div style="position:relative;width:100%;height:640px;background:repeating-linear-gradient(160deg,#E8DCC8 0px,#E8DCC8 26px,#D8B8A0 26px,#D8B8A0 52px);display:flex;align-items:center;">
+          <span style="position:absolute;top:24px;left:64px;font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;background:rgba(255,255,245,.6);padding:5px 10px;border-radius:3px;">Editorial Lifestyle Shot</span>
+          <div style="padding:0 64px;display:flex;flex-direction:column;gap:22px;max-width:560px;">
+            <h1 style="margin:0;font:500 68px/1.08 'Playfair Display',serif;color:#1A1A1A;">Latest Collection</h1>
+            <p style="margin:0;font:400 16px/1.6 'Inter',sans-serif;color:#1A1A1A;max-width:420px;">Handcrafted eastern wear for the modern woman — timeless silhouettes, festive-ready detail, made to be worn for years to come.</p>
+            <a href="#" style="align-self:flex-start;margin-top:8px;background:#C9A25D;color:#FFFFF5;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:16px 34px;border-radius:2px;">Shop New Arrivals</a>
+          </div>
+        </div>
+
+        <div style="padding:80px 64px 8px;display:flex;flex-direction:column;gap:28px;max-width:1312px;margin:0 auto;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;">
+            <h2 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">New Arrivals</h2>
+            <div style="display:flex;align-items:center;gap:24px;">
+              <a href="#" style="font:500 13px 'Inter',sans-serif;color:#8A6A50;letter-spacing:.3px;">View All →</a>
+              <div style="display:flex;gap:8px;">
+                <button onClick="{{ scrollDesktopNewLeft }}" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-left:1.4px solid #1A1A1A;border-bottom:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+                <button onClick="{{ scrollDesktopNewRight }}" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-right:1.4px solid #1A1A1A;border-top:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+              </div>
+            </div>
+          </div>
+          <div ref="{{ desktopNewArrivalsRef }}" style="display:flex;gap:28px;overflow-x:auto;padding-bottom:6px;">
+            <sc-for list="{{ newArrivals }}" as="p" hint-placeholder-count="4">
+              <div style="flex:0 0 auto;width:280px;">
+                <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="280px,400px"></dc-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:32px 64px 8px;display:flex;flex-direction:column;gap:28px;max-width:1312px;margin:0 auto;">
+          <h2 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">Featured Collections</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:18px;">
+            <sc-for list="{{ collections }}" as="c" hint-placeholder-count="4">
+              <a href="#" style="position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;background:{{ c.bg }};display:flex;align-items:flex-end;">
+                <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.45),transparent 55%);"></div>
+                <div style="position:relative;padding:22px;display:flex;flex-direction:column;gap:3px;">
+                  <span style="font:500 20px 'Playfair Display',serif;color:#FFFFF5;letter-spacing:.3px;">{{ c.label }}</span>
+                  <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.85);">{{ c.sub }}</span>
+                </div>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:32px 64px 8px;display:flex;flex-direction:column;gap:28px;max-width:1312px;margin:0 auto;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;">
+            <h2 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">Best Sellers</h2>
+            <div style="display:flex;align-items:center;gap:24px;">
+              <a href="#" style="font:500 13px 'Inter',sans-serif;color:#8A6A50;letter-spacing:.3px;">View All →</a>
+              <div style="display:flex;gap:8px;">
+                <button onClick="{{ scrollDesktopBestLeft }}" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-left:1.4px solid #1A1A1A;border-bottom:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+                <button onClick="{{ scrollDesktopBestRight }}" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-right:1.4px solid #1A1A1A;border-top:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+              </div>
+            </div>
+          </div>
+          <div ref="{{ desktopBestSellersRef }}" style="display:flex;gap:28px;overflow-x:auto;padding-bottom:6px;">
+            <sc-for list="{{ bestSellers }}" as="p" hint-placeholder-count="4">
+              <div style="flex:0 0 auto;width:280px;">
+                <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" sale-price="{{ p.salePrice }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="280px,400px"></dc-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <a href="#" style="position:relative;display:block;width:100%;height:420px;margin-top:48px;background:repeating-linear-gradient(150deg,#D8B8A0 0px,#D8B8A0 24px,#8A6A50 24px,#8A6A50 48px);">
+          <div style="position:absolute;inset:0;background:rgba(26,26,26,.28);"></div>
+          <div style="position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;">
+            <span style="font:400 38px 'Playfair Display',serif;color:#FFFFF5;">Timeless Elegance, Handcrafted for You</span>
+            <span style="font:500 12px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#FFFFF5;border-bottom:1px solid #FFFFF5;padding-bottom:4px;">Explore the Edit</span>
+          </div>
+        </a>
+
+        <a href="#" style="position:relative;display:block;width:100%;height:260px;margin-top:48px;background:#E8DCC8;display:flex;align-items:stretch;">
+          <div style="width:420px;height:100%;background:repeating-linear-gradient(135deg,#D8B8A0 0px,#D8B8A0 16px,#E8DCC8 16px,#E8DCC8 32px);flex:none;"></div>
+          <div style="flex:1;padding:0 64px;display:flex;flex-direction:column;justify-content:center;gap:10px;">
+            <span style="font:400 26px 'Playfair Display',serif;color:#1A1A1A;">Not sure of your size?</span>
+            <span style="font:14px 'Inter',sans-serif;color:#8A6A50;max-width:420px;">Find your perfect fit in seconds with our detailed size guide.</span>
+            <span style="font:600 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;color:#1A1A1A;border-bottom:1px solid #C9A25D;padding-bottom:3px;align-self:flex-start;margin-top:6px;">View Size Guide</span>
+          </div>
+        </a>
+
+        <div style="padding:80px 64px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center;">
+          <span style="font:italic 400 56px 'Playfair Display',serif;color:#C9A25D;line-height:1;">&ldquo;</span>
+          <p style="margin:0;font:400 26px/1.55 'Playfair Display',serif;color:#1A1A1A;max-width:640px;">{{ currentTestimonial.quote }}</p>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font:600 13px 'Inter',sans-serif;letter-spacing:.3px;color:#1A1A1A;">{{ currentTestimonial.name }}</span>
+            <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">{{ currentTestimonial.city }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:26px;margin-top:6px;">
+            <button onClick="{{ prevTestimonial }}" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;border-left:1.4px solid #1A1A1A;border-bottom:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+            <div style="display:flex;gap:8px;">
+              <sc-for list="{{ testimonialDots }}" as="d" hint-placeholder-count="3">
+                <button onClick="{{ d.onClick }}" style="width:7px;height:7px;border-radius:50%;border:none;padding:0;cursor:pointer;background:{{ d.dot }};"></button>
+              </sc-for>
+            </div>
+            <button onClick="{{ nextTestimonial }}" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;border-right:1.4px solid #1A1A1A;border-top:1.4px solid #1A1A1A;transform:rotate(45deg);"></div></button>
+          </div>
+        </div>
+
+        <div style="padding:8px 64px 80px;display:flex;flex-direction:column;gap:24px;max-width:1312px;margin:0 auto;">
+          <h2 style="margin:0;font:500 28px 'Playfair Display',serif;color:#1A1A1A;text-align:center;">@singharbysidra</h2>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;">
+            <sc-for list="{{ instagramPosts }}" as="ig" hint-placeholder-count="6">
+              <a href="#" style="position:relative;aspect-ratio:1/1;background:{{ ig.bg }};display:block;"></a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#E8DCC8;padding:70px 64px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+          <h2 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">Stay In Style</h2>
+          <p style="margin:0;font:14px/1.5 'Inter',sans-serif;color:#8A6A50;max-width:380px;">Be the first to know about new collections and exclusive previews.</p>
+          <sc-if value="{{ newsletterSubmitted }}" hint-placeholder-val="{{ false }}">
+            <span style="font:600 14px 'Inter',sans-serif;color:#1A1A1A;margin-top:6px;">Thank you — you're on the list.</span>
+          </sc-if>
+          <sc-if value="{{ newsletterOpen }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ submitNewsletter }}" style="display:flex;gap:10px;width:100%;max-width:420px;margin-top:8px;">
+              <input value="{{ newsletterEmail }}" onChange="{{ updateNewsletterEmail }}" placeholder="Your email address" type="email" style="flex:1;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px 16px;font:14px 'Inter',sans-serif;background:#FFFFF5;color:#1A1A1A;outline:none;"></input>
+              <button type="submit" style="background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:14px 26px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Subscribe</button>
+            </form>
+          </sc-if>
+        </div>
+
+        <div style="background:#1A1A1A;padding:64px 64px 32px;display:flex;flex-direction:column;gap:44px;max-width:1312px;margin:0 auto;">
+          <div style="display:flex;justify-content:space-between;gap:40px;">
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <span style="font:400 12px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+              <span style="font:500 22px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+              <p style="font:13px/1.6 'Inter',sans-serif;color:rgba(255,255,245,.55);max-width:260px;margin-top:10px;">Luxury eastern wear, handcrafted for the moments that matter.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">FAQs</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Company</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Our Story</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Careers</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Store Locator</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Connect</span>
+              <div style="display:flex;gap:10px;">
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,245,.12);padding-top:28px;">
+            <div style="display:flex;gap:32px;">
+              <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <div style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,245,.3);display:flex;align-items:center;justify-content:center;flex:none;">
+                    <div style="width:8px;height:5px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                  </div>
+                  <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.7);">{{ tb }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:32px;right:32px;width:58px;height:58px;border-radius:18px 18px 18px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;">
+        <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mobileMenuOpen: false,
+      mobileSearchOpen: false,
+      mobileCartOpen: false,
+      desktopSearchOpen: false,
+      desktopCartOpen: false,
+      searchQuery: '',
+      activeMegaMenu: null,
+      testimonialIndex: 0,
+      newsletterEmail: '',
+      newsletterSubmitted: false,
+      accountOpen: false,
+      accountLoggedIn: false
+    };
+    this.mobileNewArrivalsRef = React.createRef();
+    this.mobileBestSellersRef = React.createRef();
+    this.desktopNewArrivalsRef = React.createRef();
+    this.desktopBestSellersRef = React.createRef();
+  }
+
+  navCategories = ['New Arrivals', 'Luxury Pret', 'Casual Wear', 'Formal Wear', 'Wedding Collection', 'Festive Collection', 'Sale'];
+
+  megaMenu = {
+    'Luxury Pret': { sub: ['2-Piece Sets', '3-Piece Sets', 'Kurtas', 'Trousers & Palazzos'], promo: 'LUXURY PRET LOOKBOOK' },
+    'Wedding Collection': { sub: ['Bridal Wear', 'Walima', 'Mehndi', 'Barat'], promo: 'BRIDAL EDIT' },
+    'Festive Collection': { sub: ['Eid Edit', 'Chikankari', 'Organza', 'Embroidered'], promo: 'FESTIVE EDIT' }
+  };
+
+  newArrivals = [
+    { name: 'Noor Embroidered Kurta Set', price: 'Rs. 14,500', colors: ['#8A6A50', '#1A1A1A', '#C9A25D'], badge: 'New' },
+    { name: 'Zara Silk Anarkali', price: 'Rs. 21,900', colors: ['#7B2D26', '#1A1A1A'], badge: 'New' },
+    { name: 'Mahira Chikankari Shirt', price: 'Rs. 9,800', colors: ['#D8B8A0', '#FFFFF5'], badge: null },
+    { name: 'Alizeh Organza Saree', price: 'Rs. 18,200', colors: ['#C9A25D', '#8A6A50'], badge: 'New' }
+  ];
+
+  bestSellers = [
+    { name: 'Amal Two-Piece Lawn', price: 'Rs. 7,900', colors: ['#1A1A1A', '#8A6A50', '#D8B8A0'], badge: 'Bestseller' },
+    { name: 'Sana Velvet Shawl Set', price: 'Rs. 24,500', colors: ['#7B2D26', '#1A1A1A'], badge: null },
+    { name: 'Rania Net Embellished Set', price: 'Rs. 16,300', salePrice: 'Rs. 13,900', colors: ['#C9A25D', '#1A1A1A'], badge: 'Sale' },
+    { name: 'Hania Cotton Kurta', price: 'Rs. 5,400', colors: ['#D8B8A0', '#8A6A50', '#FFFFF5'], badge: null }
+  ];
+
+  collectionBgs = [
+    'repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 16px,#D8B8A0 16px,#D8B8A0 32px)',
+    'repeating-linear-gradient(135deg,#D8B8A0 0px,#D8B8A0 16px,#8A6A50 16px,#8A6A50 32px)',
+    'repeating-linear-gradient(135deg,#C9A25D 0px,#C9A25D 16px,#E8DCC8 16px,#E8DCC8 32px)',
+    'repeating-linear-gradient(135deg,#8A6A50 0px,#8A6A50 16px,#C9A25D 16px,#C9A25D 32px)'
+  ];
+
+  collectionsData = [
+    { label: 'Luxury Pret', sub: 'Everyday elegance' },
+    { label: 'Wedding', sub: 'For your big day' },
+    { label: 'Eid', sub: 'Celebrate in style' },
+    { label: 'Festive', sub: 'Occasion ready' }
+  ];
+
+  testimonialsData = [
+    { quote: 'The fabric quality is unmatched — I felt like royalty at my sister\u2019s wedding.', name: 'Ayesha K.', city: 'Lahore' },
+    { quote: 'Singhar never disappoints. The Eid collection sold out before I could blink.', name: 'Farah M.', city: 'Karachi' },
+    { quote: 'Timeless pieces that feel special every time I wear them.', name: 'Sana R.', city: 'Islamabad' }
+  ];
+
+  trustBadges = ['Secure Payment', 'Easy Returns', '100% Authentic', 'Cash on Delivery'];
+  trendingList = ['Eid Collection', 'Bridal Wear', 'Lawn Suits', 'Organza Saree', 'Chikankari'];
+
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
+  toggleMobileSearch = () => this.setState(s => ({ mobileSearchOpen: !s.mobileSearchOpen, mobileCartOpen: false, searchQuery: s.mobileSearchOpen ? '' : s.searchQuery }));
+  toggleMobileCart = () => this.setState(s => ({ mobileCartOpen: !s.mobileCartOpen, mobileSearchOpen: false }));
+  toggleDesktopSearch = () => this.setState(s => ({ desktopSearchOpen: !s.desktopSearchOpen, desktopCartOpen: false, searchQuery: s.desktopSearchOpen ? '' : s.searchQuery }));
+  toggleDesktopCart = () => this.setState(s => ({ desktopCartOpen: !s.desktopCartOpen, desktopSearchOpen: false }));
+  closeMobileSearch = () => this.setState({ mobileSearchOpen: false, searchQuery: '' });
+  closeDesktopSearch = () => this.setState({ desktopSearchOpen: false, searchQuery: '' });
+  updateSearchQuery = (e) => this.setState({ searchQuery: e.target.value });
+
+  setMegaMenu = (name) => this.setState({ activeMegaMenu: name });
+  clearMegaMenu = () => this.setState({ activeMegaMenu: null });
+  toggleAccount = () => this.setState(s => ({ accountOpen: !s.accountOpen }));
+  closeAccount = () => this.setState({ accountOpen: false });
+  logOut = () => this.setState({ accountLoggedIn: false });
+  toggleLoginPreview = () => this.setState(s => ({ accountLoggedIn: !s.accountLoggedIn }));
+
+  scrollCarousel = (ref, dir) => { if (ref.current) ref.current.scrollBy({ left: dir * 300, behavior: 'smooth' }); };
+
+  prevTestimonial = () => this.setState(s => ({ testimonialIndex: (s.testimonialIndex + this.testimonialsData.length - 1) % this.testimonialsData.length }));
+  nextTestimonial = () => this.setState(s => ({ testimonialIndex: (s.testimonialIndex + 1) % this.testimonialsData.length }));
+  goToTestimonial = (i) => this.setState({ testimonialIndex: i });
+
+  updateNewsletterEmail = (e) => this.setState({ newsletterEmail: e.target.value });
+  submitNewsletter = (e) => { e.preventDefault(); this.setState({ newsletterSubmitted: true }); };
+
+  renderVals() {
+    const navItems = this.navCategories.map(name => ({
+      name,
+      hasMega: !!this.megaMenu[name],
+      enter: () => (this.megaMenu[name] ? this.setMegaMenu(name) : this.clearMegaMenu())
+    }));
+    const active = this.state.activeMegaMenu ? this.megaMenu[this.state.activeMegaMenu] : null;
+    const collections = this.collectionsData.map((c, i) => ({ ...c, bg: this.collectionBgs[i % this.collectionBgs.length] }));
+    const instagramPosts = this.collectionBgs.concat(this.collectionBgs).map(bg => ({ bg }));
+    const testimonialDots = this.testimonialsData.map((t, i) => ({
+      dot: i === this.state.testimonialIndex ? '#C9A25D' : 'rgba(0,0,0,.18)',
+      onClick: () => this.goToTestimonial(i)
+    }));
+    const query = this.state.searchQuery.trim().toLowerCase();
+    const allProducts = this.newArrivals.concat(this.bestSellers);
+    const searchResults = query ? allProducts.filter(p => p.name.toLowerCase().includes(query)) : [];
+    const trendingSearches = this.trendingList.map(label => ({ label, onClick: () => this.setState({ searchQuery: label }) }));
+
+    return {
+      navCategories: this.navCategories,
+      navItems,
+      activeMegaMenu: this.state.activeMegaMenu,
+      megaSubs: active ? active.sub : [],
+      megaPromo: active ? active.promo : '',
+      setMegaMenu: this.setMegaMenu,
+      clearMegaMenu: this.clearMegaMenu,
+      newArrivals: this.newArrivals,
+      bestSellers: this.bestSellers,
+      collections,
+      instagramPosts,
+      trustBadges: this.trustBadges,
+      currentTestimonial: this.testimonialsData[this.state.testimonialIndex],
+      testimonialDots,
+      prevTestimonial: this.prevTestimonial,
+      nextTestimonial: this.nextTestimonial,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: this.toggleMobileMenu,
+      mobileSearchOpen: this.state.mobileSearchOpen,
+      toggleMobileSearch: this.toggleMobileSearch,
+      mobileCartOpen: this.state.mobileCartOpen,
+      toggleMobileCart: this.toggleMobileCart,
+      desktopSearchOpen: this.state.desktopSearchOpen,
+      toggleDesktopSearch: this.toggleDesktopSearch,
+      closeMobileSearch: this.closeMobileSearch,
+      closeDesktopSearch: this.closeDesktopSearch,
+      searchQuery: this.state.searchQuery,
+      updateSearchQuery: this.updateSearchQuery,
+      searchResults,
+      trendingSearches,
+      desktopCartOpen: this.state.desktopCartOpen,
+      toggleDesktopCart: this.toggleDesktopCart,
+      mobileNewArrivalsRef: this.mobileNewArrivalsRef,
+      mobileBestSellersRef: this.mobileBestSellersRef,
+      desktopNewArrivalsRef: this.desktopNewArrivalsRef,
+      desktopBestSellersRef: this.desktopBestSellersRef,
+      scrollDesktopNewLeft: () => this.scrollCarousel(this.desktopNewArrivalsRef, -1),
+      scrollDesktopNewRight: () => this.scrollCarousel(this.desktopNewArrivalsRef, 1),
+      scrollDesktopBestLeft: () => this.scrollCarousel(this.desktopBestSellersRef, -1),
+      scrollDesktopBestRight: () => this.scrollCarousel(this.desktopBestSellersRef, 1),
+      newsletterEmail: this.state.newsletterEmail,
+      updateNewsletterEmail: this.updateNewsletterEmail,
+      newsletterSubmitted: this.state.newsletterSubmitted,
+      newsletterOpen: !this.state.newsletterSubmitted,
+      submitNewsletter: this.submitNewsletter,
+      accountOpen: this.state.accountOpen,
+      toggleAccount: this.toggleAccount,
+      closeAccount: this.closeAccount,
+      accountLoggedIn: this.state.accountLoggedIn,
+      accountLoggedOut: !this.state.accountLoggedIn,
+      logOut: this.logOut,
+      toggleLoginPreview: this.toggleLoginPreview,
+      loginPreviewLabel: this.state.accountLoggedIn ? 'Preview logged-out view' : 'Preview logged-in view'
+    };
+  }
+}
+</script>
+</body>
+</html>

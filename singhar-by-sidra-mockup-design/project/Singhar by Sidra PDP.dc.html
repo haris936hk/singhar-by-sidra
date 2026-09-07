@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#FFFFF5;--beige:#E8DCC8;--gold:#C9A25D;--nude:#D8B8A0;--brown:#8A6A50;--ink:#1A1A1A;}
+  *{box-sizing:border-box;}
+  body{margin:0;-webkit-font-smoothing:antialiased;}
+  a{color:var(--ink);text-decoration:none;}
+  a:hover{color:var(--gold);}
+  ::-webkit-scrollbar{height:0;width:0;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(100%);}to{opacity:1;transform:translateY(0);}}
+</style>
+</helmet>
+<div style="background:#F4F0E8;min-height:100vh;padding:56px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:72px;font-family:'Inter',sans-serif;overflow-x:auto;">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Mobile — 390 × 844</span>
+    <div style="position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div ref="{{ mobileScrollRef }}" style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:10px 16px;text-align:center;">
+          <span style="font:500 10.5px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping over Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 12px;display:flex;align-items:center;justify-content:space-between;">
+          <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;">
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+            <div style="width:20px;height:1.5px;background:#1A1A1A;"></div>
+          </button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+            <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <button style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;padding:0;">
+              <div style="width:14px;height:14px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:14px;right:11px;"></div>
+            </button>
+            <button onClick="{{ toggleAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;">
+              <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+              <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+            </button>
+            <button style="width:44px;height:44px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;">
+              <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+              <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+            </button>
+          </div>
+        </div>
+
+        <div style="padding:14px 16px 0;">
+          <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">Home / Luxury Pret / <span style="color:#1A1A1A;">Noor Embroidered Kurta Set</span></span>
+        </div>
+
+        <div style="padding:14px 0 0;display:flex;flex-direction:column;gap:10px;">
+          <div ref="{{ mobileGalleryRef }}" onScroll="{{ onMobileGalleryScroll }}" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;">
+            <sc-for list="{{ galleryImages }}" as="img" hint-placeholder-count="7">
+              <div onClick="{{ openMobileZoom }}" style="flex:0 0 100%;width:100%;aspect-ratio:3/4;scroll-snap-align:start;position:relative;background:{{ img.bg }};display:flex;align-items:center;justify-content:center;cursor:zoom-in;">
+                <span style="font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;background:rgba(255,255,245,.65);padding:5px 10px;border-radius:3px;">Product Photo {{ img.n }}</span>
+                <sc-if value="{{ img.isVideo }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(26,26,26,.55);display:flex;align-items:center;justify-content:center;">
+                    <div style="width:0;height:0;border-style:solid;border-width:6px 0 6px 9px;border-color:transparent transparent transparent #FFFFF5;margin-left:2px;"></div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:center;gap:6px;">
+            <sc-for list="{{ galleryDots }}" as="d" hint-placeholder-count="7">
+              <button onClick="{{ d.onClick }}" style="width:6px;height:6px;border-radius:50%;border:none;padding:0;cursor:pointer;background:{{ d.dot }};"></button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div ref="{{ mobileBuyBoxRef }}" style="padding:24px 20px 8px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <h1 style="margin:0;font:500 25px/1.25 'Playfair Display',serif;color:#1A1A1A;">Noor Embroidered Kurta Set</h1>
+            <span style="font:600 17px 'Inter',sans-serif;color:#1A1A1A;">Rs. 14,500</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Color — {{ selectedColorName }}</span>
+            <div style="display:flex;gap:12px;">
+              <sc-for list="{{ colorSwatches }}" as="sw" hint-placeholder-count="4">
+                <button onClick="{{ sw.onClick }}" style="width:30px;height:30px;border-radius:50%;border:none;padding:0;cursor:pointer;background:{{ sw.color }};box-shadow:{{ sw.ring }};"></button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Size</span>
+            <div style="display:flex;gap:10px;">
+              <sc-for list="{{ sizeOptions }}" as="sz" hint-placeholder-count="4">
+                <button onClick="{{ sz.onClick }}" disabled="{{ sz.soldOut }}" style="width:48px;height:44px;border-radius:2px;border:{{ sz.border }};background:{{ sz.bg }};color:{{ sz.color }};font:500 13px 'Inter',sans-serif;cursor:{{ sz.cursor }};position:relative;text-decoration:{{ sz.strike }};">{{ sz.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+            <button onClick="{{ addToCart }}" style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:16px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">{{ addToCartLabel }}</button>
+            <button style="width:100%;background:none;color:#1A1A1A;border:1px solid #C9A25D;border-radius:2px;padding:15px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Quick Buy</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);">
+            <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;flex:none;">
+                  <div style="width:7px;height:4px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                </div>
+                <span style="font:11px 'Inter',sans-serif;color:#8A6A50;">{{ tb }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:28px 20px 8px;display:flex;flex-direction:column;">
+          <sc-for list="{{ accordionSections }}" as="sec" hint-placeholder-count="4">
+            <div style="border-bottom:1px solid rgba(0,0,0,.08);">
+              <button onClick="{{ sec.onToggle }}" style="width:100%;background:none;border:none;padding:16px 0;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+                <span style="font:500 15px 'Playfair Display',serif;color:#1A1A1A;">{{ sec.title }}</span>
+                <span style="font:16px 'Inter',sans-serif;color:#8A6A50;transform:{{ sec.iconRotate }};transition:transform .2s ease;">+</span>
+              </button>
+              <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 0 20px;font:13.5px/1.7 'Inter',sans-serif;color:#8A6A50;animation:fadeIn .15s ease;">{{ sec.body }}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:36px 20px 8px;display:flex;flex-direction:column;gap:20px;">
+          <h2 style="margin:0;font:500 20px 'Playfair Display',serif;color:#1A1A1A;">You May Also Like</h2>
+          <div style="display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;">
+            <sc-for list="{{ relatedProducts }}" as="p" hint-placeholder-count="4">
+              <div style="flex:0 0 auto;width:160px;scroll-snap-align:start;">
+                <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="160px,260px"></dc-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#1A1A1A;margin-top:36px;padding:48px 24px 28px;display:flex;flex-direction:column;gap:36px;">
+          <div style="display:flex;flex-direction:column;gap:1px;text-align:center;">
+            <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+            <span style="font:500 18px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+            <a href="#" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+          </div>
+          <span style="text-align:center;font:11px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+        </div>
+
+      </div>
+
+      <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:60;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ toggleMobileMenu }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:26px;padding:8px 32px;overflow-y:auto;">
+            <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+              <a href="#" style="font:400 22px 'Playfair Display',serif;color:#1A1A1A;">{{ cat }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:#FFFFF5;z-index:63;display:flex;flex-direction:column;animation:fadeIn .18s ease;">
+          <div style="padding:16px;display:flex;justify-content:flex-end;">
+            <button onClick="{{ closeAccount }}" style="width:44px;height:44px;border:none;background:none;cursor:pointer;position:relative;">
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+              <div style="width:18px;height:1.4px;background:#1A1A1A;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);"></div>
+            </button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px 32px;text-align:center;">
+            <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+              <a href="#" style="font:15px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+              <button onClick="{{ logOut }}" style="border:none;background:none;padding:0;font:15px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+            </sc-if>
+            <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+              <span style="font:500 24px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+              <button style="width:100%;max-width:260px;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:15px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Log In</button>
+              <button style="width:100%;max-width:260px;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:14px;font:500 12.5px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+            </sc-if>
+            <button onClick="{{ toggleLoginPreview }}" style="margin-top:10px;border:none;background:none;padding:0;font:12px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ mobileZoomOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeMobileZoom }}" style="position:absolute;inset:0;background:#1A1A1A;z-index:65;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;">
+          <div style="width:100%;height:70%;background:{{ activeGalleryBg }};display:flex;align-items:center;justify-content:center;">
+            <span style="font:11px ui-monospace,monospace;color:rgba(255,255,245,.7);">Tap to close</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showStickyBar }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:#FFFFF5;border-top:1px solid rgba(0,0,0,.1);padding:12px 16px;display:flex;align-items:center;gap:12px;z-index:55;animation:slideUp .2s ease;box-shadow:0 -8px 20px -10px rgba(0,0,0,.15);">
+          <div style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0;">
+            <span style="font:500 12.5px 'Playfair Display',serif;color:#1A1A1A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Noor Embroidered Kurta Set</span>
+            <span style="font:600 12px 'Inter',sans-serif;color:#1A1A1A;">Rs. 14,500</span>
+          </div>
+          <button onClick="{{ addToCart }}" style="background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:13px 22px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;white-space:nowrap;">{{ addToCartLabel }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showMobileWhatsApp }}" hint-placeholder-val="{{ false }}">
+        <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:{{ mobileWhatsAppBottom }};right:20px;width:52px;height:52px;border-radius:16px 16px 16px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;transition:bottom .2s ease;">
+          <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+        </a>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+    <span style="font:500 11px ui-monospace,monospace;letter-spacing:1.5px;text-transform:uppercase;color:#8A6A50;">Desktop — 1440 × 900</span>
+    <div style="position:relative;width:1440px;height:900px;border-radius:10px;overflow:hidden;box-shadow:0 40px 70px -25px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.06);background:#FFFFF5;">
+      <div style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;">
+
+        <div style="background:#E8DCC8;padding:9px 0;text-align:center;">
+          <span style="font:500 11px 'Inter',sans-serif;letter-spacing:.4px;color:#8A6A50;">Free shipping on orders above Rs. 15,000 &nbsp;·&nbsp; Eid Collection now live &nbsp;·&nbsp; COD available nationwide</span>
+        </div>
+
+        <div style="position:sticky;top:0;z-index:40;background:#FFFFF5;border-bottom:1px solid rgba(0,0,0,.06);padding:0 64px;" onMouseLeave="{{ clearMegaMenu }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;height:88px;">
+            <div style="display:flex;flex-direction:column;gap:1px;">
+              <span style="font:400 11px 'Playfair Display',serif;color:#C9A25D;letter-spacing:.5px;">سنگھار</span>
+              <span style="font:500 21px 'Playfair Display',serif;color:#1A1A1A;letter-spacing:.4px;">Singhar by Sidra</span>
+            </div>
+            <nav style="display:flex;gap:36px;">
+              <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="7">
+                <a href="#" onMouseEnter="{{ item.enter }}" style="font:500 13px 'Inter',sans-serif;letter-spacing:.2px;color:#1A1A1A;padding:6px 0;border-bottom:1px solid transparent;">{{ item.name }}</a>
+              </sc-for>
+            </nav>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <button style="width:40px;height:40px;border:none;background:none;cursor:pointer;position:relative;">
+                <div style="width:15px;height:15px;border:1.4px solid #1A1A1A;border-radius:50%;margin:0 auto;"></div>
+                <div style="width:6px;height:1.4px;background:#1A1A1A;transform:rotate(45deg);position:absolute;bottom:11px;right:9px;"></div>
+              </button>
+              <div style="position:relative;">
+                <button onClick="{{ toggleAccount }}" style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+                  <div style="width:11px;height:11px;border:1.4px solid #1A1A1A;border-radius:50%;"></div>
+                  <div style="width:19px;height:10px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:10px 10px 0 0;"></div>
+                </button>
+                <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:calc(100% + 12px);right:0;width:260px;background:#FFFFF5;border:1px solid rgba(0,0,0,.1);box-shadow:0 20px 40px -18px rgba(0,0,0,.25);padding:24px;z-index:55;animation:fadeIn .15s ease;">
+                    <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">My Account</span>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Orders</a>
+                        <a href="#" style="font:13px 'Inter',sans-serif;color:#1A1A1A;">My Details</a>
+                        <button onClick="{{ logOut }}" style="text-align:left;border:none;background:none;padding:0;font:13px 'Inter',sans-serif;color:#8A6A50;cursor:pointer;">Log Out</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;">
+                        <span style="font:500 17px 'Playfair Display',serif;color:#1A1A1A;">Welcome</span>
+                        <button style="width:100%;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:12px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Log In</button>
+                        <button style="width:100%;background:none;color:#1A1A1A;border:1px solid rgba(0,0,0,.2);border-radius:2px;padding:11px;font:500 12px 'Inter',sans-serif;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;">Create Account</button>
+                      </div>
+                    </sc-if>
+                    <button onClick="{{ toggleLoginPreview }}" style="margin-top:16px;border:none;background:none;padding:0;font:11px 'Inter',sans-serif;color:#8A6A50;text-decoration:underline;cursor:pointer;">{{ loginPreviewLabel }}</button>
+                  </div>
+                </sc-if>
+              </div>
+              <button style="width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                <div style="width:9px;height:6px;border:1.4px solid #1A1A1A;border-bottom:none;border-radius:6px 6px 0 0;"></div>
+                <div style="width:15px;height:11px;border:1.4px solid #1A1A1A;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+              </button>
+            </div>
+          </div>
+
+          <sc-if value="{{ activeMegaMenu }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:88px;background:#FFFFF5;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 20px 30px -20px rgba(0,0,0,.12);padding:40px 64px;display:flex;gap:64px;animation:fadeIn .15s ease;">
+              <div style="display:flex;flex-direction:column;gap:14px;min-width:200px;">
+                <sc-for list="{{ megaSubs }}" as="sub" hint-placeholder-count="4">
+                  <a href="#" style="font:14px 'Inter',sans-serif;color:#1A1A1A;">{{ sub }}</a>
+                </sc-for>
+              </div>
+              <div style="width:220px;height:150px;border-radius:2px;background:repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 14px,#C9A25D 14px,#C9A25D 28px);display:flex;align-items:flex-end;padding:12px;">
+                <span style="font:500 12px 'Inter',sans-serif;color:#FFFFF5;letter-spacing:.3px;">{{ megaPromo }}</span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="padding:28px 64px 0;">
+          <span style="font:12.5px 'Inter',sans-serif;color:#8A6A50;">Home / Luxury Pret / <span style="color:#1A1A1A;">Noor Embroidered Kurta Set</span></span>
+        </div>
+
+        <div style="padding:24px 64px 0;display:flex;gap:48px;max-width:1312px;margin:0 auto;">
+          <div style="display:flex;gap:14px;flex:0 0 auto;">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ galleryImages }}" as="img" hint-placeholder-count="7">
+                <button onClick="{{ img.onSelect }}" style="width:76px;height:96px;border-radius:2px;border:{{ img.thumbBorder }};padding:0;cursor:pointer;background:{{ img.bg }};position:relative;overflow:hidden;">
+                  <sc-if value="{{ img.isVideo }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;background:rgba(26,26,26,.55);display:flex;align-items:center;justify-content:center;">
+                      <div style="width:0;height:0;border-style:solid;border-width:4px 0 4px 6px;border-color:transparent transparent transparent #FFFFF5;"></div>
+                    </div>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+            <div onMouseMove="{{ onDesktopZoomMove }}" onMouseEnter="{{ enableDesktopZoom }}" onMouseLeave="{{ disableDesktopZoom }}" style="width:520px;height:660px;border-radius:2px;overflow:hidden;background:#F4F0E8;position:relative;cursor:zoom-in;">
+              <div style="width:100%;height:100%;background:{{ activeGalleryBg }};display:flex;align-items:center;justify-content:center;transform:{{ desktopZoomTransform }};transform-origin:{{ desktopZoomOrigin }};transition:{{ desktopZoomTransition }};">
+                <span style="font:11px ui-monospace,monospace;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;background:rgba(255,255,245,.65);padding:6px 12px;border-radius:3px;">Product Photo {{ activeImageNumber }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div ref="{{ desktopBuyBoxRef }}" style="flex:1;display:flex;flex-direction:column;gap:22px;max-width:420px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <h1 style="margin:0;font:500 34px/1.2 'Playfair Display',serif;color:#1A1A1A;">Noor Embroidered Kurta Set</h1>
+              <span style="font:600 20px 'Inter',sans-serif;color:#1A1A1A;">Rs. 14,500</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Color — {{ selectedColorName }}</span>
+              <div style="display:flex;gap:12px;">
+                <sc-for list="{{ colorSwatches }}" as="sw" hint-placeholder-count="4">
+                  <button onClick="{{ sw.onClick }}" style="width:30px;height:30px;border-radius:50%;border:none;padding:0;cursor:pointer;background:{{ sw.color }};box-shadow:{{ sw.ring }};"></button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#8A6A50;">Size</span>
+                <a href="#" style="font:12px 'Inter',sans-serif;color:#8A6A50;border-bottom:1px solid #C9A25D;">Size Guide</a>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <sc-for list="{{ sizeOptions }}" as="sz" hint-placeholder-count="4">
+                  <button onClick="{{ sz.onClick }}" disabled="{{ sz.soldOut }}" style="width:56px;height:48px;border-radius:2px;border:{{ sz.border }};background:{{ sz.bg }};color:{{ sz.color }};font:500 13px 'Inter',sans-serif;cursor:{{ sz.cursor }};position:relative;text-decoration:{{ sz.strike }};">{{ sz.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:6px;">
+              <button onClick="{{ addToCart }}" style="flex:1;background:#1A1A1A;color:#FFFFF5;border:none;border-radius:2px;padding:17px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">{{ addToCartLabel }}</button>
+              <button style="flex:1;background:none;color:#1A1A1A;border:1px solid #C9A25D;border-radius:2px;padding:16px;font:500 13px 'Inter',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;">Quick Buy</button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:16px;border-top:1px solid rgba(0,0,0,.08);">
+              <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <div style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;flex:none;">
+                    <div style="width:8px;height:5px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                  </div>
+                  <span style="font:12px 'Inter',sans-serif;color:#8A6A50;">{{ tb }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:flex;flex-direction:column;margin-top:10px;">
+              <sc-for list="{{ accordionSections }}" as="sec" hint-placeholder-count="4">
+                <div style="border-bottom:1px solid rgba(0,0,0,.08);">
+                  <button onClick="{{ sec.onToggle }}" style="width:100%;background:none;border:none;padding:16px 0;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+                    <span style="font:500 15px 'Playfair Display',serif;color:#1A1A1A;">{{ sec.title }}</span>
+                    <span style="font:16px 'Inter',sans-serif;color:#8A6A50;transform:{{ sec.iconRotate }};transition:transform .2s ease;">+</span>
+                  </button>
+                  <sc-if value="{{ sec.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:0 0 20px;font:13.5px/1.7 'Inter',sans-serif;color:#8A6A50;animation:fadeIn .15s ease;">{{ sec.body }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:64px 64px 8px;display:flex;flex-direction:column;gap:28px;max-width:1312px;margin:0 auto;">
+          <h2 style="margin:0;font:500 32px 'Playfair Display',serif;color:#1A1A1A;">You May Also Like</h2>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px;">
+            <sc-for list="{{ relatedProducts }}" as="p" hint-placeholder-count="4">
+              <dc-import name="ProductCard" name-prop="{{ p.name }}" price="{{ p.price }}" colors="{{ p.colors }}" badge="{{ p.badge }}" hint-size="280px,400px"></dc-import>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#1A1A1A;margin-top:64px;padding:64px 64px 32px;display:flex;flex-direction:column;gap:44px;max-width:1312px;margin-left:auto;margin-right:auto;">
+          <div style="display:flex;justify-content:space-between;gap:40px;">
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <span style="font:400 12px 'Playfair Display',serif;color:#C9A25D;">سنگھار</span>
+              <span style="font:500 22px 'Playfair Display',serif;color:#FFFFF5;">Singhar by Sidra</span>
+              <p style="font:13px/1.6 'Inter',sans-serif;color:rgba(255,255,245,.55);max-width:260px;margin-top:10px;">Luxury eastern wear, handcrafted for the moments that matter.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Shop</span>
+              <sc-for list="{{ navCategories }}" as="cat" hint-placeholder-count="7">
+                <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">{{ cat }}</a>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Customer Care</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Track Order</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Returns &amp; Exchanges</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Size Guide</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Contact Us</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">FAQs</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Company</span>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Our Story</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Careers</a>
+              <a href="#" style="font:13px 'Inter',sans-serif;color:rgba(255,255,245,.75);">Store Locator</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font:600 11px 'Inter',sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#D8B8A0;">Connect</span>
+              <div style="display:flex;gap:10px;">
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">IG</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">FB</span></a>
+                <a href="#" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,245,.25);display:flex;align-items:center;justify-content:center;"><span style="font:10px 'Inter',sans-serif;color:#FFFFF5;">PN</span></a>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,245,.12);padding-top:28px;">
+            <div style="display:flex;gap:32px;">
+              <sc-for list="{{ trustBadges }}" as="tb" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:9px;">
+                  <div style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,245,.3);display:flex;align-items:center;justify-content:center;flex:none;">
+                    <div style="width:8px;height:5px;border-left:1.3px solid #C9A25D;border-bottom:1.3px solid #C9A25D;transform:rotate(-45deg) translate(1px,-1px);"></div>
+                  </div>
+                  <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.7);">{{ tb }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <span style="font:12px 'Inter',sans-serif;color:rgba(255,255,245,.4);">© 2026 Singhar by Sidra. All rights reserved.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <a href="https://wa.me/10000000000" target="_blank" style="position:absolute;bottom:32px;right:32px;width:58px;height:58px;border-radius:18px 18px 18px 4px;background:#3E9C6B;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;">
+        <span style="font:600 10px 'Inter',sans-serif;color:#FFFFF5;">chat</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mobileMenuOpen: false,
+      activeMegaMenu: null,
+      activeImageIndex: 0,
+      selectedColorIndex: 0,
+      selectedSizeIndex: 1,
+      openAccordionIndex: 0,
+      mobileZoomOpen: false,
+      showStickyBar: false,
+      desktopZoomActive: false,
+      desktopZoomOrigin: '50% 50%',
+      addedToCart: false,
+      accountOpen: false,
+      accountLoggedIn: false
+    };
+    this.mobileScrollRef = React.createRef();
+    this.mobileGalleryRef = React.createRef();
+    this.mobileBuyBoxRef = React.createRef();
+    this.desktopBuyBoxRef = React.createRef();
+  }
+
+  navCategories = ['New Arrivals', 'Luxury Pret', 'Casual Wear', 'Formal Wear', 'Wedding Collection', 'Festive Collection', 'Sale'];
+  megaMenu = {
+    'Luxury Pret': { sub: ['2-Piece Sets', '3-Piece Sets', 'Kurtas', 'Trousers & Palazzos'], promo: 'LUXURY PRET LOOKBOOK' },
+    'Wedding Collection': { sub: ['Bridal Wear', 'Walima', 'Mehndi', 'Barat'], promo: 'BRIDAL EDIT' },
+    'Festive Collection': { sub: ['Eid Edit', 'Chikankari', 'Organza', 'Embroidered'], promo: 'FESTIVE EDIT' }
+  };
+
+  imageBgs = [
+    'repeating-linear-gradient(135deg,#E8DCC8 0px,#E8DCC8 16px,#D8B8A0 16px,#D8B8A0 32px)',
+    'repeating-linear-gradient(120deg,#D8B8A0 0px,#D8B8A0 16px,#8A6A50 16px,#8A6A50 32px)',
+    'repeating-linear-gradient(150deg,#C9A25D 0px,#C9A25D 16px,#E8DCC8 16px,#E8DCC8 32px)',
+    'repeating-linear-gradient(160deg,#8A6A50 0px,#8A6A50 16px,#C9A25D 16px,#C9A25D 32px)',
+    'repeating-linear-gradient(100deg,#E8DCC8 0px,#E8DCC8 16px,#C9A25D 16px,#C9A25D 32px)',
+    'repeating-linear-gradient(140deg,#D8B8A0 0px,#D8B8A0 16px,#E8DCC8 16px,#E8DCC8 32px)',
+    'repeating-linear-gradient(125deg,#C9A25D 0px,#C9A25D 16px,#D8B8A0 16px,#D8B8A0 32px)'
+  ];
+
+  colors = [
+    { name: 'Champagne Beige', hex: '#D8B8A0' },
+    { name: 'Soft Brown', hex: '#8A6A50' },
+    { name: 'Ink Black', hex: '#1A1A1A' },
+    { name: 'Champagne Gold', hex: '#C9A25D' }
+  ];
+
+  sizes = ['S', 'M', 'L', 'XL'];
+  soldOutSize = 3;
+
+  accordionData = [
+    { title: 'Fabric Details', body: 'Woven from pure lawn cotton with hand-embellished thread work along the neckline and hem. Fully lined for structure and comfort, with a breathable finish suited to all-day wear.' },
+    { title: 'Size Chart', body: 'S — Bust 34in, Waist 28in, Length 42in\nM — Bust 36in, Waist 30in, Length 43in\nL — Bust 38in, Waist 32in, Length 44in\nXL — Bust 40in, Waist 34in, Length 45in' },
+    { title: 'Care Instructions', body: 'Dry clean only. Store away from direct sunlight to preserve embroidery detail. Iron on reverse at low heat, and avoid folding along embellished panels.' },
+    { title: 'Description', body: 'Cut from featherlight lawn and finished with hand-embroidered florals, the Noor set drapes with quiet elegance for daytime festivities and beyond.\n\nA relaxed silhouette pairs with a tapered trouser, letting the embroidery take center stage without ever feeling heavy. Designed to move easily from mehndi mornings to evening tea.\n\nEach piece is finished by hand, so gentle variation in the embroidery is part of its character rather than a flaw.' }
+  ];
+
+  trustBadges = ['Secure Payment', 'Easy Returns', 'Cash on Delivery', '100% Authentic'];
+
+  relatedProducts = [
+    { name: 'Zara Silk Anarkali', price: 'Rs. 21,900', colors: ['#7B2D26', '#1A1A1A'], badge: 'New' },
+    { name: 'Mahira Chikankari Shirt', price: 'Rs. 9,800', colors: ['#D8B8A0', '#FFFFF5'], badge: null },
+    { name: 'Alizeh Organza Saree', price: 'Rs. 18,200', colors: ['#C9A25D', '#8A6A50'], badge: null },
+    { name: 'Amal Two-Piece Lawn', price: 'Rs. 7,900', colors: ['#1A1A1A', '#8A6A50', '#D8B8A0'], badge: 'Bestseller' }
+  ];
+
+  componentDidMount() {
+    this.handleMobileScroll = () => {
+      const scrollEl = this.mobileScrollRef.current;
+      const buyBoxEl = this.mobileBuyBoxRef.current;
+      if (!scrollEl || !buyBoxEl) return;
+      const scrollRect = scrollEl.getBoundingClientRect();
+      const buyBoxRect = buyBoxEl.getBoundingClientRect();
+      const stillVisible = buyBoxRect.bottom > scrollRect.top;
+      if (this.state.showStickyBar === stillVisible) this.setState({ showStickyBar: !stillVisible });
+    };
+    if (this.mobileScrollRef.current) {
+      this.mobileScrollRef.current.addEventListener('scroll', this.handleMobileScroll, { passive: true });
+      this.handleMobileScroll();
+    }
+  }
+  componentWillUnmount() {
+    if (this.mobileScrollRef.current && this.handleMobileScroll) {
+      this.mobileScrollRef.current.removeEventListener('scroll', this.handleMobileScroll);
+    }
+  }
+
+  toggleMobileMenu = () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen }));
+  setMegaMenu = (name) => this.setState({ activeMegaMenu: name });
+  clearMegaMenu = () => this.setState({ activeMegaMenu: null });
+
+  selectColor = (i) => this.setState({ selectedColorIndex: i });
+  selectSize = (i) => { if (i !== this.soldOutSize) this.setState({ selectedSizeIndex: i }); };
+  toggleAccordion = (i) => this.setState(s => ({ openAccordionIndex: s.openAccordionIndex === i ? null : i }));
+
+  setActiveImage = (i) => this.setState({ activeImageIndex: i });
+  openMobileZoom = () => this.setState({ mobileZoomOpen: true });
+  closeMobileZoom = () => this.setState({ mobileZoomOpen: false });
+
+  onMobileGalleryScroll = (e) => {
+    const el = e.target;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    if (idx !== this.state.activeImageIndex) this.setState({ activeImageIndex: idx });
+  };
+  scrollToImage = (i) => {
+    if (this.mobileGalleryRef.current) {
+      this.mobileGalleryRef.current.scrollTo({ left: i * this.mobileGalleryRef.current.clientWidth, behavior: 'smooth' });
+    }
+    this.setActiveImage(i);
+  };
+
+  enableDesktopZoom = () => this.setState({ desktopZoomActive: true });
+  disableDesktopZoom = () => this.setState({ desktopZoomActive: false, desktopZoomOrigin: '50% 50%' });
+  toggleAccount = () => this.setState(s => ({ accountOpen: !s.accountOpen }));
+  closeAccount = () => this.setState({ accountOpen: false });
+  logOut = () => this.setState({ accountLoggedIn: false });
+  toggleLoginPreview = () => this.setState(s => ({ accountLoggedIn: !s.accountLoggedIn }));
+  onDesktopZoomMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    this.setState({ desktopZoomOrigin: `${x}% ${y}%` });
+  };
+
+  addToCart = () => { this.setState({ addedToCart: true }); setTimeout(() => this.setState({ addedToCart: false }), 1800); };
+
+  renderVals() {
+    const navItems = this.navCategories.map(name => ({
+      name,
+      enter: () => (this.megaMenu[name] ? this.setMegaMenu(name) : this.clearMegaMenu())
+    }));
+    const active = this.state.activeMegaMenu ? this.megaMenu[this.state.activeMegaMenu] : null;
+
+    const galleryImages = this.imageBgs.map((bg, i) => ({
+      bg, n: i + 1, isVideo: i === 3,
+      onSelect: () => this.setActiveImage(i),
+      thumbBorder: i === this.state.activeImageIndex ? '1.5px solid #C9A25D' : '1px solid rgba(0,0,0,.08)'
+    }));
+    const galleryDots = this.imageBgs.map((_, i) => ({
+      dot: i === this.state.activeImageIndex ? '#C9A25D' : 'rgba(0,0,0,.18)',
+      onClick: () => this.scrollToImage(i)
+    }));
+
+    const colorSwatches = this.colors.map((c, i) => ({
+      color: c.hex,
+      onClick: () => this.selectColor(i),
+      ring: i === this.state.selectedColorIndex ? '0 0 0 2px #FFFFF5, 0 0 0 4px #C9A25D' : '0 0 0 1px rgba(0,0,0,.15)'
+    }));
+
+    const sizeOptions = this.sizes.map((label, i) => {
+      const soldOut = i === this.soldOutSize;
+      const selected = i === this.state.selectedSizeIndex && !soldOut;
+      return {
+        label, soldOut,
+        onClick: () => this.selectSize(i),
+        border: selected ? '1.5px solid #1A1A1A' : '1px solid rgba(0,0,0,.15)',
+        bg: soldOut ? '#F4F0E8' : (selected ? '#1A1A1A' : 'none'),
+        color: soldOut ? '#8A6A50' : (selected ? '#FFFFF5' : '#1A1A1A'),
+        cursor: soldOut ? 'not-allowed' : 'pointer',
+        strike: soldOut ? 'line-through' : 'none'
+      };
+    });
+
+    const accordionSections = this.accordionData.map((sec, i) => ({
+      title: sec.title,
+      body: sec.body,
+      open: this.state.openAccordionIndex === i,
+      iconRotate: this.state.openAccordionIndex === i ? 'rotate(45deg)' : 'rotate(0deg)',
+      onToggle: () => this.toggleAccordion(i)
+    }));
+
+    return {
+      navCategories: this.navCategories,
+      navItems,
+      activeMegaMenu: this.state.activeMegaMenu,
+      megaSubs: active ? active.sub : [],
+      megaPromo: active ? active.promo : '',
+      clearMegaMenu: this.clearMegaMenu,
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: this.toggleMobileMenu,
+      mobileScrollRef: this.mobileScrollRef,
+      mobileGalleryRef: this.mobileGalleryRef,
+      mobileBuyBoxRef: this.mobileBuyBoxRef,
+      desktopBuyBoxRef: this.desktopBuyBoxRef,
+      galleryImages,
+      galleryDots,
+      onMobileGalleryScroll: this.onMobileGalleryScroll,
+      activeGalleryBg: this.imageBgs[this.state.activeImageIndex],
+      activeImageNumber: this.state.activeImageIndex + 1,
+      mobileZoomOpen: this.state.mobileZoomOpen,
+      openMobileZoom: this.openMobileZoom,
+      closeMobileZoom: this.closeMobileZoom,
+      desktopZoomTransform: this.state.desktopZoomActive ? 'scale(1.7)' : 'scale(1)',
+      desktopZoomOrigin: this.state.desktopZoomOrigin,
+      desktopZoomTransition: this.state.desktopZoomActive ? 'none' : 'transform .2s ease',
+      enableDesktopZoom: this.enableDesktopZoom,
+      disableDesktopZoom: this.disableDesktopZoom,
+      onDesktopZoomMove: this.onDesktopZoomMove,
+      selectedColorName: this.colors[this.state.selectedColorIndex].name,
+      colorSwatches,
+      sizeOptions,
+      addToCartLabel: this.state.addedToCart ? 'Added ✓' : 'Add to Cart',
+      addToCart: this.addToCart,
+      trustBadges: this.trustBadges,
+      accordionSections,
+      relatedProducts: this.relatedProducts,
+      showStickyBar: this.state.showStickyBar,
+      showMobileWhatsApp: this.state.showStickyBar,
+      mobileWhatsAppBottom: this.state.showStickyBar ? '84px' : '20px',
+      accountOpen: this.state.accountOpen,
+      toggleAccount: this.toggleAccount,
+      closeAccount: this.closeAccount,
+      accountLoggedIn: this.state.accountLoggedIn,
+      accountLoggedOut: !this.state.accountLoggedIn,
+      logOut: this.logOut,
+      toggleLoginPreview: this.toggleLoginPreview,
+      loginPreviewLabel: this.state.accountLoggedIn ? 'Preview logged-out view' : 'Preview logged-in view'
+    };
+  }
+}
+</script>
+</body>
+</html>
