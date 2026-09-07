@@ -52,8 +52,9 @@ export async function createHydrogenRouterContext(
       cache,
       waitUntil,
       session,
-      // Or detect from URL path based on locale subpath, cookies, or any other strategy
-      i18n: {language: 'EN', country: 'US'},
+      // Pakistan is the storefront's current launch market. Add URL-based locale
+      // resolution here only when additional Shopify Markets are introduced.
+      i18n: {language: 'EN', country: 'PK'},
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
       },

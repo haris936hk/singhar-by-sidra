@@ -1,8 +1,23 @@
-import {useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent} from 'react';
-import {Link, redirect, useLoaderData, useLocation, useNavigate} from 'react-router';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router';
 import {Analytics, getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import type {ProductFilter} from '@shopify/hydrogen/storefront-api-types';
-import type {CollectionProductFragment, CollectionQuery} from 'storefrontapi.generated';
+import type {
+  CollectionProductFragment,
+  CollectionQuery,
+} from 'storefrontapi.generated';
 import type {Route} from './+types/collections.$handle';
 import {CollectionProductCard} from '~/components/CollectionProductCard';
 import {
@@ -12,6 +27,7 @@ import {
   getCollectionSortVariables,
   normalizeCollectionFilterInput,
   parseCollectionFilters,
+  PRICE_FILTER_OPTIONS,
   updateCollectionSearchParams,
   type CollectionSortValue,
 } from '~/lib/collectionFilters';
@@ -61,11 +77,21 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
   redirectIfHandleIsLocalized(request, {handle, data: collection});
 
-  return {collection, filters, sort};
+  return {
+    collection,
+    collectionFilters: ensurePriceFilter(collection.products.filters),
+    filters,
+    sort,
+  };
 }
 
 export default function Collection() {
-  const {collection, filters: activeFilters, sort} = useLoaderData<typeof loader>();
+  const {
+    collection,
+    collectionFilters,
+    filters: activeFilters,
+    sort,
+  } = useLoaderData<typeof loader>();
   const location = useLocation();
   const navigate = useNavigate();
   const [gridDensity, setGridDensity] = useState<3 | 4>(4);
@@ -90,16 +116,21 @@ export default function Collection() {
     [activeFilters],
   );
   const selectedChips = useMemo(
-    () => getSelectedChips(collection.products.filters, activeFilterKeys),
-    [activeFilterKeys, collection.products.filters],
+    () => getSelectedChips(collectionFilters, activeFilterKeys),
+    [activeFilterKeys, collectionFilters],
   );
 
   function navigateWithFilters(nextFilters: ProductFilter[]) {
-    const search = updateCollectionSearchParams(new URLSearchParams(location.search), {
-      filters: nextFilters,
-    });
+    const search = updateCollectionSearchParams(
+      new URLSearchParams(location.search),
+      {
+        filters: nextFilters,
+      },
+    );
     setSheet(null);
-    void navigate(`${location.pathname}${search.toString() ? `?${search}` : ''}`);
+    void navigate(
+      `${location.pathname}${search.toString() ? `?${search}` : ''}`,
+    );
   }
 
   function toggleFilter(input: ProductFilter) {
@@ -111,11 +142,16 @@ export default function Collection() {
   }
 
   function setSort(nextSort: CollectionSortValue) {
-    const search = updateCollectionSearchParams(new URLSearchParams(location.search), {
-      sort: nextSort,
-    });
+    const search = updateCollectionSearchParams(
+      new URLSearchParams(location.search),
+      {
+        sort: nextSort,
+      },
+    );
     setSheet(null);
-    void navigate(`${location.pathname}${search.toString() ? `?${search}` : ''}`);
+    void navigate(
+      `${location.pathname}${search.toString() ? `?${search}` : ''}`,
+    );
   }
 
   const clearFilters = () => navigateWithFilters([]);
@@ -137,17 +173,23 @@ export default function Collection() {
 
       <div className="collection-toolbar">
         <span className="collection-result-count">
-          {collection.products.nodes.length} {collection.products.nodes.length === 1 ? 'product' : 'products'}
+          {collection.products.nodes.length}{' '}
+          {collection.products.nodes.length === 1 ? 'product' : 'products'}
         </span>
         <div className="collection-toolbar-actions">
-          <div aria-label="Product grid density" className="collection-density" role="group">
+          <div
+            aria-label="Product grid density"
+            className="collection-density"
+            role="group"
+          >
             <button
               aria-pressed={gridDensity === 3}
               className={gridDensity === 3 ? 'is-active' : ''}
               onClick={() => setGridDensity(3)}
               type="button"
             >
-              <GridDensityIcon columns={3} /><span className="sr-only">Three columns</span>
+              <GridDensityIcon columns={3} />
+              <span className="sr-only">Three columns</span>
             </button>
             <button
               aria-pressed={gridDensity === 4}
@@ -155,35 +197,63 @@ export default function Collection() {
               onClick={() => setGridDensity(4)}
               type="button"
             >
-              <GridDensityIcon columns={4} /><span className="sr-only">Four columns</span>
+              <GridDensityIcon columns={4} />
+              <span className="sr-only">Four columns</span>
             </button>
           </div>
           <SortDropdown onChange={setSort} value={sort} />
-          <button className="collection-mobile-control" onClick={() => setSheet('sort')} type="button">Sort</button>
-          <button className="collection-mobile-control" onClick={() => setSheet('filter')} type="button">
+          <button
+            className="collection-mobile-control"
+            onClick={() => setSheet('sort')}
+            type="button"
+          >
+            Sort
+          </button>
+          <button
+            className="collection-mobile-control"
+            onClick={() => setSheet('filter')}
+            type="button"
+          >
             Filter{selectedChips.length ? ` (${selectedChips.length})` : ''}
           </button>
         </div>
       </div>
 
       <div className="collection-content">
-        <aside aria-label="Collection filters" className="collection-filter-sidebar">
+        <aside
+          aria-label="Collection filters"
+          className="collection-filter-sidebar"
+        >
           <FilterPanel
-            filters={collection.products.filters}
+            filters={collectionFilters}
             onToggle={toggleFilter}
             selectedKeys={activeFilterKeys}
           />
         </aside>
 
-        <section aria-label={`${collection.title} products`} className="collection-results">
+        <section
+          aria-label={`${collection.title} products`}
+          className="collection-results"
+        >
           {selectedChips.length ? (
             <div className="collection-chips">
               {selectedChips.map((chip) => (
-                <button key={chip.key} onClick={() => toggleFilter(chip.input)} type="button">
-                  {chip.label}<span aria-hidden="true">×</span>
+                <button
+                  key={chip.key}
+                  onClick={() => toggleFilter(chip.input)}
+                  type="button"
+                >
+                  {chip.label}
+                  <span aria-hidden="true">×</span>
                 </button>
               ))}
-              <button className="collection-clear" onClick={clearFilters} type="button">Clear All</button>
+              <button
+                className="collection-clear"
+                onClick={clearFilters}
+                type="button"
+              >
+                Clear All
+              </button>
             </div>
           ) : null}
 
@@ -194,7 +264,9 @@ export default function Collection() {
                   {isLoading ? 'Loading…' : '↑ Load previous'}
                 </PreviousLink>
                 {nodes.length ? (
-                  <div className={`collection-product-grid density-${gridDensity}`}>
+                  <div
+                    className={`collection-product-grid density-${gridDensity}`}
+                  >
                     {nodes.map((product, index) => (
                       <CollectionProductCard
                         key={product.id}
@@ -207,7 +279,11 @@ export default function Collection() {
                   <div className="collection-empty">
                     <h2>No pieces found</h2>
                     <p>Try clearing a filter to see more of the collection.</p>
-                    {selectedChips.length ? <button onClick={clearFilters} type="button">Clear filters</button> : null}
+                    {selectedChips.length ? (
+                      <button onClick={clearFilters} type="button">
+                        Clear filters
+                      </button>
+                    ) : null}
                   </div>
                 )}
                 <div className="collection-pagination">
@@ -226,15 +302,27 @@ export default function Collection() {
 
       {sheet ? (
         <div aria-modal="true" className="collection-sheet-wrap" role="dialog">
-          <button aria-label="Close panel" className="collection-sheet-backdrop" onClick={() => setSheet(null)} type="button" />
+          <button
+            aria-label="Close panel"
+            className="collection-sheet-backdrop"
+            onClick={() => setSheet(null)}
+            type="button"
+          />
           <div className="collection-sheet">
             <span aria-hidden="true" className="collection-sheet-handle" />
             {sheet === 'sort' ? (
               <div className="collection-sort-sheet">
                 <h2>Sort By</h2>
                 {COLLECTION_SORT_OPTIONS.map((option) => (
-                  <button key={option.value} onClick={() => setSort(option.value)} type="button">
-                    {option.label}<span aria-hidden="true">{sort === option.value ? '✓' : ''}</span>
+                  <button
+                    key={option.value}
+                    onClick={() => setSort(option.value)}
+                    type="button"
+                  >
+                    {option.label}
+                    <span aria-hidden="true">
+                      {sort === option.value ? '✓' : ''}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -242,16 +330,22 @@ export default function Collection() {
               <div className="collection-filter-sheet">
                 <div className="collection-sheet-heading">
                   <h2>Filters</h2>
-                  <button onClick={clearFilters} type="button">Clear All</button>
+                  <button onClick={clearFilters} type="button">
+                    Clear All
+                  </button>
                 </div>
                 <div className="collection-sheet-scroll">
                   <FilterPanel
-                    filters={collection.products.filters}
+                    filters={collectionFilters}
                     onToggle={toggleFilter}
                     selectedKeys={activeFilterKeys}
                   />
                 </div>
-                <button className="button button-dark collection-sheet-apply" onClick={() => setSheet(null)} type="button">
+                <button
+                  className="button button-dark collection-sheet-apply"
+                  onClick={() => setSheet(null)}
+                  type="button"
+                >
                   Show {collection.products.nodes.length} Results
                 </button>
               </div>
@@ -272,15 +366,22 @@ export default function Collection() {
         </a>
       ) : null}
 
-      <Analytics.CollectionView data={{collection: {id: collection.id, handle: collection.handle}}} />
+      <Analytics.CollectionView
+        data={{collection: {id: collection.id, handle: collection.handle}}}
+      />
     </div>
   );
 }
 
 function GridDensityIcon({columns}: {columns: 3 | 4}) {
   return (
-    <span aria-hidden="true" className={`collection-density-icon collection-density-icon-${columns}`}>
-      {Array.from({length: columns * 2}, (_, index) => <span key={index} />)}
+    <span
+      aria-hidden="true"
+      className={`collection-density-icon collection-density-icon-${columns}`}
+    >
+      {Array.from({length: columns * 2}, (_, index) => (
+        <span key={index} />
+      ))}
     </span>
   );
 }
@@ -328,13 +429,20 @@ function SortDropdown({
   }
 
   function handleTriggerKeyDown(event: ReactKeyboardEvent<HTMLButtonElement>) {
-    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+    if (
+      event.key === 'ArrowDown' ||
+      event.key === 'Enter' ||
+      event.key === ' '
+    ) {
       event.preventDefault();
       setOpen(true);
     }
   }
 
-  function handleOptionKeyDown(event: ReactKeyboardEvent<HTMLButtonElement>, index: number) {
+  function handleOptionKeyDown(
+    event: ReactKeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       focusOption(index + 1);
@@ -358,7 +466,11 @@ function SortDropdown({
     <div
       className={`collection-sort-select${open ? ' is-open' : ''}`}
       onBlur={(event) => {
-        if (!event.relatedTarget || !event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+        if (
+          !event.relatedTarget ||
+          !event.currentTarget.contains(event.relatedTarget)
+        )
+          setOpen(false);
       }}
       ref={dropdownRef}
     >
@@ -376,7 +488,11 @@ function SortDropdown({
         <span aria-hidden="true" className="collection-sort-chevron" />
       </button>
       {open ? (
-        <div className="collection-sort-menu" id="collection-sort-menu" role="menu">
+        <div
+          className="collection-sort-menu"
+          id="collection-sort-menu"
+          role="menu"
+        >
           {COLLECTION_SORT_OPTIONS.map((option, index) => {
             const selected = option.value === value;
             return (
@@ -389,11 +505,14 @@ function SortDropdown({
                   onChange(option.value);
                 }}
                 onKeyDown={(event) => handleOptionKeyDown(event, index)}
-                ref={(element) => { optionRefs.current[index] = element; }}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
+                }}
                 role="menuitemradio"
                 type="button"
               >
-                <span>{option.label}</span><span aria-hidden="true">{selected ? '✓' : ''}</span>
+                <span>{option.label}</span>
+                <span aria-hidden="true">{selected ? '✓' : ''}</span>
               </button>
             );
           })}
@@ -421,31 +540,51 @@ function FilterPanel({
       {filters.map((filter) => {
         const open = openGroups.has(filter.id);
         const swatches = filter.presentation === 'SWATCH';
+        const values = getFilterValues(filter);
         return (
           <div className="collection-filter-group" key={filter.id}>
             <button
               aria-expanded={open}
               className="collection-filter-heading"
-              onClick={() => setOpenGroups((current) => {
-                const next = new Set(current);
-                if (next.has(filter.id)) next.delete(filter.id); else next.add(filter.id);
-                return next;
-              })}
+              onClick={() =>
+                setOpenGroups((current) => {
+                  const next = new Set(current);
+                  if (next.has(filter.id)) next.delete(filter.id);
+                  else next.add(filter.id);
+                  return next;
+                })
+              }
               type="button"
             >
-              <span>{filter.label}</span><span aria-hidden="true" className={open ? 'is-open' : ''}>+</span>
+              <span>{filter.label}</span>
+              <span aria-hidden="true" className={open ? 'is-open' : ''}>
+                +
+              </span>
             </button>
             {open ? (
-              <div className={swatches ? 'collection-filter-values swatches' : 'collection-filter-values'}>
-                {filter.values.map((value) => {
+              <div
+                className={
+                  swatches
+                    ? 'collection-filter-values swatches'
+                    : 'collection-filter-values'
+                }
+              >
+                {values.map((value) => {
                   const input = normalizeCollectionFilterInput(value.input);
-                  const selected = input ? selectedKeys.has(filterKey(input)) : false;
-                  const swatchImage = value.swatch?.image?.previewImage?.url;
+                  const selected = input
+                    ? selectedKeys.has(filterKey(input))
+                    : false;
+                  const swatch = 'swatch' in value ? value.swatch : null;
+                  const swatchImage = swatch?.image?.previewImage?.url;
                   if (!input) return null;
                   return (
                     <button
                       aria-pressed={selected}
-                      className={swatches ? 'collection-filter-swatch' : 'collection-filter-value'}
+                      className={
+                        swatches
+                          ? 'collection-filter-swatch'
+                          : 'collection-filter-value'
+                      }
                       key={value.id}
                       onClick={() => onToggle(input)}
                       type="button"
@@ -454,12 +593,24 @@ function FilterPanel({
                         <span
                           aria-label={value.label}
                           className="collection-filter-swatch-dot"
-                          style={{backgroundColor: value.swatch?.color || 'var(--color-beige)', backgroundImage: swatchImage ? `url(${swatchImage})` : undefined}}
+                          style={{
+                            backgroundColor:
+                              swatch?.color || 'var(--color-beige)',
+                            backgroundImage: swatchImage
+                              ? `url(${swatchImage})`
+                              : undefined,
+                          }}
                         />
                       ) : (
-                        <span aria-hidden="true" className="collection-checkbox">{selected ? '✓' : ''}</span>
+                        <span
+                          aria-hidden="true"
+                          className="collection-checkbox"
+                        >
+                          {selected ? '✓' : ''}
+                        </span>
                       )}
-                      <span>{value.label}</span><small>{value.count}</small>
+                      <span>{value.label}</span>
+                      <small>{value.count}</small>
                     </button>
                   );
                 })}
@@ -472,19 +623,42 @@ function FilterPanel({
   );
 }
 
-function getSelectedChips(filters: CollectionFilter[], selectedKeys: Set<string>) {
+function getSelectedChips(
+  filters: CollectionFilter[],
+  selectedKeys: Set<string>,
+) {
   return filters.flatMap((filter) =>
-    filter.values
-      .flatMap((value) => {
-        const input = normalizeCollectionFilterInput(value.input);
-        if (!input || !selectedKeys.has(filterKey(input))) return [];
-        return [{
+    getFilterValues(filter).flatMap((value) => {
+      const input = normalizeCollectionFilterInput(value.input);
+      if (!input || !selectedKeys.has(filterKey(input))) return [];
+      return [
+        {
           input,
           key: `${filter.id}:${value.id}`,
           label: `${filter.label}: ${value.label}`,
-        }];
-      }),
+        },
+      ];
+    }),
   );
+}
+
+function getFilterValues(filter: CollectionFilter) {
+  return filter.type === 'PRICE_RANGE' ? PRICE_FILTER_OPTIONS : filter.values;
+}
+
+function ensurePriceFilter(filters: CollectionFilter[]): CollectionFilter[] {
+  if (filters.some((filter) => filter.type === 'PRICE_RANGE')) return filters;
+
+  return [
+    ...filters,
+    {
+      id: 'price',
+      label: 'Price',
+      presentation: null,
+      type: 'PRICE_RANGE',
+      values: [],
+    },
+  ];
 }
 
 const COLLECTION_PRODUCT_FRAGMENT = `#graphql
@@ -542,6 +716,7 @@ const COLLECTION_QUERY = `#graphql
           id
           label
           presentation
+          type
           values {
             id
             label

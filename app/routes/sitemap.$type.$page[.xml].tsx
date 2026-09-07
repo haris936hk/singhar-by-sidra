@@ -10,11 +10,9 @@ export async function loader({
     storefront,
     request,
     params,
-    locales: ['EN-US', 'EN-CA', 'FR-CA'],
-    getLink: ({type, baseUrl, handle, locale}) => {
-      if (!locale) return `${baseUrl}/${type}/${handle}`;
-      return `${baseUrl}/${locale}/${type}/${handle}`;
-    },
+    // This storefront currently has one market and no locale-prefixed routes.
+    // Do not emit the skeleton's EN-US/EN-CA/FR-CA alternate URLs.
+    getLink: ({type, baseUrl, handle}) => `${baseUrl}/${type}/${handle}`,
   });
 
   response.headers.set('Cache-Control', `max-age=${60 * 60 * 24}`);
