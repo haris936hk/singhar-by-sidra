@@ -1361,12 +1361,6 @@
     font-size: 11px;
   }
 
-  @media (max-width: 767px) {
-    body:has(.pdp-sticky-cart.is-visible) .site-footer {
-      padding-bottom: 76px;
-    }
-  }
-
   .route-error,
   .page,
   .policy,
@@ -3188,15 +3182,5 @@
   }
   .pdp-recommendation-card h3 {
     font-size: 16px;
-  }
-}
-
-@media (min-width: 768px) {
-  .site-footer {
-    padding-inline: max(32px, calc((100vw - 1312px) / 2));
-    background: var(--color-ivory);
-  }
-  .site-footer-inner {
-    background: var(--color-ink);
   }
 }
