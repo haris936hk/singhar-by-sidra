@@ -148,16 +148,17 @@ function getGalleryImages(
 
 function ProductGallery({images, title}: {images: GalleryImage[]; title: string}) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [zoomed, setZoomed] = useState(false);
+  const [desktopZoomed, setDesktopZoomed] = useState(false);
+  const [mobileZoomed, setMobileZoomed] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState('50% 50%');
   const mobileGalleryRef = useRef<HTMLDivElement>(null);
   const activeImage = images[activeIndex] ?? images[0];
 
   useEffect(() => {
-    if (!zoomed) return;
+    if (!mobileZoomed) return;
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setZoomed(false);
+      if (event.key === 'Escape') setMobileZoomed(false);
     };
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', closeOnEscape);
@@ -165,11 +166,19 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
       document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', closeOnEscape);
     };
-  }, [zoomed]);
+  }, [mobileZoomed]);
+
+  const closeMobileZoom = () => setMobileZoomed(false);
 
   const selectImage = (index: number) => {
     setActiveIndex(index);
-    mobileGalleryRef.current?.children[index]?.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start'});
+    mobileGalleryRef.current?.children[index]?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    });
   };
 
   if (!activeImage) return <div className="pdp-gallery-empty">No product images available.</div>;
@@ -182,7 +191,7 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
         if (nextIndex !== activeIndex) setActiveIndex(nextIndex);
       }}>
         {images.map((image, index) => (
-          <button aria-label={`View product image ${index + 1}`} className="pdp-gallery-mobile-slide" key={image.id} onClick={() => setZoomed(true)} type="button">
+          <button aria-label={`View product image ${index + 1}`} className="pdp-gallery-mobile-slide" key={image.id} onClick={() => setMobileZoomed(true)} type="button">
             <Image alt={image.altText || title} data={image} sizes="100vw" />
             {image.isVideo ? <span className="pdp-video-badge" aria-hidden>▶</span> : null}
           </button>
@@ -198,11 +207,29 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
             </button>
           ))}
         </div>
-        <div aria-label="Product image zoom" className="pdp-gallery-main" onMouseEnter={() => setZoomed(true)} onMouseLeave={() => setZoomed(false)} onMouseMove={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect();
-          setZoomOrigin(`${((event.clientX - rect.left) / rect.width) * 100}% ${((event.clientY - rect.top) / rect.height) * 100}%`);
-        }}>
-          <Image alt={activeImage.altText || title} className={zoomed ? 'is-zoomed' : undefined} data={activeImage} sizes="(min-width: 768px) 520px, 100vw" style={{transformOrigin: zoomOrigin}} />
+        <div
+          aria-label="Zoom product image"
+          aria-pressed={desktopZoomed}
+          className="pdp-gallery-main"
+          onBlur={() => setDesktopZoomed(false)}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              setDesktopZoomed(false);
+            } else if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              setDesktopZoomed((current) => !current);
+            }
+          }}
+          onMouseEnter={() => setDesktopZoomed(true)}
+          onMouseLeave={() => setDesktopZoomed(false)}
+          onMouseMove={(event) => {
+            const rect = event.currentTarget.getBoundingClientRect();
+            setZoomOrigin(`${((event.clientX - rect.left) / rect.width) * 100}% ${((event.clientY - rect.top) / rect.height) * 100}%`);
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          <Image alt={activeImage.altText || title} className={desktopZoomed ? 'is-zoomed' : undefined} data={activeImage} sizes="(min-width: 768px) 520px, 100vw" style={{transformOrigin: zoomOrigin}} />
           {activeImage.isVideo ? <span className="pdp-video-badge" aria-hidden>▶</span> : null}
         </div>
       </div>
@@ -212,7 +239,7 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
           <button aria-label={`View product image ${index + 1}`} aria-selected={index === activeIndex} className={index === activeIndex ? 'is-active' : undefined} key={image.id} onClick={() => selectImage(index)} role="tab" type="button" />
         ))}
       </div>
-      {zoomed ? <button aria-label="Close enlarged product image" className="pdp-mobile-zoom" onClick={() => setZoomed(false)} type="button"><Image alt={activeImage.altText || title} data={activeImage} sizes="100vw" /></button> : null}
+      {mobileZoomed ? <button aria-label="Close enlarged product image" className="pdp-mobile-zoom" onClick={closeMobileZoom} type="button"><Image alt={activeImage.altText || title} data={activeImage} sizes="100vw" /></button> : null}
     </section>
   );
 }
