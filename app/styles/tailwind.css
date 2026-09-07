@@ -2841,8 +2841,8 @@
   .collection-breadcrumbs span:last-child {
     color: var(--color-ink);
   }
-  .collection-breadcrumbs a:hover {
-    color: var(--color-gold);
+  .collection-breadcrumbs a {
+    transition: color var(--motion-standard) var(--motion-ease);
   }
   .collection-hero {
     display: flex;
@@ -2909,11 +2909,18 @@
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-mobile-control:hover,
   .collection-mobile-control:focus-visible {
     border-color: var(--color-ink);
     background: var(--color-beige);
+  }
+  .collection-mobile-control:active {
+    transform: scale(0.98);
   }
   .collection-content {
     width: min(100% - 40px, 1312px);
@@ -2944,6 +2951,11 @@
     font-size: 11.5px;
     font-weight: 500;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
   .collection-chips button span {
     color: var(--color-brown);
@@ -2956,6 +2968,18 @@
     padding-inline: 4px;
     color: var(--color-brown);
     text-decoration: underline;
+  }
+  .collection-chips button:focus-visible {
+    border-color: var(--color-gold);
+    background: var(--color-beige);
+  }
+  .collection-chips .collection-clear:focus-visible {
+    border-color: transparent;
+    background: transparent;
+    color: var(--color-ink);
+  }
+  .collection-chips button:active {
+    transform: scale(0.98);
   }
   .collection-product-grid {
     display: grid;
@@ -2987,9 +3011,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.25s ease;
+    transition: transform var(--motion-standard) var(--motion-ease-in-out);
   }
-  .collection-product-card:hover .collection-product-card-media img {
+  .collection-product-card-media:focus-visible img {
     transform: scale(1.02);
   }
   .collection-image-placeholder {
@@ -3045,9 +3069,7 @@
     font-size: 14px;
     line-height: 1.3;
     text-wrap: balance;
-  }
-  .collection-product-card-title:hover {
-    color: var(--color-brown);
+    transition: color var(--motion-standard) var(--motion-ease);
   }
   .collection-product-card-price {
     display: flex;
@@ -3070,6 +3092,7 @@
     margin-bottom: 16px;
     color: var(--color-brown);
     font-size: 12px;
+    transition: color var(--motion-standard) var(--motion-ease);
   }
   .collection-pagination {
     display: flex;
@@ -3089,15 +3112,30 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     transition:
-      background-color 0.18s ease,
-      border-color 0.18s ease,
-      color 0.18s ease;
+      background-color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-load-more:hover,
-  .collection-load-more:focus-visible {
+  .collection-load-more:not([aria-disabled='true']):not(
+      [aria-busy='true']
+    ):focus-visible {
     border-color: var(--color-ink);
     background: var(--color-ink);
     color: var(--color-ivory);
+  }
+  .collection-load-more:not([aria-disabled='true']):not(
+      [aria-busy='true']
+    ):active {
+    transform: scale(0.98);
+  }
+  .collection-load-more[aria-disabled='true'],
+  .collection-load-more[aria-busy='true'],
+  .collection-pagination-previous[aria-disabled='true'],
+  .collection-pagination-previous[aria-busy='true'] {
+    cursor: wait;
+    opacity: 0.55;
+    pointer-events: none;
   }
   .collection-pagination > span {
     color: var(--color-brown);
@@ -3126,6 +3164,13 @@
     font-size: 12px;
     text-decoration: underline;
     cursor: pointer;
+    transition:
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
+  }
+  .collection-empty button:active,
+  .collection-sheet-heading button:active {
+    transform: scale(0.98);
   }
   .collection-filter-groups {
     display: flex;
@@ -3146,11 +3191,16 @@
     font-weight: 500;
     text-align: left;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease);
   }
   .collection-filter-heading > span:last-child {
     color: var(--color-brown);
     font-size: 17px;
-    transition: transform 0.18s ease;
+    transition:
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-standard) var(--motion-ease-in-out);
   }
   .collection-filter-heading > span:last-child.is-open {
     transform: rotate(45deg);
@@ -3160,6 +3210,9 @@
     flex-direction: column;
     gap: 2px;
     padding: 0 0 14px;
+    transition: none;
+    animation: collection-filter-values-in var(--motion-fast)
+      var(--motion-ease-out) both;
   }
   .collection-filter-value,
   .collection-filter-swatch {
@@ -3173,10 +3226,14 @@
     font-size: 13px;
     text-align: left;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-filter-value:hover,
-  .collection-filter-swatch:hover {
-    color: var(--color-brown);
+  .collection-filter-value:active,
+  .collection-filter-swatch:active {
+    transform: scale(0.98);
   }
   .collection-filter-value small,
   .collection-filter-swatch small {
@@ -3193,6 +3250,10 @@
     border: 1px solid rgb(26 26 26 / 0.3);
     border-radius: 3px;
     font-size: 10px;
+    transition:
+      background-color var(--motion-fast) var(--motion-ease),
+      border-color var(--motion-fast) var(--motion-ease),
+      color var(--motion-fast) var(--motion-ease);
   }
   .collection-filter-value[aria-pressed='true'] .collection-checkbox {
     border-color: var(--color-ink);
@@ -3216,6 +3277,12 @@
     border-radius: 50%;
     background-size: cover;
     box-shadow: 0 0 0 1px rgb(0 0 0 / 0.15);
+    transition: transform var(--motion-fast) var(--motion-ease-in-out);
+  }
+  .collection-sheet-backdrop {
+    opacity: 0;
+    animation: collection-sheet-backdrop-in var(--motion-panel)
+      var(--motion-ease-out) both;
   }
   .collection-filter-swatch[aria-pressed='true'] > span:first-child {
     box-shadow:
@@ -3251,7 +3318,8 @@
     overscroll-behavior: contain;
     border-radius: 16px 16px 0 0;
     background: var(--color-ivory);
-    animation: collection-sheet-up 0.22s ease;
+    animation: collection-sheet-up var(--motion-panel) var(--motion-ease-out)
+      both;
   }
   .collection-sheet-handle {
     display: block;
@@ -3284,10 +3352,16 @@
     font-size: 13.5px;
     text-align: left;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-sort-sheet button:hover,
   .collection-sort-sheet button:focus-visible {
     background: var(--color-beige);
+  }
+  .collection-sort-sheet button:active {
+    transform: scale(0.98);
   }
   .collection-sort-sheet button span {
     color: var(--color-gold);
@@ -3399,6 +3473,24 @@
       transform: translateY(0);
     }
   }
+  @keyframes collection-sheet-backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes collection-filter-values-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @media (min-width: 768px) {
@@ -3453,13 +3545,16 @@
     color: var(--color-brown);
     cursor: pointer;
     transition:
-      background-color 0.18s ease,
-      border-color 0.18s ease,
-      color 0.18s ease;
+      background-color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-density button:hover:not(.is-active) {
-    border-color: var(--color-ink);
-    color: var(--color-ink);
+  .collection-density button:active {
+    transform: scale(0.97);
+  }
+  .collection-density button:focus-visible {
+    border-color: var(--color-gold);
   }
   .collection-density-icon {
     display: grid;
@@ -3510,10 +3605,11 @@
     white-space: nowrap;
     cursor: pointer;
     transition:
-      border-color 0.18s ease,
-      box-shadow 0.18s ease;
+      background-color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-sort-trigger:hover,
   .collection-sort-select.is-open .collection-sort-trigger {
     border-color: var(--color-ink);
   }
@@ -3529,10 +3625,9 @@
     border-bottom: 1px solid var(--color-brown);
     transform: translateY(-25%) rotate(45deg);
     transition:
-      border-color 0.18s ease,
-      transform 0.18s ease;
+      border-color var(--motion-fast) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-in-out);
   }
-  .collection-sort-trigger:hover .collection-sort-chevron,
   .collection-sort-select.is-open .collection-sort-chevron {
     border-color: var(--color-ink);
   }
@@ -3555,7 +3650,8 @@
     padding: 6px;
     box-shadow: 0 16px 30px -14px rgb(0 0 0 / 0.24);
     transform-origin: top right;
-    animation: collection-sort-menu-in 0.14s ease;
+    animation: collection-sort-menu-in var(--motion-fast) var(--motion-ease-out)
+      both;
   }
   .collection-sort-menu button {
     display: flex;
@@ -3572,8 +3668,11 @@
     text-align: left;
     white-space: nowrap;
     cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform var(--motion-fast) var(--motion-ease-out);
   }
-  .collection-sort-menu button:hover,
   .collection-sort-menu button:focus-visible {
     background: var(--color-beige);
     outline: none;
@@ -3590,6 +3689,9 @@
   }
   .collection-sort-menu button:focus-visible {
     box-shadow: inset 0 0 0 1px var(--color-gold);
+  }
+  .collection-sort-menu button:active {
+    transform: scale(0.98);
   }
   @keyframes collection-sort-menu-in {
     from {
@@ -3633,6 +3735,52 @@
     bottom: 32px;
     width: 58px;
     height: 58px;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .collection-breadcrumbs a:hover,
+  .collection-product-card-title:hover,
+  .collection-pagination-previous:hover,
+  .collection-empty button:hover,
+  .collection-sheet-heading button:hover {
+    color: var(--color-gold);
+  }
+  .collection-mobile-control:hover,
+  .collection-chips button:hover,
+  .collection-sort-trigger:hover,
+  .collection-sort-sheet button:hover,
+  .collection-sort-menu button:hover {
+    border-color: var(--color-ink);
+    background-color: var(--color-beige);
+    color: var(--color-brown);
+  }
+  .collection-filter-heading:hover,
+  .collection-filter-value:hover,
+  .collection-filter-swatch:hover {
+    color: var(--color-brown);
+  }
+  .collection-chips .collection-clear:hover,
+  .collection-empty button:hover,
+  .collection-sheet-heading button:hover {
+    border-color: transparent;
+    background-color: transparent;
+  }
+  .collection-load-more:not([aria-disabled='true']):not(
+      [aria-busy='true']
+    ):hover {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+  .collection-product-card:hover .collection-product-card-media img {
+    transform: scale(1.02);
+  }
+  .collection-density button:hover:not(.is-active) {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+  .collection-sort-trigger:hover .collection-sort-chevron {
+    border-color: var(--color-ink);
   }
 }
 
@@ -3701,10 +3849,43 @@
   .overlay {
     transform: none;
   }
+  .collection-breadcrumbs a,
+  .collection-mobile-control,
+  .collection-density button,
+  .collection-sort-trigger,
+  .collection-sort-chevron,
+  .collection-sort-menu,
+  .collection-sort-menu button,
   .collection-product-card-media img,
+  .collection-product-card-title,
+  .collection-chips button,
+  .collection-pagination-previous,
+  .collection-load-more,
+  .collection-empty button,
+  .collection-filter-heading,
+  .collection-filter-heading > span:last-child,
+  .collection-filter-values,
+  .collection-filter-value,
+  .collection-filter-swatch,
+  .collection-filter-swatch-dot,
+  .collection-checkbox,
+  .collection-sort-sheet button,
+  .collection-sheet-heading button,
+  .collection-sheet-backdrop,
   .collection-sheet {
     transition: none;
     animation: none;
+  }
+  .collection-product-card-media img,
+  .collection-filter-heading > span:last-child,
+  .collection-filter-swatch-dot,
+  .collection-sort-chevron,
+  .collection-sort-menu,
+  .collection-sheet {
+    transform: none;
+  }
+  .collection-sheet-backdrop {
+    opacity: 1;
   }
 }
 
