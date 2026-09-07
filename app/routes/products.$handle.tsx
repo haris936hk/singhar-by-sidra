@@ -228,9 +228,8 @@ function ProductBuyBox({descriptionHtml, product, productOptions, selectedVarian
   const [showStickyCart, setShowStickyCart] = useState(false);
   const purchaseAreaRef = useRef<HTMLDivElement>(null);
   const accordionSections = useMemo(() => [
-    {title: 'Fabric Details', body: 'Please refer to the product description for the fabric, finish, and construction details of this piece.'},
-    {title: 'Care Instructions', body: 'Follow the care instructions supplied with your order. Store embellished pieces away from direct sunlight and moisture.'},
     {title: 'Description', body: descriptionHtml, html: true},
+    {title: 'Care Instructions', body: 'Follow the care instructions supplied with your order. Store embellished pieces away from direct sunlight and moisture.'},
   ], [descriptionHtml]);
   const lines = selectedVariant ? [{merchandiseId: selectedVariant.id, quantity: 1, selectedVariant}] : [];
 

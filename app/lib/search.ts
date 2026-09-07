@@ -20,6 +20,29 @@ export type PredictiveSearchReturn = ResultWithItems<
 >;
 
 /**
+ * Returns the empty state for a regular search result without making a
+ * Storefront API request.
+ */
+export function getEmptyRegularSearchResult(): RegularSearchReturn['result'] {
+  return {
+    total: 0,
+    items: {
+      articles: {nodes: []},
+      pages: {nodes: []},
+      products: {
+        nodes: [],
+        pageInfo: {
+          hasNextPage: false,
+          hasPreviousPage: false,
+          startCursor: null,
+          endCursor: null,
+        },
+      },
+    },
+  };
+}
+
+/**
  * Returns the empty state of a predictive search result to reset the search state.
  */
 export function getEmptyPredictiveSearchResult(): PredictiveSearchReturn['result'] {
@@ -68,7 +91,7 @@ export function urlWithTrackingParams({
 }: UrlWithTrackingParams) {
   let search = new URLSearchParams({
     ...extraParams,
-    q: encodeURIComponent(term),
+    q: term,
   }).toString();
 
   if (trackingParams) {

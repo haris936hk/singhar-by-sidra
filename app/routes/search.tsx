@@ -1,20 +1,36 @@
-import {useLoaderData} from 'react-router';
+import {
+  Link,
+  useLoaderData,
+  useNavigation,
+  useRouteLoaderData,
+} from 'react-router';
 import type {Route} from './+types/search';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {SearchForm} from '~/components/SearchForm';
 import {SearchResults} from '~/components/SearchResults';
 import {
+  getEmptyRegularSearchResult,
   type RegularSearchReturn,
   type PredictiveSearchReturn,
   getEmptyPredictiveSearchResult,
 } from '~/lib/search';
+import type {RootLoader} from '~/root';
+import {siteConfig} from '~/lib/site-config';
 import type {
   RegularSearchQuery,
   PredictiveSearchQuery,
 } from 'storefrontapi.generated';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Search`}];
+export const meta: Route.MetaFunction = ({data}) => {
+  const term = data?.term?.trim();
+  return [
+    {
+      title: term
+        ? `Search results for “${term}” | ${siteConfig.brand.english}`
+        : `Search | ${siteConfig.brand.english}`,
+    },
+    {name: 'description', content: siteConfig.seo.description},
+  ];
 };
 
 export async function loader({request, context}: Route.LoaderArgs) {
@@ -38,7 +54,12 @@ export async function loader({request, context}: Route.LoaderArgs) {
         result: getEmptyPredictiveSearchResult(),
       };
     }
-    throw error;
+    return {
+      type: 'regular' as const,
+      term,
+      error: 'Search is temporarily unavailable. Please try again in a moment.',
+      result: getEmptyRegularSearchResult(),
+    };
   }
 }
 
@@ -47,42 +68,141 @@ export async function loader({request, context}: Route.LoaderArgs) {
  */
 export default function SearchPage() {
   const {type, term, result, error} = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+  const rootData = useRouteLoaderData<RootLoader>('root');
   if (type === 'predictive') return null;
 
+  const menuCollectionCards = (rootData?.header.menu?.items ?? [])
+    .flatMap((item) => {
+      const candidates = [item, ...(item.items ?? [])];
+      return candidates.flatMap((candidate) => {
+        const resource = candidate.resource;
+        return resource && 'image' in resource && resource.image
+          ? [{...resource, image: resource.image}]
+          : [];
+      });
+    })
+    .slice(0, 4);
+  const collectionCards = menuCollectionCards.length
+    ? menuCollectionCards
+    : siteConfig.homepage.featuredCollections.map((collection) => ({
+        ...collection,
+        id: collection.handle,
+      }));
+  const isLoading = navigation.state !== 'idle';
+  const resultCount = result?.total ?? 0;
+
   return (
-    <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
-        {({inputRef}) => (
-          <>
-            <input
-              defaultValue={term}
-              name="q"
-              placeholder="Search…"
-              ref={inputRef}
-              type="search"
-            />
-            &nbsp;
-            <button type="submit">Search</button>
-          </>
-        )}
-      </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {!term || !result?.total ? (
-        <SearchResults.Empty />
-      ) : (
-        <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
-            <div>
-              <SearchResults.Products products={products} term={term} />
-              <SearchResults.Pages pages={pages} term={term} />
-              <SearchResults.Articles articles={articles} term={term} />
+    <div aria-busy={isLoading} className="search-page">
+      <div className="search-page-inner">
+        <nav aria-label="Breadcrumb" className="search-breadcrumbs">
+          <Link to="/">Home</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Search</span>
+        </nav>
+
+        <section aria-labelledby="search-page-heading" className="search-page-intro">
+          <span className="search-page-eyebrow">The Singhar edit</span>
+          <h1 id="search-page-heading">
+            {term ? (
+              <>
+                Search results for <q>{term}</q>
+              </>
+            ) : (
+              'What are you looking for?'
+            )}
+          </h1>
+          <p>
+            {term
+              ? 'Discover handcrafted pieces selected for your next occasion.'
+              : 'Find timeless eastern wear, from everyday pret to occasion-ready detail.'}
+          </p>
+          <SearchForm className="search-page-form">
+            {({inputRef}) => (
+              <div className="search-page-form-field">
+                <label className="sr-only" htmlFor="search-page-input">
+                  Search the store
+                </label>
+                <input
+                  autoComplete="off"
+                  defaultValue={term}
+                  id="search-page-input"
+                  name="q"
+                  placeholder="Search the collection..."
+                  ref={inputRef}
+                  type="search"
+                />
+                <button className="search-page-submit" type="submit">
+                  <SearchIcon />
+                  <span>Search</span>
+                </button>
+              </div>
+            )}
+          </SearchForm>
+          {term ? (
+            <div aria-live="polite" className="search-page-summary">
+              <span>
+                {resultCount} {resultCount === 1 ? 'result' : 'results'}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>Relevance ordered</span>
             </div>
-          )}
-        </SearchResults>
-      )}
+          ) : null}
+        </section>
+
+        {isLoading ? <SearchPageLoading /> : null}
+
+        {!isLoading && error ? (
+          <div className="search-page-error" role="alert">
+            <strong>Search is temporarily unavailable</strong>
+            <span>Please try again in a moment.</span>
+          </div>
+        ) : null}
+
+        {!isLoading && !error && !term ? (
+          <SearchResults.Discovery collectionCards={collectionCards} />
+        ) : null}
+
+        {!isLoading && !error && term && !resultCount ? (
+          <SearchResults.Empty term={term} />
+        ) : null}
+
+        {!isLoading && resultCount ? (
+          <SearchResults result={result} term={term}>
+            {({articles, pages, products, term}) => (
+              <div className="search-page-results">
+                <SearchResults.Products products={products} term={term} />
+                <div className="search-page-secondary-results">
+                  <SearchResults.Pages pages={pages} term={term} />
+                  <SearchResults.Articles articles={articles} term={term} />
+                </div>
+              </div>
+            )}
+          </SearchResults>
+        ) : null}
+      </div>
       <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
     </div>
+  );
+}
+
+function SearchPageLoading() {
+  return (
+    <div aria-live="polite" className="search-page-loading">
+      <span className="sr-only">Loading search results</span>
+      {Array.from({length: 8}, (_, index) => (
+        <div key={index} />
+      ))}
+    </div>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <circle cx="10.8" cy="10.8" r="6.2" />
+      <path d="m15.5 15.5 4.3 4.3" />
+    </svg>
   );
 }
 
@@ -97,14 +217,22 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     id
     publishedAt
     title
+    tags
     trackingParameters
     vendor
+    availableForSale
+    featuredImage { id altText url width height }
+    priceRange {
+      minVariantPrice { amount currencyCode }
+      maxVariantPrice { amount currencyCode }
+    }
     selectedOrFirstAvailableVariant(
       selectedOptions: []
       ignoreUnknownOptions: true
       caseInsensitiveMatch: true
     ) {
       id
+      availableForSale
       image {
         url
         altText
@@ -147,6 +275,7 @@ const SEARCH_ARTICLE_FRAGMENT = `#graphql
     handle
     id
     title
+    blog { handle }
     trackingParameters
   }
 ` as const;
@@ -232,7 +361,11 @@ async function regularSearch({
   const {storefront} = context;
   const url = new URL(request.url);
   const variables = getPaginationVariables(request, {pageBy: 8});
-  const term = String(url.searchParams.get('q') || '');
+  const term = String(url.searchParams.get('q') || '').trim();
+
+  if (!term) {
+    return {type: 'regular', term, result: getEmptyRegularSearchResult()};
+  }
 
   // Search articles, pages, and products for the `q` term
   const {

@@ -1,5 +1,6 @@
 import {Suspense, useId} from 'react';
-import {Await, Form, Link} from 'react-router';
+import {useOptimisticCart} from '@shopify/hydrogen';
+import {Await, Form, Link, useLocation} from 'react-router';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -35,6 +36,8 @@ export function PageLayout({
   publicStoreDomain,
   currentYear,
 }: PageLayoutProps) {
+  const location = useLocation();
+
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -42,12 +45,14 @@ export function PageLayout({
       <AccountAside isLoggedIn={isLoggedIn} />
       <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
       <Header
+        cartPage={location.pathname === '/cart'}
         header={header}
         cart={cart}
         publicStoreDomain={publicStoreDomain}
       />
       <main id="main-content">{children}</main>
       <Footer
+        cartPage={location.pathname === '/cart'}
         footer={footer}
         header={header}
         publicStoreDomain={publicStoreDomain}
@@ -59,7 +64,16 @@ export function PageLayout({
 
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   return (
-    <Aside type="cart" heading="Your Bag">
+    <Aside
+      type="cart"
+      heading={
+        <Suspense fallback="Your Bag">
+          <Await resolve={cart} errorElement="Your Bag">
+            {(resolved) => <CartAsideHeading cart={resolved} />}
+          </Await>
+        </Suspense>
+      }
+    >
       <Suspense fallback={<CartSkeleton />}>
         <Await resolve={cart} errorElement={<CartError />}>
           {(resolved) => <CartMain cart={resolved} layout="aside" />}
@@ -67,6 +81,12 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
       </Suspense>
     </Aside>
   );
+}
+
+function CartAsideHeading({cart}: {cart: CartApiQueryFragment | null}) {
+  const optimisticCart = useOptimisticCart(cart);
+
+  return <>Your Bag ({optimisticCart?.totalQuantity ?? 0})</>;
 }
 
 function CartSkeleton() {

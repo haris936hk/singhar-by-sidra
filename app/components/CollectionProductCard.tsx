@@ -4,13 +4,16 @@ import type {CollectionProductFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/lib/variants';
 
 export function CollectionProductCard({
+  linkTo,
   loading,
   product,
 }: {
+  linkTo?: string;
   loading?: 'eager' | 'lazy';
   product: CollectionProductFragment;
 }) {
   const variantUrl = useVariantUrl(product.handle);
+  const productUrl = linkTo ?? variantUrl;
   const selectedVariant = product.selectedOrFirstAvailableVariant;
   const badge = getBadge(product.tags);
   const compareAtPrice = selectedVariant?.compareAtPrice ?? null;
@@ -29,7 +32,7 @@ export function CollectionProductCard({
           aria-label={`View ${product.title}`}
           className="collection-product-card-media"
           prefetch="intent"
-          to={variantUrl}
+          to={productUrl}
         >
           {product.featuredImage ? (
             <Image
@@ -52,7 +55,7 @@ export function CollectionProductCard({
       </div>
 
       <div className="collection-product-card-details">
-        <Link className="collection-product-card-title" prefetch="intent" to={variantUrl}>
+        <Link className="collection-product-card-title" prefetch="intent" to={productUrl}>
           {product.title}
         </Link>
         <div className="collection-product-card-price">

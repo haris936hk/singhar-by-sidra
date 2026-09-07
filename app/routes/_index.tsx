@@ -119,10 +119,20 @@ function CarouselContent({products, title, viewAll, badge, eager}: {products: Ho
     rail.addEventListener('scroll', update, {passive: true});
     return () => {observer.disconnect(); rail.removeEventListener('scroll', update);};
   }, [products.length]);
-  const scroll = (direction: number) => railRef.current?.scrollBy({left: direction * Math.min(616, railRef.current.clientWidth), behavior: 'smooth'});
+  const scroll = (direction: number) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth';
+    rail.scrollBy({
+      left: direction * Math.min(616, rail.clientWidth),
+      behavior,
+    });
+  };
   return (
     <>
-      <div className="section-heading"><h2>{title}</h2><div><Link prefetch="intent" to={viewAll}>View All →</Link><span className="carousel-buttons"><button aria-label={`Previous ${title}`} disabled={bounds.start} onClick={() => scroll(-1)}><ArrowIcon direction="left" /></button><button aria-label={`Next ${title}`} disabled={bounds.end} onClick={() => scroll(1)}><ArrowIcon direction="right" /></button></span></div></div>
+      <div className="section-heading"><h2>{title}</h2><div><Link prefetch="intent" to={viewAll}>View All <span aria-hidden className="link-arrow">→</span></Link><span className="carousel-buttons"><button aria-label={`Previous ${title}`} disabled={bounds.start} onClick={() => scroll(-1)}><ArrowIcon direction="left" /></button><button aria-label={`Next ${title}`} disabled={bounds.end} onClick={() => scroll(1)}><ArrowIcon direction="right" /></button></span></div></div>
       <div className="product-rail hide-scrollbar" ref={railRef}>{products.map((product, index) => <HomeProductCard badge={badge} eager={eager && index < 2} key={product.id} product={product} />)}</div>
     </>
   );
@@ -195,7 +205,7 @@ function CarouselSkeleton({title}: {title: string}) {
 }
 
 function ArrowIcon({direction}: {direction: 'left' | 'right'}) {
-  return <svg aria-hidden viewBox="0 0 16 16"><path d={direction === 'right' ? 'm5.5 3 5 5-5 5' : 'm10.5 3-5 5 5 5'} /></svg>;
+  return <svg aria-hidden className={`arrow-icon arrow-icon-${direction}`} viewBox="0 0 16 16"><path d={direction === 'right' ? 'm5.5 3 5 5-5 5' : 'm10.5 3-5 5 5 5'} /></svg>;
 }
 
 const HOMEPAGE_PRODUCT_FRAGMENT = `#graphql

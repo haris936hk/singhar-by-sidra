@@ -1,9 +1,13 @@
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartLayout, LineItemChildrenMap} from '~/components/CartMain';
-import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
+import {
+  CartForm,
+  Image,
+  Money,
+  type OptimisticCartLine,
+} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
-import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import type {
   CartApiQueryFragment,
@@ -33,24 +37,27 @@ export function CartLineItem({
   const {close} = useAside();
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
+  const lineCost = line.cost;
 
   return (
     <li key={id} className="cart-line">
       <div className="cart-line-inner">
-        {image && (
-          <div className="cart-line-image">
+        <div className="cart-line-image">
+          {image ? (
             <Image
               alt={image.altText || product.title || title}
               aspectRatio="4/5"
               data={image}
-              height={110}
+              height={138}
               loading="lazy"
-              width={88}
+              width={110}
             />
-          </div>
-        )}
+          ) : (
+            <span aria-hidden="true" className="cart-line-image-placeholder" />
+          )}
+        </div>
 
-        <div>
+        <div className="cart-line-content">
           <Link
             prefetch="intent"
             to={lineItemUrl}
@@ -64,7 +71,6 @@ export function CartLineItem({
               <strong>{product.title}</strong>
             </p>
           </Link>
-          <ProductPrice price={line?.cost?.totalAmount} />
           <ul>
             {selectedOptions.map((option) => (
               <li key={option.name}>
@@ -74,7 +80,32 @@ export function CartLineItem({
               </li>
             ))}
           </ul>
-          <CartLineQuantity line={line} />
+          {layout === 'page' ? (
+            <>
+              {line.attributes?.map((attribute) =>
+                attribute.value ? (
+                  <span
+                    className="cart-line-note"
+                    key={`${attribute.key}-${attribute.value}`}
+                  >
+                    {attribute.value}
+                  </span>
+                ) : null,
+              )}
+              <span aria-busy={!lineCost} className="cart-line-unit-price">
+                Unit price:{' '}
+                {lineCost?.amountPerQuantity ? (
+                  <Money
+                    data={lineCost.amountPerQuantity}
+                    withoutTrailingZeros
+                  />
+                ) : (
+                  <span>Updating…</span>
+                )}
+              </span>
+            </>
+          ) : null}
+          <CartLineQuantity layout={layout} line={line} />
         </div>
       </div>
 
@@ -104,7 +135,13 @@ export function CartLineItem({
  * These controls are disabled when the line item is new, and the server
  * hasn't yet responded that it was successfully added to the cart.
  */
-function CartLineQuantity({line}: {line: CartLine}) {
+function CartLineQuantity({
+  layout,
+  line,
+}: {
+  layout: CartLayout;
+  line: CartLine;
+}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {id: lineId, quantity, isOptimistic} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
@@ -138,6 +175,15 @@ function CartLineQuantity({line}: {line: CartLine}) {
           </button>
         </CartLineUpdateButton>
       </div>
+      {layout === 'aside' || layout === 'page' ? (
+        <span aria-busy={!line.cost} className="cart-line-total">
+          {line.cost?.totalAmount ? (
+            <Money data={line.cost.totalAmount} withoutTrailingZeros />
+          ) : (
+            'Updating…'
+          )}
+        </span>
+      ) : null}
       <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
     </div>
   );

@@ -171,6 +171,99 @@ export const CART_QUERY_FRAGMENT = `#graphql
   }
 ` as const;
 
+export const CART_MUTATE_FRAGMENT = `#graphql
+  fragment MutationMoney on MoneyV2 {
+    currencyCode
+    amount
+  }
+  fragment MutationCartLine on CartLine {
+    id
+    quantity
+    attributes {
+      key
+      value
+    }
+    cost {
+      totalAmount { ...MutationMoney }
+      amountPerQuantity { ...MutationMoney }
+      compareAtAmountPerQuantity { ...MutationMoney }
+    }
+    merchandise {
+      ... on ProductVariant {
+        id
+        availableForSale
+        compareAtPrice { ...MutationMoney }
+        price { ...MutationMoney }
+        requiresShipping
+        title
+        image { id url altText width height }
+        product { handle title id vendor }
+        selectedOptions { name value }
+      }
+    }
+    parentRelationship { parent { id } }
+  }
+  fragment MutationCartLineComponent on ComponentizableCartLine {
+    id
+    quantity
+    attributes {
+      key
+      value
+    }
+    cost {
+      totalAmount { ...MutationMoney }
+      amountPerQuantity { ...MutationMoney }
+      compareAtAmountPerQuantity { ...MutationMoney }
+    }
+    merchandise {
+      ... on ProductVariant {
+        id
+        availableForSale
+        compareAtPrice { ...MutationMoney }
+        price { ...MutationMoney }
+        requiresShipping
+        title
+        image { id url altText width height }
+        product { handle title id vendor }
+        selectedOptions { name value }
+      }
+    }
+    lineComponents { ...MutationCartLine }
+  }
+  fragment CartApiMutation on Cart {
+    updatedAt
+    id
+    appliedGiftCards {
+      id
+      lastCharacters
+      amountUsed { ...MutationMoney }
+    }
+    checkoutUrl
+    totalQuantity
+    buyerIdentity {
+      countryCode
+      customer { id email firstName lastName displayName }
+      email
+      phone
+    }
+    lines(first: 100) {
+      nodes {
+        ...MutationCartLine
+        ...MutationCartLineComponent
+      }
+    }
+    cost {
+      subtotalAmount { ...MutationMoney }
+      totalAmount { ...MutationMoney }
+      totalDutyAmount { ...MutationMoney }
+      totalTaxAmount { ...MutationMoney }
+    }
+    note
+    attributes { key value }
+    discountCodes { code applicable }
+  }
+` as const;
+
 const MENU_FRAGMENT = `#graphql
   fragment MenuItem on MenuItem {
     id
