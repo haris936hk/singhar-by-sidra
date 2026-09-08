@@ -1,11 +1,16 @@
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
-import type {CartLayout, LineItemChildrenMap} from '~/components/CartMain';
+import type {
+  CartLayout,
+  CartLineFeedback,
+  LineItemChildrenMap,
+} from '~/components/CartMain';
 import {
   CartForm,
   Image,
   Money,
   type OptimisticCartLine,
 } from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
 import {useAside} from './Aside';
@@ -26,10 +31,12 @@ export function CartLineItem({
   layout,
   line,
   childrenMap,
+  feedback,
 }: {
   layout: CartLayout;
   line: CartLine;
   childrenMap: LineItemChildrenMap;
+  feedback?: CartLineFeedback;
 }) {
   const {id, merchandise} = line;
   const {product, title, image, selectedOptions} = merchandise;
@@ -38,9 +45,27 @@ export function CartLineItem({
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
   const lineCost = line.cost;
+  const isOptimistic = Boolean(line.isOptimistic);
+  const feedbackId = feedback?.id;
+  const feedbackType = feedback?.type;
+  const [feedbackActive, setFeedbackActive] = useState(Boolean(feedbackId));
+
+  useEffect(() => {
+    if (!feedbackId || !feedbackType) {
+      setFeedbackActive(false);
+      return;
+    }
+
+    setFeedbackActive(true);
+    const timeout = window.setTimeout(() => setFeedbackActive(false), 220);
+    return () => window.clearTimeout(timeout);
+  }, [feedbackId, feedbackType]);
 
   return (
-    <li key={id} className="cart-line">
+    <li
+      key={id}
+      className={`cart-line${feedbackActive ? ` cart-line-feedback-${feedbackType}` : ''}`}
+    >
       <div className="cart-line-inner">
         <div className="cart-line-image">
           {image ? (
@@ -92,9 +117,12 @@ export function CartLineItem({
                   </span>
                 ) : null,
               )}
-              <span aria-busy={!lineCost} className="cart-line-unit-price">
+              <span
+                aria-busy={isOptimistic || !lineCost}
+                className="cart-line-unit-price"
+              >
                 Unit price:{' '}
-                {lineCost?.amountPerQuantity ? (
+                {!isOptimistic && lineCost?.amountPerQuantity ? (
                   <Money
                     data={lineCost.amountPerQuantity}
                     withoutTrailingZeros
@@ -176,8 +204,11 @@ function CartLineQuantity({
         </CartLineUpdateButton>
       </div>
       {layout === 'aside' || layout === 'page' ? (
-        <span aria-busy={!line.cost} className="cart-line-total">
-          {line.cost?.totalAmount ? (
+        <span
+          aria-busy={isOptimistic || !line.cost}
+          className="cart-line-total"
+        >
+          {!isOptimistic && line.cost?.totalAmount ? (
             <Money data={line.cost.totalAmount} withoutTrailingZeros />
           ) : (
             'Updating…'

@@ -8,12 +8,46 @@ import {
   useRef,
   useState,
 } from 'react';
+import type {OptimisticCartLineInput} from '@shopify/hydrogen';
+import type {CartApiQueryFragment} from 'storefrontapi.generated';
 
 export type AsideType = 'search' | 'cart' | 'mobile' | 'account' | 'closed';
+export type CartAddFeedbackLine = {
+  merchandiseId: OptimisticCartLineInput['merchandiseId'];
+  quantity: number;
+};
+export type CartAddFeedback = {
+  id: number;
+  lines: CartAddFeedbackLine[];
+  cart: CartApiQueryFragment;
+};
+export type ConfirmedCartSnapshot = {
+  id: number;
+  cart: CartApiQueryFragment;
+};
+
+export function getCartWithConfirmedSnapshot(
+  cart: CartApiQueryFragment | null,
+  snapshot: ConfirmedCartSnapshot | null,
+) {
+  if (!snapshot) return cart;
+  if (!cart) return snapshot.cart;
+
+  const snapshotUpdatedAt = Date.parse(snapshot.cart.updatedAt);
+  const cartUpdatedAt = Date.parse(cart.updatedAt);
+  if (snapshotUpdatedAt !== cartUpdatedAt) {
+    return snapshotUpdatedAt > cartUpdatedAt ? snapshot.cart : cart;
+  }
+
+  return cart.id === snapshot.cart.id ? cart : snapshot.cart;
+}
 type AsideContextValue = {
   type: AsideType;
   open: (mode: Exclude<AsideType, 'closed'>) => void;
   close: () => void;
+  cartAddFeedback: CartAddFeedback | null;
+  confirmedCart: ConfirmedCartSnapshot | null;
+  notifyCartAdd: (feedback: Omit<CartAddFeedback, 'id'>) => void;
 };
 
 const FOCUSABLE =
@@ -22,11 +56,13 @@ const FOCUSABLE =
 export function Aside({
   children,
   heading,
+  headingMeta,
   type,
 }: {
   children?: React.ReactNode;
   type: Exclude<AsideType, 'closed'>;
   heading: React.ReactNode;
+  headingMeta?: React.ReactNode;
 }) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
@@ -109,7 +145,10 @@ export function Aside({
       >
         {type !== 'search' ? (
           <header className="aside-header">
-            <h2 id={headingId}>{heading}</h2>
+            <div className="aside-heading">
+              <h2 id={headingId}>{heading}</h2>
+              {headingMeta}
+            </div>
             <button
               aria-label="Close"
               className="icon-button aside-close"
@@ -130,17 +169,61 @@ const AsideContext = createContext<AsideContextValue | null>(null);
 
 Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
+  const [cartAddFeedback, setCartAddFeedback] =
+    useState<CartAddFeedback | null>(null);
+  const [confirmedCart, setConfirmedCart] =
+    useState<ConfirmedCartSnapshot | null>(null);
+  const cartAddFeedbackId = useRef(0);
   const close = useCallback(() => setType('closed'), []);
   const open = useCallback(
     (mode: Exclude<AsideType, 'closed'>) => setType(mode),
     [],
   );
+  const notifyCartAdd = useCallback(
+    (feedback: Omit<CartAddFeedback, 'id'>) => {
+      const id = ++cartAddFeedbackId.current;
+      const nextFeedback = {id, ...feedback};
+      setCartAddFeedback(nextFeedback);
+      setConfirmedCart((current) => {
+        if (!current || isNewerCartSnapshot(nextFeedback, current)) {
+          return {id, cart: feedback.cart};
+        }
+        return current;
+      });
+    },
+    [],
+  );
   return (
-    <AsideContext.Provider value={{type, open, close}}>
+    <AsideContext.Provider
+      value={{
+        type,
+        open,
+        close,
+        cartAddFeedback,
+        confirmedCart,
+        notifyCartAdd,
+      }}
+    >
       {children}
     </AsideContext.Provider>
   );
 };
+
+function isNewerCartSnapshot(
+  next: CartAddFeedback,
+  current: ConfirmedCartSnapshot,
+) {
+  const nextUpdatedAt = Date.parse(next.cart.updatedAt);
+  const currentUpdatedAt = Date.parse(current.cart.updatedAt);
+  if (nextUpdatedAt !== currentUpdatedAt) return nextUpdatedAt > currentUpdatedAt;
+
+  if (next.cart.id !== current.cart.id) return next.id > current.id;
+  if (next.cart.totalQuantity !== current.cart.totalQuantity) {
+    return next.cart.totalQuantity > current.cart.totalQuantity;
+  }
+
+  return next.id > current.id;
+}
 
 export function useAside() {
   const aside = useContext(AsideContext);

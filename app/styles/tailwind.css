@@ -295,6 +295,9 @@
     padding: 16px 20px;
     border-bottom: 1px solid rgb(26 26 26 / 0.08);
   }
+  .aside-heading {
+    min-width: 0;
+  }
   .aside-header h2 {
     margin: 0;
     font-family: var(--font-editorial);
@@ -1235,6 +1238,78 @@
     font-size: 19px;
     line-height: 1.2;
   }
+  .overlay-cart .aside-heading {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .cart-heading-count {
+    display: inline-block;
+    transform-origin: center;
+  }
+  .cart-add-confirmation {
+    min-height: 15px;
+    margin: 0;
+    color: var(--color-brown);
+    font-size: 11.5px;
+    line-height: 15px;
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity var(--motion-standard) var(--motion-ease-out),
+      transform var(--motion-standard) var(--motion-ease-out);
+  }
+  .cart-add-confirmation.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cart-add-confirmation.is-exiting {
+    opacity: 0;
+    transform: translateY(-2px);
+    transition-duration: var(--motion-fast);
+  }
+  .cart-line-feedback-new,
+  .cart-line-feedback-updated {
+    will-change: transform, opacity;
+  }
+  .cart-line-feedback-new {
+    animation: cart-line-added var(--motion-standard) var(--motion-ease-out)
+      both;
+  }
+  .cart-line-feedback-updated {
+    animation: cart-line-updated var(--motion-fast) var(--motion-ease-in-out)
+      both;
+  }
+  @keyframes cart-line-added {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes cart-line-updated {
+    0% {
+      opacity: 0.82;
+      transform: scale(0.995);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .cart-heading-count.is-pulsing {
+    animation: cart-count-pulse var(--motion-fast) var(--motion-ease-out) both;
+    will-change: transform;
+  }
+  @keyframes cart-count-pulse {
+    50% {
+      transform: scale(1.06);
+    }
+  }
   .overlay-cart .aside-close {
     width: 36px;
     height: 36px;
@@ -1512,6 +1587,25 @@
     height: 1px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay-cart,
+    .overlay-cart .aside-panel,
+    .overlay-cart .cart-add-confirmation,
+    .overlay-cart .cart-line-feedback-new,
+    .overlay-cart .cart-line-feedback-updated,
+    .overlay-cart .cart-heading-count {
+      animation: none;
+      transition: none;
+    }
+
+    .overlay-cart .cart-line-feedback-new,
+    .overlay-cart .cart-line-feedback-updated,
+    .overlay-cart .cart-heading-count.is-pulsing {
+      opacity: 1;
+      transform: none;
+    }
   }
   .cart-subtotal {
     display: flex;

@@ -1,7 +1,11 @@
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Link} from 'react-router';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {useAside} from '~/components/Aside';
+import {
+  getCartWithConfirmedSnapshot,
+  useAside,
+  type CartAddFeedback,
+} from '~/components/Aside';
 import {CartLineItem, type CartLine} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
 
@@ -14,6 +18,10 @@ export type CartMainProps = {
 };
 
 export type LineItemChildrenMap = {[parentId: string]: CartLine[]};
+export type CartLineFeedback = {
+  id: number;
+  type: 'new' | 'updated';
+};
 /** Returns a map of all line items and their children. */
 function getLineItemChildrenMap(lines: CartLine[]): LineItemChildrenMap {
   const children: LineItemChildrenMap = {};
@@ -44,7 +52,12 @@ export function CartMain({
 }: CartMainProps) {
   // The useOptimisticCart hook applies pending actions to the cart
   // so the user immediately sees feedback when they modify the cart.
-  const cart = useOptimisticCart(originalCart);
+  const {cartAddFeedback, confirmedCart} = useAside();
+  const displayedCart =
+    layout === 'aside'
+      ? getCartWithConfirmedSnapshot(originalCart, confirmedCart)
+      : originalCart;
+  const cart = useOptimisticCart(displayedCart);
 
   const withDiscount =
     cart &&
@@ -52,6 +65,10 @@ export function CartMain({
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
   const className = `cart-main cart-main-${layout} ${withDiscount ? 'with-discount' : ''}`;
   const childrenMap = getLineItemChildrenMap(cart?.lines?.nodes ?? []);
+  const lineFeedback =
+    layout === 'aside'
+      ? getCartLineFeedback(cart?.lines?.nodes ?? [], cartAddFeedback)
+      : new Map<string, CartLineFeedback>();
 
   return (
     <section
@@ -85,6 +102,7 @@ export function CartMain({
                   line={line}
                   layout={layout}
                   childrenMap={childrenMap}
+                  feedback={lineFeedback.get(line.id)}
                 />
               );
             })}
@@ -95,6 +113,31 @@ export function CartMain({
       </div>
     </section>
   );
+}
+
+function getCartLineFeedback(
+  currentLines: CartLine[],
+  feedback: CartAddFeedback | null,
+) {
+  const lineFeedback = new Map<string, CartLineFeedback>();
+  if (!feedback) return lineFeedback;
+
+  for (const input of feedback.lines) {
+    const resultLine = feedback.cart.lines.nodes.find(
+      (line) => line.merchandise.id === input.merchandiseId,
+    );
+    const currentLine = currentLines.find(
+      (line) => line.merchandise.id === input.merchandiseId,
+    );
+    if (!resultLine || !currentLine) continue;
+
+    lineFeedback.set(currentLine.id, {
+      id: feedback.id,
+      type: resultLine.quantity === input.quantity ? 'new' : 'updated',
+    });
+  }
+
+  return lineFeedback;
 }
 
 function CartEmpty({

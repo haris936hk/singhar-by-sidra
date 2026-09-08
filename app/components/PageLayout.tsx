@@ -1,4 +1,4 @@
-import {Suspense, useId} from 'react';
+import {Suspense, useEffect, useId, useState} from 'react';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Await, Form, Link, useLocation} from 'react-router';
 import type {
@@ -6,7 +6,11 @@ import type {
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import {Aside, useAside} from '~/components/Aside';
+import {
+  Aside,
+  getCartWithConfirmedSnapshot,
+  useAside,
+} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
@@ -73,6 +77,7 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
           </Await>
         </Suspense>
       }
+      headingMeta={<CartAddConfirmation />}
     >
       <Suspense fallback={<CartSkeleton />}>
         <Await resolve={cart} errorElement={<CartError />}>
@@ -84,9 +89,58 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
 }
 
 function CartAsideHeading({cart}: {cart: CartApiQueryFragment | null}) {
-  const optimisticCart = useOptimisticCart(cart);
+  const {cartAddFeedback, confirmedCart} = useAside();
+  const displayedCart = getCartWithConfirmedSnapshot(cart, confirmedCart);
+  const optimisticCart = useOptimisticCart(displayedCart);
+  const cartAddFeedbackId = cartAddFeedback?.id;
+  const [pulseId, setPulseId] = useState<number | null>(null);
 
-  return <>Your Bag ({optimisticCart?.totalQuantity ?? 0})</>;
+  useEffect(() => {
+    if (!cartAddFeedbackId) return;
+    setPulseId(cartAddFeedbackId);
+    const timeout = window.setTimeout(() => setPulseId(null), 150);
+    return () => window.clearTimeout(timeout);
+  }, [cartAddFeedbackId]);
+
+  return (
+    <>
+      Your Bag (
+      <span
+        className={pulseId ? 'cart-heading-count is-pulsing' : 'cart-heading-count'}
+      >
+        {optimisticCart?.totalQuantity ?? 0}
+      </span>
+      )
+    </>
+  );
+}
+
+function CartAddConfirmation() {
+  const {cartAddFeedback} = useAside();
+  const cartAddFeedbackId = cartAddFeedback?.id;
+  const [state, setState] = useState<'idle' | 'visible' | 'exiting'>('idle');
+
+  useEffect(() => {
+    if (!cartAddFeedbackId) return;
+    setState('visible');
+    const exitTimeout = window.setTimeout(() => setState('exiting'), 1200);
+    const resetTimeout = window.setTimeout(() => setState('idle'), 1320);
+    return () => {
+      window.clearTimeout(exitTimeout);
+      window.clearTimeout(resetTimeout);
+    };
+  }, [cartAddFeedbackId]);
+
+  return (
+    <p
+      aria-atomic="true"
+      aria-live="polite"
+      className={`cart-add-confirmation is-${state}`}
+      role="status"
+    >
+      {state === 'idle' ? null : 'Added to your bag'}
+    </p>
+  );
 }
 
 function CartSkeleton() {

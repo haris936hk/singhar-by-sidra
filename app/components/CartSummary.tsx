@@ -28,10 +28,10 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
       <dl role="group" className="cart-subtotal">
         <dt>Subtotal</dt>
         <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
+          {!cart.isOptimistic && cart?.cost?.subtotalAmount?.amount ? (
             <Money data={cart?.cost?.subtotalAmount} withoutTrailingZeros />
           ) : (
-            '-'
+            'Updating…'
           )}
         </dd>
       </dl>
