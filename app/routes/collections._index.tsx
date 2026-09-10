@@ -1,8 +1,8 @@
 import {useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/collections._index';
-import {getPaginationVariables, Image} from '@shopify/hydrogen';
+import {getPaginationVariables, Image, Pagination} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {siteConfig} from '~/lib/site-config';
 
 export async function loader(args: Route.LoaderArgs) {
   // Start fetching non-critical data without blocking time to first byte
@@ -46,20 +46,81 @@ export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collections">
-      <h1>Collections</h1>
-      <PaginatedResourceSection<CollectionFragment>
-        connection={collections}
-        resourcesClassName="collections-grid"
+    <div className="collections-directory-page">
+      <nav
+        aria-label="Breadcrumb"
+        className="collections-directory-breadcrumbs"
       >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
+        <Link to="/">Home</Link>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Collections</span>
+      </nav>
+
+      <header className="collections-directory-intro">
+        <span className="collections-directory-eyebrow">The Singhar Edit</span>
+        <h1>Collections</h1>
+        <p>{siteConfig.brand.statement}</p>
+      </header>
+
+      <Pagination connection={collections}>
+        {({
+          hasNextPage,
+          hasPreviousPage,
+          isLoading,
+          nodes,
+          NextLink,
+          PreviousLink,
+        }) => (
+          <>
+            <section
+              aria-label="Available collections"
+              className="collections-directory-list"
+            >
+              <ul className="collections-directory-grid">
+                {nodes.map((collection, index) => (
+                  <CollectionItem
+                    key={collection.id}
+                    collection={collection as CollectionFragment}
+                    index={index}
+                  />
+                ))}
+              </ul>
+            </section>
+
+            <nav
+              aria-label="Collections pagination"
+              className="collections-directory-pagination"
+            >
+              {hasPreviousPage ? (
+                <PreviousLink className="collections-directory-previous">
+                  {isLoading ? (
+                    'Loading...'
+                  ) : (
+                    <>
+                      <span aria-hidden="true">↑</span> Load previous
+                    </>
+                  )}
+                </PreviousLink>
+              ) : null}
+              {hasNextPage ? (
+                <NextLink className="collections-directory-load-more">
+                  {isLoading ? (
+                    'Loading...'
+                  ) : (
+                    <>
+                      Load more <span aria-hidden="true">↓</span>
+                    </>
+                  )}
+                </NextLink>
+              ) : (
+                <span className="collections-directory-end">
+                  You&apos;ve reached the end of the collections.
+                </span>
+              )}
+            </nav>
+          </>
         )}
-      </PaginatedResourceSection>
+      </Pagination>
     </div>
   );
 }
@@ -72,23 +133,45 @@ function CollectionItem({
   index: number;
 }) {
   return (
-    <Link
-      className="collection-item"
-      key={collection.id}
-      to={`/collections/${collection.handle}`}
-      prefetch="intent"
-    >
-      {collection?.image && (
-        <Image
-          alt={collection.image.altText || collection.title}
-          aspectRatio="1/1"
-          data={collection.image}
-          loading={index < 3 ? 'eager' : undefined}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h5>{collection.title}</h5>
-    </Link>
+    <li className="collections-directory-card">
+      <Link
+        aria-label={`Explore ${collection.title}`}
+        className="collections-directory-card-link"
+        to={`/collections/${collection.handle}`}
+        prefetch="intent"
+      >
+        <div className="collections-directory-card-media">
+          {collection.image ? (
+            <Image
+              alt={collection.image.altText || collection.title}
+              aspectRatio="3/4"
+              data={collection.image}
+              loading={index < 3 ? 'eager' : 'lazy'}
+              sizes="(min-width: 1100px) 25vw, (min-width: 768px) 33vw, 50vw"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="collections-directory-card-placeholder"
+            />
+          )}
+          <span
+            aria-hidden="true"
+            className="collections-directory-card-shade"
+          />
+          <span className="collections-directory-card-copy">
+            <h2>{collection.title}</h2>
+            <span
+              aria-hidden="true"
+              className="collections-directory-card-arrow"
+            >
+              Explore
+              <span>→</span>
+            </span>
+          </span>
+        </div>
+      </Link>
+    </li>
   );
 }
 
