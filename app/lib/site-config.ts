@@ -1,6 +1,8 @@
+import heroImage from '../../hero.webp';
+
 export interface EditorialAsset {
-  desktopSrc: string;
-  mobileSrc: string;
+  desktopSrc: string | null;
+  mobileSrc: string | null;
   alt: string;
   desktopWidth: number;
   desktopHeight: number;
@@ -63,8 +65,8 @@ export const siteConfig: SiteConfig = {
   },
   homepage: {
     hero: {
-      desktopSrc: '/images/home/hero-desktop.webp',
-      mobileSrc: '/images/home/hero-mobile.webp',
+      desktopSrc: heroImage,
+      mobileSrc: heroImage,
       desktopWidth: 2880,
       desktopHeight: 1280,
       mobileWidth: 780,
@@ -76,8 +78,8 @@ export const siteConfig: SiteConfig = {
       collectionHandle: 'new-arrivals',
     },
     editorial: {
-      desktopSrc: '/images/home/editorial-desktop.webp',
-      mobileSrc: '/images/home/editorial-mobile.webp',
+      desktopSrc: null,
+      mobileSrc: null,
       desktopWidth: 2880,
       desktopHeight: 840,
       mobileWidth: 780,
@@ -87,8 +89,8 @@ export const siteConfig: SiteConfig = {
       cta: 'Explore the Edit',
     },
     sizeGuide: {
-      desktopSrc: '/images/home/size-guide-desktop.webp',
-      mobileSrc: '/images/home/size-guide-mobile.webp',
+      desktopSrc: null,
+      mobileSrc: null,
       desktopWidth: 840,
       desktopHeight: 520,
       mobileWidth: 312,
@@ -132,4 +134,3 @@ export const siteConfig: SiteConfig = {
     'Cash on Delivery',
   ],
 };
-

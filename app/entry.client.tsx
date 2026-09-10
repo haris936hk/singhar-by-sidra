@@ -2,6 +2,11 @@ import {HydratedRouter} from 'react-router/dom';
 import {startTransition, StrictMode} from 'react';
 import {hydrateRoot} from 'react-dom/client';
 import {NonceProvider} from '@shopify/hydrogen';
+import {ensureHostReactGlobals} from '@bildit-platform/hydrogen/client';
+import {registerHostCmsDependencies} from '~/lib/cmsDependencies';
+
+ensureHostReactGlobals();
+registerHostCmsDependencies();
 
 if (!window.location.origin.includes('webcache.googleusercontent.com')) {
   startTransition(() => {

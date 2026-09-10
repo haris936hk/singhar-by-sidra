@@ -1,4 +1,5 @@
-import {Analytics, getShopAnalytics, useNonce} from '@shopify/hydrogen';
+import {Analytics, getShopAnalytics, Script, useNonce} from '@shopify/hydrogen';
+import {BilditRoot} from '@bildit-platform/hydrogen/client';
 import {
   Outlet,
   useRouteError,
@@ -15,6 +16,8 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
+import {extraDependenciesConfig} from '~/lib/cmsDependencies';
+import {getHomepageBanners} from '~/lib/bildit';
 
 export type RootLoader = typeof loader;
 
@@ -37,7 +40,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   // Use with caution. If you are uncomfortable with this optimization, update the
   // line below to `return defaultShouldRevalidate` instead.
   // For more details see: https://remix.run/docs/en/main/route/should-revalidate
-  return false;
+  return currentUrl.pathname === '/' || nextUrl.pathname === '/';
 };
 
 /**
@@ -97,20 +100,21 @@ export async function loader(args: Route.LoaderArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context}: Route.LoaderArgs) {
+async function loadCriticalData({context, request}: Route.LoaderArgs) {
   const {storefront} = context;
 
-  const [header] = await Promise.all([
+  const [header, banners] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
       },
     }),
+    getHomepageBanners(request, context.env),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
-  return {header};
+  return {header, banners};
 }
 
 /**
@@ -150,6 +154,11 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={tailwindCss}></link>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+          nonce={nonce}
+          waitForHydration
+        />
         <Meta />
         <Links />
       </head>
@@ -170,15 +179,20 @@ export default function App() {
   }
 
   return (
-    <Analytics.Provider
-      cart={data.cart}
-      shop={data.shop}
-      consent={data.consent}
+    <BilditRoot
+      banners={data.banners ?? []}
+      extraDependenciesConfig={extraDependenciesConfig}
     >
-      <PageLayout {...data}>
-        <Outlet />
-      </PageLayout>
-    </Analytics.Provider>
+      <Analytics.Provider
+        cart={data.cart}
+        shop={data.shop}
+        consent={data.consent}
+      >
+        <PageLayout {...data}>
+          <Outlet />
+        </PageLayout>
+      </Analytics.Provider>
+    </BilditRoot>
   );
 }
 

@@ -13,6 +13,7 @@ export default defineConfig({
       // projects that use jsconfig.json, so define Hydrogen's app alias here.
       '~': fileURLToPath(new URL('./app', import.meta.url)),
     },
+    dedupe: ['react', 'react-dom', 'react-dom/client'],
     tsconfigPaths: true,
   },
   build: {
@@ -21,6 +22,13 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   ssr: {
+    noExternal: [
+      '@bildit-platform/hydrogen',
+      '@bildit-platform/react-core',
+      '@bildit-platform/engine',
+      'react-error-boundary',
+      'react-fast-compare',
+    ],
     optimizeDeps: {
       /**
        * Include dependencies here if they throw CJS<>ESM errors.
@@ -36,6 +44,10 @@ export default defineConfig({
         'react-router > set-cookie-parser',
         'react-router > cookie',
         'react-router',
+        'react-is',
+        'react-dom/client',
+        'react-error-boundary',
+        'react-fast-compare',
       ],
     },
   },

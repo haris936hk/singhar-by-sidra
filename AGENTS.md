@@ -8,7 +8,7 @@ Singhar By Sidra is a production Shopify headless storefront built from the Shop
 
 The supplied business context identifies Pakistan as the initial primary market. The current code is not yet configured for that market: `app/lib/context.ts` hard-codes `i18n: {language: 'EN', country: 'US'}`, and `app/routes/sitemap.$type.$page[.xml].tsx` contains the template locale list `EN-US`, `EN-CA`, and `FR-CA`. Treat those as current implementation details to verify or deliberately change, not as proof of active markets. Do not introduce multi-market URL routing or market-selection complexity unless it is requested or already implemented.
 
-The app currently has storefront browsing, collections, products and variants, search, blogs, pages, policies, cart and checkout handoff, Shopify Customer Account pages, analytics, robots.txt, and sitemap routes. The home route still contains the generated `MockShopNotice` fallback when `PUBLIC_STORE_DOMAIN` is absent; this is a configuration diagnostic only, not a production data source.
+The app currently has storefront browsing, collections, products and variants, search, blogs, pages, policies, cart and checkout handoff, Shopify Customer Account pages, analytics, robots.txt, and sitemap routes. The homepage also has BILDIT-managed `home-hero` and `home-promo` slots with the existing Singhar by Sidra sections as fallbacks; BILDIT content is fetched server-side and is not a replacement for Shopify commerce data. The home route still contains the generated `MockShopNotice` fallback when `PUBLIC_STORE_DOMAIN` is absent; this is a configuration diagnostic only, not a production data source.
 
 ## Technology Stack
 
@@ -55,12 +55,12 @@ Only add code to an existing area after reading its local patterns.
 - `app/routes/` — React Router file-system routes. Route filenames use React Router flat-route conventions and are assembled by `app/routes.ts`.
 - `app/components/` — shared UI and commerce components: layout, header/footer, asides, search, product cards/forms, cart, and pagination.
 - `app/graphql/customer-account/` — Customer Account API queries, fragments, and mutations. This directory is a separate GraphQL project in `.graphqlrc.ts`.
-- `app/lib/` — shared server/client helpers: Hydrogen context and session setup, shared Storefront fragments, search types/URL tracking, variant URL handling, order filters, and localized-handle redirects.
+- `app/lib/` — shared server/client helpers: Hydrogen context and session setup, shared Storefront fragments, search types/URL tracking, variant URL handling, order filters, localized-handle redirects, and the server-only BILDIT homepage loader/CMS dependency registry.
 - `app/styles/tailwind.css` — the single Tailwind v4 stylesheet entry point. It currently contains Tailwind import/preflight only; the starter visual layer was intentionally cleared for the storefront mockup.
 - `app/assets/` — imported assets such as the favicon.
-- `app/root.tsx` — root loader, global links, document layout, analytics provider, shared page layout, and root error boundary.
-- `app/entry.client.tsx` — browser hydration, Strict Mode, CSP nonce propagation, and the Google web-cache guard.
-- `app/entry.server.tsx` — Oxygen-compatible streaming SSR, bot readiness handling, CSP generation, and response headers.
+- `app/root.tsx` — root loader, global links, document layout, BILDIT provider, analytics provider, shared page layout, and root error boundary.
+- `app/entry.client.tsx` — BILDIT host bootstrap, browser hydration, Strict Mode, CSP nonce propagation, and the Google web-cache guard.
+- `app/entry.server.tsx` — Oxygen-compatible streaming SSR, bot readiness handling, merged Shopify/BILDIT CSP generation, and response headers.
 - `server.ts` — Oxygen worker fetch handler, Hydrogen request handler, session cookie commit, 404 storefront redirects, and top-level 500 handling.
 - `app/routes.ts` — combines `hydrogenRoutes` with `flatRoutes`; manual route entries may be added here only when file-based routing is insufficient.
 - `react-router.config.ts` — official `hydrogenPreset()` configuration.
@@ -231,8 +231,10 @@ Server-sensitive configuration:
 - `PRIVATE_STOREFRONT_API_TOKEN` — private Storefront API token consumed by Hydrogen server context.
 - `SESSION_SECRET` — required by `AppSession.init`; absence throws during context creation.
 - `SHOP_ID` — used by the Customer Account API client.
+- `BILDIT_API_URL` — BILDIT root CMS host, such as `https://admin.bildit.co`; the Hydrogen adapter appends its scheduled-banner endpoint.
+- `BILDIT_API_KEY` — secret BILDIT API key used only by the server-side homepage loader.
 
-Never commit or print secret values. Never put private tokens, session secrets, OAuth tokens, or real store identifiers in `AGENTS.md`, source, logs, screenshots, or test fixtures. `.env` and `.shopify` are ignored; this repository has no committed `.env.example`. When adding a legitimate variable, update the actual deployment/local environment documentation and typing strategy rather than embedding a value. Keep server-only variables out of browser props and client bundles.
+Never commit or print secret values. Never put private tokens, session secrets, OAuth tokens, BILDIT API keys, or real store identifiers in `AGENTS.md`, source, logs, screenshots, or test fixtures. `.env` and `.shopify` are ignored; this repository has no committed `.env.example`. When adding a legitimate variable, update the actual deployment/local environment documentation and typing strategy rather than embedding a value. Keep server-only variables out of browser props and client bundles.
 
 ## Security
 

@@ -1,6 +1,7 @@
 import {Suspense, useEffect, useRef, useState} from 'react';
 import {Await, Link, useLoaderData} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
+import {SlotPlaceholder} from '@bildit-platform/hydrogen/client';
 import type {HomepageCollectionFragment, HomepageProductCardFragment} from 'storefrontapi.generated';
 import type {Route} from './+types/_index';
 import {MockShopNotice} from '~/components/MockShopNotice';
@@ -61,11 +62,17 @@ export default function Homepage() {
   return (
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
-      <Hero href={heroHref} />
+      <SlotPlaceholder
+        slotId="home-hero"
+        fallback={<Hero href={heroHref} />}
+      />
       <ProductCarousel badge="New" products={data.newArrivals} title="New Arrivals" viewAll={heroHref} eager />
       <FeaturedCollections collections={data.featuredCollections} />
       <ProductCarousel badge="Bestseller" products={data.bestSellers} title="Best Sellers" viewAll="/collections/all" />
-      <EditorialBanner />
+      <SlotPlaceholder
+        slotId="home-promo"
+        fallback={<EditorialBanner />}
+      />
       <SizeGuide />
       <Testimonials />
       <Instagram />
@@ -177,7 +184,7 @@ function SizeGuide() {
 }
 
 function EditorialPicture({asset, className, eager = false}: {asset: EditorialAsset; className: string; eager?: boolean}) {
-  return <picture className={className}><source media="(max-width: 767px)" srcSet={asset.mobileSrc} /><img alt={asset.alt} decoding="async" height={asset.desktopHeight} loading={eager ? 'eager' : 'lazy'} onError={(event) => {event.currentTarget.hidden = true;}} src={asset.desktopSrc} width={asset.desktopWidth} /></picture>;
+  return <picture className={className}>{asset.mobileSrc ? <source media="(max-width: 767px)" srcSet={asset.mobileSrc} /> : null}{asset.desktopSrc ? <img alt={asset.alt} decoding="async" height={asset.desktopHeight} loading={eager ? 'eager' : 'lazy'} onError={(event) => {event.currentTarget.hidden = true;}} src={asset.desktopSrc} width={asset.desktopWidth} /> : null}</picture>;
 }
 
 function Testimonials() {

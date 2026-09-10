@@ -32,6 +32,7 @@ export default [
       '**/*.generated.d.ts',
       '**/.react-router/',
       '**/packages/hydrogen/dist/',
+      'singhar-by-sidra-mockup-design/project/support.js',
     ],
   },
   ...fixupConfigRules(

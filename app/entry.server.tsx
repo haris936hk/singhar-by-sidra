@@ -2,6 +2,10 @@ import {ServerRouter} from 'react-router';
 import {isbot} from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {
+  allowBilditIframeEmbedding,
+  bilditCspDirectives,
+} from '@bildit-platform/hydrogen/server';
+import {
   createContentSecurityPolicy,
   type HydrogenRouterContextProvider,
 } from '@shopify/hydrogen';
@@ -14,12 +18,22 @@ export default async function handleRequest(
   reactRouterContext: EntryContext,
   context: HydrogenRouterContextProvider,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+  const {nonce, header: baseHeader, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    ...bilditCspDirectives,
+    scriptSrc: [
+      ...bilditCspDirectives.scriptSrc,
+      'https://cdn.jsdelivr.net',
+    ],
+    connectSrc: [
+      ...bilditCspDirectives.connectSrc,
+      'https://cdn.jsdelivr.net',
+    ],
   });
+  const header = allowBilditIframeEmbedding(baseHeader);
 
   const body = await renderToReadableStream(
     <NonceProvider>
