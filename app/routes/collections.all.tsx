@@ -5,7 +5,13 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
-import {Link, useLoaderData, useLocation, useNavigate} from 'react-router';
+import {
+  data as remixData,
+  Link,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router';
 import {getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import type {ProductFilter} from '@shopify/hydrogen/storefront-api-types';
 import type {
@@ -14,6 +20,7 @@ import type {
 } from 'storefrontapi.generated';
 import type {Route} from './+types/collections.all';
 import {CollectionProductCard} from '~/components/CollectionProductCard';
+import {CUSTOMER_WISHLIST_QUERY} from '~/graphql/customer-account/CustomerWishlistQuery';
 import {
   COLLECTION_SORT_OPTIONS,
   filterKey,
@@ -28,6 +35,7 @@ import {
   type CollectionSortValue,
 } from '~/lib/collectionFilters';
 import {siteConfig} from '~/lib/site-config';
+import {getWishlistProductIds, WISHLIST_PRIVATE_HEADERS} from '~/lib/wishlist';
 
 type AllProductsFilter = CatalogQuery['products']['filters'][number];
 type AllProductsFilterValue = AllProductsFilter['values'][number];
@@ -73,32 +81,46 @@ export async function loader({context, request}: Route.LoaderArgs) {
     'endCursor' in searchPaginationVariables
       ? searchPaginationVariables.endCursor
       : undefined;
-  const {products, search} = await context.storefront.query(CATALOG_QUERY, {
-    variables: {
-      query: getCatalogQuery(filters),
-      filters,
-      searchTerm: '*',
-      sortKey,
-      reverse,
-      searchSortKey,
-      searchReverse,
-      searchFirst,
-      searchLast,
-      searchStartCursor,
-      searchEndCursor,
-      ...paginationVariables,
-    },
-  });
+  const [{products, search}, wishlist] = await Promise.all([
+    context.storefront.query(CATALOG_QUERY, {
+      variables: {
+        query: getCatalogQuery(filters),
+        filters,
+        searchTerm: '*',
+        sortKey,
+        reverse,
+        searchSortKey,
+        searchReverse,
+        searchFirst,
+        searchLast,
+        searchStartCursor,
+        searchEndCursor,
+        ...paginationVariables,
+      },
+    }),
+    getWishlistProductIds({
+      isLoggedIn: () => context.customerAccount.isLoggedIn(),
+      read: () =>
+        context.customerAccount.query(CUSTOMER_WISHLIST_QUERY, {
+          variables: {language: context.customerAccount.i18n.language},
+        }),
+    }),
+  ]);
 
-  return {
+  const loaderData = {
     products,
     filteredProducts: search,
     availableFilters: ensurePriceFilter(
       filters.length ? search.productFilters : products.filters,
     ),
     filters,
+    wishlistProductIds: wishlist.productIds,
     sort,
   };
+
+  return wishlist.isLoggedIn
+    ? remixData(loaderData, {headers: WISHLIST_PRIVATE_HEADERS})
+    : loaderData;
 }
 
 export default function AllProducts() {
@@ -108,6 +130,7 @@ export default function AllProducts() {
     availableFilters,
     filters: activeFilters,
     sort,
+    wishlistProductIds,
   } = useLoaderData<typeof loader>();
   const location = useLocation();
   const navigate = useNavigate();
@@ -296,6 +319,9 @@ export default function AllProducts() {
                         <CollectionProductCard
                           key={catalogProduct.id}
                           loading={index < 4 ? 'eager' : 'lazy'}
+                          initialSaved={wishlistProductIds.includes(
+                            catalogProduct.id,
+                          )}
                           product={catalogProduct}
                         />
                       );

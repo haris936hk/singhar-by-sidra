@@ -1,13 +1,16 @@
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import type {CollectionProductFragment} from 'storefrontapi.generated';
+import {WishlistToggle} from '~/components/WishlistToggle';
 import {useVariantUrl} from '~/lib/variants';
 
 export function CollectionProductCard({
+  initialSaved = false,
   linkTo,
   loading,
   product,
 }: {
+  initialSaved?: boolean;
   linkTo?: string;
   loading?: 'eager' | 'lazy';
   product: CollectionProductFragment;
@@ -45,8 +48,15 @@ export function CollectionProductCard({
           ) : (
             <span className="collection-image-placeholder">Product Photo</span>
           )}
-          {badge ? <span className="collection-product-badge">{badge}</span> : null}
+          {badge ? (
+            <span className="collection-product-badge">{badge}</span>
+          ) : null}
         </Link>
+        <WishlistToggle
+          className="collection-wishlist-toggle"
+          initialSaved={initialSaved}
+          productId={product.id}
+        />
         {!isAvailable ? (
           <div className="collection-product-sold-out" role="status">
             <span>Sold Out</span>
@@ -55,7 +65,11 @@ export function CollectionProductCard({
       </div>
 
       <div className="collection-product-card-details">
-        <Link className="collection-product-card-title" prefetch="intent" to={productUrl}>
+        <Link
+          className="collection-product-card-title"
+          prefetch="intent"
+          to={productUrl}
+        >
           {product.title}
         </Link>
         <div className="collection-product-card-price">
@@ -82,7 +96,9 @@ export function CollectionProductCard({
 }
 
 function getBadge(tags: string[]) {
-  const tag = tags.find((value) => /^(new|best seller|bestseller|sale)$/i.test(value.trim()));
+  const tag = tags.find((value) =>
+    /^(new|best seller|bestseller|sale)$/i.test(value.trim()),
+  );
   if (!tag) return null;
   return tag.toLowerCase() === 'bestseller' ? 'Best Seller' : tag;
 }

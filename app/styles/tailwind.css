@@ -5093,3 +5093,855 @@
     font-size: 16px;
   }
 }
+
+@layer components {
+  .account-shell {
+    width: 100%;
+    min-height: 45vh;
+    background: #f4f0e8;
+  }
+  .account-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: min(calc(100% - 32px), 1312px);
+    margin: 0 auto;
+    padding: 18px 0 0;
+    color: var(--color-brown);
+    font-size: 12px;
+  }
+  .account-breadcrumbs a {
+    transition: color var(--motion-standard) var(--motion-ease);
+  }
+  .account-breadcrumbs span:last-child {
+    color: var(--color-ink);
+  }
+  .account-shell-body {
+    display: grid;
+    width: min(calc(100% - 32px), 1312px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin: 0 auto;
+    padding: 20px 0 72px;
+  }
+  .account-menu-desktop {
+    display: none;
+  }
+  .account-menu-mobile {
+    border: 1px solid rgb(26 26 26 / 0.1);
+    background: var(--color-ivory);
+  }
+  .account-menu-mobile summary {
+    display: flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    color: var(--color-ink);
+    cursor: pointer;
+    font-family: var(--font-editorial);
+    font-size: 18px;
+  }
+  .account-menu-mobile summary::after {
+    color: var(--color-brown);
+    content: '+';
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 300;
+  }
+  .account-menu-mobile[open] summary {
+    border-bottom: 1px solid rgb(26 26 26 / 0.1);
+  }
+  .account-menu-mobile[open] summary::after {
+    content: '−';
+  }
+  .account-menu-mobile-list {
+    padding: 4px 16px 12px;
+  }
+  .account-menu ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .account-menu a,
+  .account-menu-logout,
+  .account-logout button {
+    display: flex;
+    min-height: 44px;
+    width: 100%;
+    align-items: center;
+    border: 0;
+    border-bottom: 1.5px solid transparent;
+    background: transparent;
+    color: var(--color-brown);
+    font-size: 14px;
+    text-align: left;
+    transition:
+      color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease);
+  }
+  .account-menu a[aria-current='page'] {
+    border-bottom-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+  .account-logout {
+    margin: 0;
+  }
+  .account-logout button {
+    min-height: 44px;
+    padding: 0;
+    cursor: pointer;
+  }
+  .account-shell-content {
+    min-width: 0;
+  }
+  .account-shell-page-title {
+    margin: 0 0 24px;
+    font-family: var(--font-editorial);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .account-shell-content
+    > :where(.account-profile, .account-addresses, .account-order, .orders) {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .account-addresses {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .account-addresses-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .account-eyebrow {
+    margin: 0 0 6px;
+    color: var(--color-brown);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .account-addresses-header h1 {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .account-addresses-add {
+    flex: none;
+    min-height: 42px;
+    border: 1px solid var(--color-gold);
+    border-radius: 2px;
+    background: transparent;
+    padding: 0 16px;
+    color: var(--color-ink);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease);
+  }
+  .account-addresses-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border: 1px solid rgb(26 26 26 / 0.1);
+    background: var(--color-ivory);
+    padding: 22px;
+    animation: account-form-in var(--motion-standard) var(--motion-ease-out)
+      both;
+  }
+  .account-addresses-form fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+  .account-addresses-form legend {
+    margin-bottom: 2px;
+    font-family: var(--font-editorial);
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .account-address-fields {
+    display: grid;
+    gap: 14px;
+  }
+  .account-address-field {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .account-address-field label,
+  .account-address-checkbox label {
+    color: var(--color-brown);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .account-address-field input {
+    width: 100%;
+    min-height: 44px;
+    border-color: rgb(26 26 26 / 0.15);
+    padding: 10px 12px;
+    color: var(--color-ink);
+    transition: border-color var(--motion-fast) var(--motion-ease);
+  }
+  .account-address-field input:focus {
+    border-color: var(--color-gold);
+    outline: 0;
+  }
+  .account-address-field input[aria-invalid='true'] {
+    border-color: #7b2d26;
+  }
+  .account-address-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .account-address-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-gold);
+  }
+  .account-address-field-error {
+    margin: 0;
+    color: #7b2d26;
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+  .account-addresses-form-error,
+  .account-address-card-error {
+    margin: 0;
+    color: #7b2d26;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .account-addresses-form-error {
+    border-left: 2px solid #7b2d26;
+    padding-left: 10px;
+  }
+  .account-addresses-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .account-addresses-form-actions button,
+  .account-address-confirm-actions button {
+    min-height: 42px;
+    border-radius: 2px;
+    padding: 0 18px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .account-addresses-form-actions button[type='submit'],
+  .account-address-confirm-actions button[type='submit'] {
+    border: 1px solid var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+  .account-addresses-form-actions button[type='button'],
+  .account-address-confirm-actions button[type='button'] {
+    border: 1px solid rgb(26 26 26 / 0.2);
+    background: transparent;
+    color: var(--color-ink);
+  }
+  .account-addresses-form-actions button:disabled,
+  .account-address-confirm-actions button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+  .account-address-list {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .account-address-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid rgb(26 26 26 / 0.1);
+    background: var(--color-ivory);
+    padding: 20px;
+  }
+  .account-address-card-header,
+  .account-address-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .account-address-card-header h2 {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .account-address-default {
+    border-radius: 999px;
+    background: var(--color-beige);
+    padding: 4px 9px;
+    color: var(--color-brown);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .account-address-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 13px;
+    font-style: normal;
+    line-height: 1.55;
+  }
+  .account-address-details a {
+    color: var(--color-brown);
+  }
+  .account-address-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 2px;
+  }
+  .account-address-actions button {
+    min-height: 32px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--color-ink);
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .account-address-actions .account-address-remove {
+    color: #7b2d26;
+  }
+  .account-address-confirmation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid rgb(123 45 38 / 0.2);
+    padding-top: 12px;
+  }
+  .account-address-confirmation p {
+    margin: 0;
+    color: #7b2d26;
+    font-size: 12px;
+  }
+  .account-address-confirm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .account-address-confirm-actions button[type='submit'] {
+    border-color: #7b2d26;
+    background: #7b2d26;
+  }
+  .account-address-empty {
+    display: flex;
+    min-height: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid rgb(26 26 26 / 0.08);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .account-address-empty h2 {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .account-address-empty p {
+    max-width: 340px;
+    margin: 0;
+    color: var(--color-brown);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .account-address-empty button {
+    min-height: 46px;
+    margin-top: 8px;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: var(--color-ink);
+    padding: 0 24px;
+    color: var(--color-ivory);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .account-wishlist {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .account-wishlist-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .account-wishlist-header h1 {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .account-wishlist-count {
+    margin: 0 0 2px;
+    color: var(--color-brown);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .account-wishlist-error,
+  .account-wishlist-card-error {
+    margin: 0;
+    color: #7b2d26;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .account-wishlist-error {
+    border-left: 2px solid #7b2d26;
+    padding-left: 10px;
+  }
+  .account-wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .account-wishlist-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .account-wishlist-card-media-wrap {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: repeating-linear-gradient(
+      135deg,
+      var(--color-beige) 0 16px,
+      var(--color-nude) 16px 32px
+    );
+  }
+  .account-wishlist-card-media {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .account-wishlist-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--motion-standard) var(--motion-ease-in-out);
+  }
+  .account-wishlist-image-unavailable {
+    padding: 8px 12px;
+    background: rgb(255 255 245 / 0.7);
+    color: var(--color-brown);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .account-wishlist-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    border-radius: 2px;
+    padding: 4px 9px;
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .account-wishlist-remove-form {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+    margin: 0;
+  }
+  .account-wishlist-remove-form button {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 1px solid rgb(26 26 26 / 0.12);
+    border-radius: 50%;
+    background: rgb(255 255 245 / 0.92);
+    color: var(--color-ink);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .account-wishlist-remove-form button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+  .account-wishlist-sold-out {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(255 255 245 / 0.6);
+  }
+  .account-wishlist-sold-out span {
+    padding: 7px 16px;
+    background: var(--color-ivory);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .account-wishlist-card-details {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .account-wishlist-card-title {
+    color: var(--color-ink);
+    font-family: var(--font-editorial);
+    font-size: 14px;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  .account-wishlist-card-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--color-ink);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .account-wishlist-card-details > form {
+    width: 100%;
+    margin: 0;
+  }
+  .account-wishlist-purchase {
+    display: inline-flex;
+    width: 100%;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: var(--color-ink);
+    padding: 0 12px;
+    color: var(--color-ivory);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      border-color var(--motion-standard) var(--motion-ease),
+      transform 130ms var(--motion-ease-out);
+  }
+  .account-wishlist-purchase:disabled {
+    border-color: rgb(26 26 26 / 0.15);
+    background: transparent;
+    color: var(--color-brown);
+    cursor: not-allowed;
+  }
+  .account-wishlist-unavailable {
+    border-top: 1px solid rgb(26 26 26 / 0.1);
+    padding-top: 20px;
+  }
+  .account-wishlist-unavailable h2 {
+    margin: 0 0 12px;
+    font-family: var(--font-editorial);
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .account-wishlist-unavailable ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .account-wishlist-unavailable-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid rgb(26 26 26 / 0.1);
+    padding: 12px 14px;
+    color: var(--color-brown);
+    font-size: 12px;
+  }
+  .account-wishlist-unavailable-item form {
+    margin: 0;
+  }
+  .account-wishlist-unavailable-item button {
+    min-height: 32px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--color-ink);
+    font-size: 11px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .account-wishlist-unavailable-item button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+  .account-wishlist-empty {
+    display: flex;
+    min-height: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid rgb(26 26 26 / 0.08);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .account-wishlist-empty h2 {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .account-wishlist-empty p {
+    max-width: 340px;
+    margin: 0;
+    color: var(--color-brown);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .wishlist-toggle-form {
+    position: relative;
+    display: inline-flex;
+    margin: 0;
+  }
+  .collection-wishlist-toggle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 4;
+  }
+  .wishlist-toggle {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgb(26 26 26 / 0.12);
+    border-radius: 50%;
+    background: rgb(255 255 245 / 0.92);
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      background-color var(--motion-standard) var(--motion-ease),
+      color var(--motion-standard) var(--motion-ease),
+      transform 130ms var(--motion-ease-out);
+  }
+  .wishlist-toggle svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+  }
+  .wishlist-toggle.is-saved {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+  .wishlist-toggle:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+  .wishlist-toggle-error {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 6;
+    width: max-content;
+    max-width: 220px;
+    border: 1px solid rgb(123 45 38 / 0.2);
+    background: var(--color-ivory);
+    padding: 7px 9px;
+    color: #7b2d26;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  .pdp-action-row {
+    align-items: stretch;
+    gap: 8px;
+  }
+  .pdp-action-row .wishlist-toggle-form {
+    width: auto;
+    flex: none;
+  }
+  .pdp-action-row .wishlist-toggle {
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    background: transparent;
+  }
+  .pdp-action-row .wishlist-toggle.is-saved {
+    background: var(--color-ink);
+  }
+  .account-addresses-add:hover,
+  .account-address-empty button:hover,
+  .account-addresses-form-actions button:hover:not(:disabled),
+  .account-address-confirm-actions button:hover:not(:disabled) {
+    border-color: var(--color-brown);
+    background: var(--color-brown);
+    color: var(--color-ivory);
+  }
+  .account-addresses-form-actions button[type='button']:hover:not(:disabled),
+  .account-address-confirm-actions button[type='button']:hover:not(:disabled) {
+    border-color: var(--color-ink);
+    background: transparent;
+    color: var(--color-ink);
+  }
+  .account-wishlist-purchase:hover:not(:disabled) {
+    border-color: var(--color-brown);
+    background: var(--color-brown);
+  }
+  .wishlist-toggle:hover:not(:disabled) {
+    transform: scale(1.04);
+  }
+  @keyframes account-form-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .account-breadcrumbs,
+  .account-shell-body {
+    width: min(calc(100% - 128px), 1312px);
+  }
+  .account-breadcrumbs {
+    padding-top: 28px;
+  }
+  .account-shell-body {
+    grid-template-columns: 240px minmax(0, 760px);
+    justify-content: center;
+    gap: 56px;
+    padding-top: 24px;
+    padding-bottom: 80px;
+  }
+  .account-menu-desktop {
+    display: block;
+  }
+  .account-menu-desktop > p {
+    margin: 0 0 14px;
+    font-family: var(--font-editorial);
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .account-menu-mobile {
+    display: none;
+  }
+  .account-addresses-header h1 {
+    font-size: 32px;
+  }
+  .account-shell-page-title {
+    font-size: 32px;
+  }
+  .account-address-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .account-address-field-wide {
+    grid-column: 1 / -1;
+  }
+  .account-address-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .account-wishlist-header h1 {
+    font-size: 32px;
+  }
+  .account-wishlist-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 14px;
+  }
+  .account-wishlist-card-title {
+    font-size: 14.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-breadcrumbs a,
+  .account-menu a,
+  .account-logout button,
+  .account-addresses-add,
+  .account-addresses-form,
+  .account-address-field input,
+  .account-addresses-form-actions button,
+  .account-address-confirm-actions button,
+  .account-wishlist-card-media img,
+  .account-wishlist-purchase,
+  .wishlist-toggle {
+    animation: none;
+    transition: none;
+  }
+}

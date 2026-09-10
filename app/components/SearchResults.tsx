@@ -1,10 +1,7 @@
 import {Image, Pagination} from '@shopify/hydrogen';
 import {Link} from 'react-router';
 import {CollectionProductCard} from '~/components/CollectionProductCard';
-import {
-  urlWithTrackingParams,
-  type RegularSearchReturn,
-} from '~/lib/search';
+import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
 import {siteConfig} from '~/lib/site-config';
 
 type SearchItems = RegularSearchReturn['result']['items'];
@@ -131,7 +128,8 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
 function SearchResultsProducts({
   term,
   products,
-}: PartialSearchResult<'products'>) {
+  wishlistProductIds = [],
+}: PartialSearchResult<'products'> & {wishlistProductIds?: string[]}) {
   if (!products?.nodes.length) {
     return null;
   }
@@ -166,6 +164,7 @@ function SearchResultsProducts({
                     key={product.id}
                     linkTo={productUrl}
                     loading={index < 4 ? 'eager' : 'lazy'}
+                    initialSaved={wishlistProductIds.includes(product.id)}
                     product={product}
                   />
                 );
@@ -197,7 +196,9 @@ function SearchResultsDiscovery({
       className="search-page-discovery"
     >
       <div className="search-page-discovery-intro">
-        <span className="search-page-section-eyebrow">A little inspiration</span>
+        <span className="search-page-section-eyebrow">
+          A little inspiration
+        </span>
         <h2 id="search-discovery-heading">Begin with a favourite</h2>
         <p>Explore the edits our community is loving right now.</p>
       </div>
@@ -270,14 +271,16 @@ function SearchResultsEmpty({term}: {term: string}) {
       <div className="search-page-empty-trending">
         <span>Try searching for</span>
         <div className="search-page-trending">
-          {siteConfig.homepage.trendingSearches.slice(0, 3).map((searchTerm) => (
-            <Link
-              key={searchTerm}
-              to={`/search?q=${encodeURIComponent(searchTerm)}`}
-            >
-              {searchTerm}
-            </Link>
-          ))}
+          {siteConfig.homepage.trendingSearches
+            .slice(0, 3)
+            .map((searchTerm) => (
+              <Link
+                key={searchTerm}
+                to={`/search?q=${encodeURIComponent(searchTerm)}`}
+              >
+                {searchTerm}
+              </Link>
+            ))}
         </div>
       </div>
     </section>

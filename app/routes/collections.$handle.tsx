@@ -6,6 +6,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
 import {
+  data as remixData,
   Link,
   redirect,
   useLoaderData,
@@ -20,6 +21,7 @@ import type {
 } from 'storefrontapi.generated';
 import type {Route} from './+types/collections.$handle';
 import {CollectionProductCard} from '~/components/CollectionProductCard';
+import {CUSTOMER_WISHLIST_QUERY} from '~/graphql/customer-account/CustomerWishlistQuery';
 import {
   COLLECTION_SORT_OPTIONS,
   filterKey,
@@ -33,6 +35,7 @@ import {
 } from '~/lib/collectionFilters';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {siteConfig} from '~/lib/site-config';
+import {getWishlistProductIds, WISHLIST_PRIVATE_HEADERS} from '~/lib/wishlist';
 
 type CollectionData = NonNullable<CollectionQuery['collection']>;
 type CollectionFilter = CollectionData['products']['filters'][number];
@@ -61,15 +64,24 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   const filters = parseCollectionFilters(url.searchParams);
   const paginationVariables = getPaginationVariables(request, {pageBy: 8});
   const {sortKey, reverse} = getCollectionSortVariables(sort);
-  const {collection} = await context.storefront.query(COLLECTION_QUERY, {
-    variables: {
-      handle,
-      filters,
-      sortKey,
-      reverse,
-      ...paginationVariables,
-    },
-  });
+  const [{collection}, wishlist] = await Promise.all([
+    context.storefront.query(COLLECTION_QUERY, {
+      variables: {
+        handle,
+        filters,
+        sortKey,
+        reverse,
+        ...paginationVariables,
+      },
+    }),
+    getWishlistProductIds({
+      isLoggedIn: () => context.customerAccount.isLoggedIn(),
+      read: () =>
+        context.customerAccount.query(CUSTOMER_WISHLIST_QUERY, {
+          variables: {language: context.customerAccount.i18n.language},
+        }),
+    }),
+  ]);
 
   if (!collection) {
     throw new Response(`Collection ${handle} not found`, {status: 404});
@@ -77,12 +89,17 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
   redirectIfHandleIsLocalized(request, {handle, data: collection});
 
-  return {
+  const loaderData = {
     collection,
     collectionFilters: ensurePriceFilter(collection.products.filters),
     filters,
+    wishlistProductIds: wishlist.productIds,
     sort,
   };
+
+  return wishlist.isLoggedIn
+    ? remixData(loaderData, {headers: WISHLIST_PRIVATE_HEADERS})
+    : loaderData;
 }
 
 export default function Collection() {
@@ -91,6 +108,7 @@ export default function Collection() {
     collectionFilters,
     filters: activeFilters,
     sort,
+    wishlistProductIds,
   } = useLoaderData<typeof loader>();
   const location = useLocation();
   const navigate = useNavigate();
@@ -271,6 +289,7 @@ export default function Collection() {
                       <CollectionProductCard
                         key={product.id}
                         loading={index < 4 ? 'eager' : 'lazy'}
+                        initialSaved={wishlistProductIds.includes(product.id)}
                         product={product as CollectionProductFragment}
                       />
                     ))}

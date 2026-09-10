@@ -1004,6 +1004,49 @@ export type HomepageBestSellersQuery = {
   };
 };
 
+export type WishlistProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  ids:
+    | Array<StorefrontAPI.Scalars['ID']['input']>
+    | StorefrontAPI.Scalars['ID']['input'];
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type WishlistProductsQuery = {
+  nodes: Array<
+    StorefrontAPI.Maybe<
+      {__typename: 'Product'} & Pick<
+        StorefrontAPI.Product,
+        'id' | 'handle' | 'title' | 'tags' | 'availableForSale'
+      > & {
+          featuredImage?: StorefrontAPI.Maybe<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'altText' | 'url' | 'width' | 'height'
+            >
+          >;
+          priceRange: {
+            minVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          };
+          variants: {
+            nodes: Array<
+              Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
+                price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+                compareAtPrice?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                >;
+              }
+            >;
+            pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage'>;
+          };
+        }
+    >
+  >;
+};
+
 export type ArticleQueryVariables = StorefrontAPI.Exact<{
   articleHandle: StorefrontAPI.Scalars['String']['input'];
   blogHandle: StorefrontAPI.Scalars['String']['input'];
@@ -2190,6 +2233,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query HomepageBestSellers($country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {\n    products(first: 8, sortKey: BEST_SELLING) { nodes { ...HomepageProductCard } }\n  }\n  #graphql\n  fragment HomepageProductCard on Product {\n    id\n    handle\n    title\n    availableForSale\n    featuredImage { id url altText width height }\n    priceRange { minVariantPrice { amount currencyCode } maxVariantPrice { amount currencyCode } }\n    selectedOrFirstAvailableVariant(selectedOptions: [], ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      id\n      availableForSale\n      price { amount currencyCode }\n      compareAtPrice { amount currencyCode }\n      image { id url altText width height }\n    }\n  }\n\n': {
     return: HomepageBestSellersQuery;
     variables: HomepageBestSellersQueryVariables;
+  };
+  '#graphql\n  query WishlistProducts(\n    $country: CountryCode\n    $ids: [ID!]!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    nodes(ids: $ids) {\n      ... on Product {\n        __typename\n        id\n        handle\n        title\n        tags\n        availableForSale\n        featuredImage { id altText url width height }\n        priceRange {\n          minVariantPrice { amount currencyCode }\n        }\n        variants(first: 2) {\n          nodes {\n            id\n            availableForSale\n            price { amount currencyCode }\n            compareAtPrice { amount currencyCode }\n          }\n          pageInfo { hasNextPage }\n        }\n      }\n    }\n  }\n': {
+    return: WishlistProductsQuery;
+    variables: WishlistProductsQueryVariables;
   };
   '#graphql\n  query Article(\n    $articleHandle: String!\n    $blogHandle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    blog(handle: $blogHandle) {\n      handle\n      articleByHandle(handle: $articleHandle) {\n        handle\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n': {
     return: ArticleQuery;

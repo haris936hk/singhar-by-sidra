@@ -359,6 +359,7 @@ function LoggedInAccount() {
     <nav aria-label="Account" className="account-panel account-links">
       <Link to="/account/orders">Orders</Link>
       <Link to="/account/profile">Profile</Link>
+      <Link to="/account/wishlist">Wishlist</Link>
       <Link to="/account/addresses">Addresses</Link>
       <Form action="/account/logout" method="POST">
         <button type="submit">Log out</button>

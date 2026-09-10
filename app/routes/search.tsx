@@ -1,4 +1,5 @@
 import {
+  data as remixData,
   Link,
   useLoaderData,
   useNavigation,
@@ -8,6 +9,7 @@ import type {Route} from './+types/search';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {SearchForm} from '~/components/SearchForm';
 import {SearchResults} from '~/components/SearchResults';
+import {CUSTOMER_WISHLIST_QUERY} from '~/graphql/customer-account/CustomerWishlistQuery';
 import {
   getEmptyRegularSearchResult,
   type RegularSearchReturn,
@@ -16,6 +18,7 @@ import {
 } from '~/lib/search';
 import type {RootLoader} from '~/root';
 import {siteConfig} from '~/lib/site-config';
+import {getWishlistProductIds, WISHLIST_PRIVATE_HEADERS} from '~/lib/wishlist';
 import type {
   RegularSearchQuery,
   PredictiveSearchQuery,
@@ -36,13 +39,39 @@ export const meta: Route.MetaFunction = ({data}) => {
 export async function loader({request, context}: Route.LoaderArgs) {
   const url = new URL(request.url);
   const isPredictive = url.searchParams.has('predictive');
-  const searchPromise: Promise<PredictiveSearchReturn | RegularSearchReturn> =
-    isPredictive
-      ? predictiveSearch({request, context})
-      : regularSearch({request, context});
+  if (isPredictive) {
+    try {
+      return await predictiveSearch({request, context});
+    } catch (error) {
+      console.error(error);
+      return {
+        type: 'predictive' as const,
+        term: String(url.searchParams.get('q') || ''),
+        error: 'Search is temporarily unavailable.',
+        result: getEmptyPredictiveSearchResult(),
+      };
+    }
+  }
 
   try {
-    return await searchPromise;
+    const [result, wishlist] = await Promise.all([
+      regularSearch({request, context}),
+      getWishlistProductIds({
+        isLoggedIn: () => context.customerAccount.isLoggedIn(),
+        read: () =>
+          context.customerAccount.query(CUSTOMER_WISHLIST_QUERY, {
+            variables: {language: context.customerAccount.i18n.language},
+          }),
+      }),
+    ]);
+    const loaderData = {
+      ...result,
+      wishlistProductIds: wishlist.productIds,
+    };
+
+    return wishlist.isLoggedIn
+      ? remixData(loaderData, {headers: WISHLIST_PRIVATE_HEADERS})
+      : loaderData;
   } catch (error) {
     console.error(error);
     const term = String(url.searchParams.get('q') || '');
@@ -59,6 +88,7 @@ export async function loader({request, context}: Route.LoaderArgs) {
       term,
       error: 'Search is temporarily unavailable. Please try again in a moment.',
       result: getEmptyRegularSearchResult(),
+      wishlistProductIds: [],
     };
   }
 }
@@ -67,10 +97,12 @@ export async function loader({request, context}: Route.LoaderArgs) {
  * Renders the /search route
  */
 export default function SearchPage() {
-  const {type, term, result, error} = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
+  const {type, term, result, error} = loaderData;
   const navigation = useNavigation();
   const rootData = useRouteLoaderData<RootLoader>('root');
   if (type === 'predictive') return null;
+  const wishlistProductIds = loaderData.wishlistProductIds ?? [];
 
   const menuCollectionCards = (rootData?.header.menu?.items ?? [])
     .flatMap((item) => {
@@ -101,7 +133,10 @@ export default function SearchPage() {
           <span aria-current="page">Search</span>
         </nav>
 
-        <section aria-labelledby="search-page-heading" className="search-page-intro">
+        <section
+          aria-labelledby="search-page-heading"
+          className="search-page-intro"
+        >
           <span className="search-page-eyebrow">The Singhar edit</span>
           <h1 id="search-page-heading">
             {term ? (
@@ -171,7 +206,11 @@ export default function SearchPage() {
           <SearchResults result={result} term={term}>
             {({articles, pages, products, term}) => (
               <div className="search-page-results">
-                <SearchResults.Products products={products} term={term} />
+                <SearchResults.Products
+                  products={products}
+                  term={term}
+                  wishlistProductIds={wishlistProductIds}
+                />
                 <div className="search-page-secondary-results">
                   <SearchResults.Pages pages={pages} term={term} />
                   <SearchResults.Articles articles={articles} term={term} />

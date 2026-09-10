@@ -1,5 +1,5 @@
 import {Suspense, useEffect, useMemo, useRef, useState} from 'react';
-import {Await, Link, useLoaderData} from 'react-router';
+import {Await, data as remixData, Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/products.$handle';
 import {
   Analytics,
@@ -16,7 +16,10 @@ import type {ProductFragment} from 'storefrontapi.generated';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {ProductForm} from '~/components/ProductForm';
+import {WishlistToggle} from '~/components/WishlistToggle';
+import {CUSTOMER_WISHLIST_QUERY} from '~/graphql/customer-account/CustomerWishlistQuery';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {getWishlistProductIds, WISHLIST_PRIVATE_HEADERS} from '~/lib/wishlist';
 
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
@@ -32,7 +35,12 @@ export const meta: Route.MetaFunction = ({data}) => {
 export async function loader(args: Route.LoaderArgs) {
   const criticalData = await loadCriticalData(args);
   const recommendations = loadDeferredData(args, criticalData.product.id);
-  return {...criticalData, recommendations};
+  const {wishlistIsLoggedIn, ...pageData} = criticalData;
+  const loaderData = {...pageData, recommendations};
+
+  return wishlistIsLoggedIn
+    ? remixData(loaderData, {headers: WISHLIST_PRIVATE_HEADERS})
+    : loaderData;
 }
 
 async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
@@ -40,16 +48,27 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   const {storefront} = context;
   if (!handle) throw new Error('Expected product handle to be defined');
 
-  const [{product}] = await Promise.all([
+  const [{product}, wishlist] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
       displayName: 'Product',
+    }),
+    getWishlistProductIds({
+      isLoggedIn: () => context.customerAccount.isLoggedIn(),
+      read: () =>
+        context.customerAccount.query(CUSTOMER_WISHLIST_QUERY, {
+          variables: {language: context.customerAccount.i18n.language},
+        }),
     }),
   ]);
 
   if (!product?.id) throw new Response(null, {status: 404});
   redirectIfHandleIsLocalized(request, {handle, data: product});
-  return {product};
+  return {
+    product,
+    wishlistIsLoggedIn: wishlist.isLoggedIn,
+    wishlistProductIds: wishlist.productIds,
+  };
 }
 
 function loadDeferredData({context}: Route.LoaderArgs, productId: string) {
@@ -61,7 +80,8 @@ function loadDeferredData({context}: Route.LoaderArgs, productId: string) {
       displayName: 'Product recommendations',
     })
     .then(({productRecommendations, errors}) => {
-      if (errors?.length) console.error('Product recommendations query failed', errors);
+      if (errors?.length)
+        console.error('Product recommendations query failed', errors);
       return {recommendations: productRecommendations ?? []};
     })
     .catch((error: unknown) => {
@@ -71,7 +91,8 @@ function loadDeferredData({context}: Route.LoaderArgs, productId: string) {
 }
 
 export default function Product() {
-  const {product, recommendations} = useLoaderData<typeof loader>();
+  const {product, recommendations, wishlistProductIds} =
+    useLoaderData<typeof loader>();
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
@@ -90,6 +111,7 @@ export default function Product() {
         <ProductGallery images={gallery} title={product.title} />
         <ProductBuyBox
           descriptionHtml={product.descriptionHtml}
+          initialSaved={wishlistProductIds.includes(product.id)}
           product={product}
           productOptions={productOptions}
           selectedVariant={selectedVariant}
@@ -98,15 +120,17 @@ export default function Product() {
       <Recommendations recommendations={recommendations} />
       <Analytics.ProductView
         data={{
-          products: [{
-            id: product.id,
-            title: product.title,
-            price: selectedVariant?.price.amount || '0',
-            vendor: product.vendor,
-            variantId: selectedVariant?.id || '',
-            variantTitle: selectedVariant?.title || '',
-            quantity: 1,
-          }],
+          products: [
+            {
+              id: product.id,
+              title: product.title,
+              price: selectedVariant?.price.amount || '0',
+              vendor: product.vendor,
+              variantId: selectedVariant?.id || '',
+              variantTitle: selectedVariant?.title || '',
+              quantity: 1,
+            },
+          ],
         }}
       />
     </div>
@@ -116,8 +140,10 @@ export default function Product() {
 function Breadcrumbs({title}: {title: string}) {
   return (
     <nav aria-label="Breadcrumb" className="pdp-breadcrumbs">
-      <Link to="/">Home</Link><span aria-hidden>/</span>
-      <Link to="/collections">Luxury Pret</Link><span aria-hidden>/</span>
+      <Link to="/">Home</Link>
+      <span aria-hidden>/</span>
+      <Link to="/collections">Luxury Pret</Link>
+      <span aria-hidden>/</span>
       <span aria-current="page">{title}</span>
     </nav>
   );
@@ -132,21 +158,50 @@ type GalleryImage = {
   isVideo: boolean;
 };
 
-type GallerySource = Omit<GalleryImage, 'id' | 'isVideo'> & {id?: string | null};
+type GallerySource = Omit<GalleryImage, 'id' | 'isVideo'> & {
+  id?: string | null;
+};
 
 function getGalleryImages(
-  media: Array<{__typename?: string; id: string; image?: GallerySource | null; previewImage?: GallerySource | null}>,
+  media: Array<{
+    __typename?: string;
+    id: string;
+    image?: GallerySource | null;
+    previewImage?: GallerySource | null;
+  }>,
   selectedImage?: GallerySource | null,
 ) {
   const images = media.flatMap((item) => {
     const image = item.image ?? item.previewImage;
-    return image ? [{...image, id: image.id ?? item.id, isVideo: item.__typename !== 'MediaImage'}] : [];
+    return image
+      ? [
+          {
+            ...image,
+            id: image.id ?? item.id,
+            isVideo: item.__typename !== 'MediaImage',
+          },
+        ]
+      : [];
   });
   if (images.length) return images;
-  return selectedImage ? [{...selectedImage, id: selectedImage.id ?? 'selected-image', isVideo: false}] : [];
+  return selectedImage
+    ? [
+        {
+          ...selectedImage,
+          id: selectedImage.id ?? 'selected-image',
+          isVideo: false,
+        },
+      ]
+    : [];
 }
 
-function ProductGallery({images, title}: {images: GalleryImage[]; title: string}) {
+function ProductGallery({
+  images,
+  title,
+}: {
+  images: GalleryImage[];
+  title: string;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [desktopZoomed, setDesktopZoomed] = useState(false);
   const [mobileZoomed, setMobileZoomed] = useState(false);
@@ -181,29 +236,63 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
     });
   };
 
-  if (!activeImage) return <div className="pdp-gallery-empty">No product images available.</div>;
+  if (!activeImage)
+    return (
+      <div className="pdp-gallery-empty">No product images available.</div>
+    );
 
   return (
     <section aria-label={`${title} images`} className="pdp-gallery">
-      <div className="pdp-gallery-mobile" ref={mobileGalleryRef} onScroll={(event) => {
-        const element = event.currentTarget;
-        const nextIndex = Math.round(element.scrollLeft / element.clientWidth);
-        if (nextIndex !== activeIndex) setActiveIndex(nextIndex);
-      }}>
+      <div
+        className="pdp-gallery-mobile"
+        ref={mobileGalleryRef}
+        onScroll={(event) => {
+          const element = event.currentTarget;
+          const nextIndex = Math.round(
+            element.scrollLeft / element.clientWidth,
+          );
+          if (nextIndex !== activeIndex) setActiveIndex(nextIndex);
+        }}
+      >
         {images.map((image, index) => (
-          <button aria-label={`View product image ${index + 1}`} className="pdp-gallery-mobile-slide" key={image.id} onClick={() => setMobileZoomed(true)} type="button">
+          <button
+            aria-label={`View product image ${index + 1}`}
+            className="pdp-gallery-mobile-slide"
+            key={image.id}
+            onClick={() => setMobileZoomed(true)}
+            type="button"
+          >
             <Image alt={image.altText || title} data={image} sizes="100vw" />
-            {image.isVideo ? <span className="pdp-video-badge" aria-hidden>▶</span> : null}
+            {image.isVideo ? (
+              <span className="pdp-video-badge" aria-hidden>
+                ▶
+              </span>
+            ) : null}
           </button>
         ))}
       </div>
 
       <div className="pdp-gallery-desktop">
-        <div aria-label="Product image thumbnails" className="pdp-gallery-thumbs" role="list">
+        <div
+          aria-label="Product image thumbnails"
+          className="pdp-gallery-thumbs"
+          role="list"
+        >
           {images.map((image, index) => (
-            <button aria-current={index === activeIndex ? 'true' : undefined} aria-label={`View product image ${index + 1}`} className={`pdp-gallery-thumb${index === activeIndex ? ' is-active' : ''}`} key={image.id} onClick={() => selectImage(index)} type="button">
+            <button
+              aria-current={index === activeIndex ? 'true' : undefined}
+              aria-label={`View product image ${index + 1}`}
+              className={`pdp-gallery-thumb${index === activeIndex ? ' is-active' : ''}`}
+              key={image.id}
+              onClick={() => selectImage(index)}
+              type="button"
+            >
               <Image alt="" data={image} sizes="76px" />
-              {image.isVideo ? <span className="pdp-video-badge" aria-hidden>▶</span> : null}
+              {image.isVideo ? (
+                <span className="pdp-video-badge" aria-hidden>
+                  ▶
+                </span>
+              ) : null}
             </button>
           ))}
         </div>
@@ -224,28 +313,72 @@ function ProductGallery({images, title}: {images: GalleryImage[]; title: string}
           onMouseLeave={() => setDesktopZoomed(false)}
           onMouseMove={(event) => {
             const rect = event.currentTarget.getBoundingClientRect();
-            setZoomOrigin(`${((event.clientX - rect.left) / rect.width) * 100}% ${((event.clientY - rect.top) / rect.height) * 100}%`);
+            setZoomOrigin(
+              `${((event.clientX - rect.left) / rect.width) * 100}% ${((event.clientY - rect.top) / rect.height) * 100}%`,
+            );
           }}
           role="button"
           tabIndex={0}
         >
-          <Image alt={activeImage.altText || title} className={desktopZoomed ? 'is-zoomed' : undefined} data={activeImage} sizes="(min-width: 768px) 520px, 100vw" style={{transformOrigin: zoomOrigin}} />
-          {activeImage.isVideo ? <span className="pdp-video-badge" aria-hidden>▶</span> : null}
+          <Image
+            alt={activeImage.altText || title}
+            className={desktopZoomed ? 'is-zoomed' : undefined}
+            data={activeImage}
+            sizes="(min-width: 768px) 520px, 100vw"
+            style={{transformOrigin: zoomOrigin}}
+          />
+          {activeImage.isVideo ? (
+            <span className="pdp-video-badge" aria-hidden>
+              ▶
+            </span>
+          ) : null}
         </div>
       </div>
 
-      <div aria-label="Product image pages" className="pdp-gallery-dots" role="tablist">
+      <div
+        aria-label="Product image pages"
+        className="pdp-gallery-dots"
+        role="tablist"
+      >
         {images.map((image, index) => (
-          <button aria-label={`View product image ${index + 1}`} aria-selected={index === activeIndex} className={index === activeIndex ? 'is-active' : undefined} key={image.id} onClick={() => selectImage(index)} role="tab" type="button" />
+          <button
+            aria-label={`View product image ${index + 1}`}
+            aria-selected={index === activeIndex}
+            className={index === activeIndex ? 'is-active' : undefined}
+            key={image.id}
+            onClick={() => selectImage(index)}
+            role="tab"
+            type="button"
+          />
         ))}
       </div>
-      {mobileZoomed ? <button aria-label="Close enlarged product image" className="pdp-mobile-zoom" onClick={closeMobileZoom} type="button"><Image alt={activeImage.altText || title} data={activeImage} sizes="100vw" /></button> : null}
+      {mobileZoomed ? (
+        <button
+          aria-label="Close enlarged product image"
+          className="pdp-mobile-zoom"
+          onClick={closeMobileZoom}
+          type="button"
+        >
+          <Image
+            alt={activeImage.altText || title}
+            data={activeImage}
+            sizes="100vw"
+          />
+        </button>
+      ) : null}
     </section>
   );
 }
 
-function ProductBuyBox({descriptionHtml, product, productOptions, selectedVariant}: {
+function ProductBuyBox({
+  descriptionHtml,
+  initialSaved,
+  product,
+  productOptions,
+  selectedVariant,
+}: {
   descriptionHtml: string;
+  initialSaved: boolean;
   product: Awaited<ReturnType<typeof loadCriticalData>>['product'];
   productOptions: MappedProductOptions[];
   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
@@ -254,18 +387,29 @@ function ProductBuyBox({descriptionHtml, product, productOptions, selectedVarian
   const [openAccordion, setOpenAccordion] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
   const purchaseAreaRef = useRef<HTMLDivElement>(null);
-  const accordionSections = useMemo(() => [
-    {title: 'Description', body: descriptionHtml, html: true},
-    {title: 'Care Instructions', body: 'Follow the care instructions supplied with your order. Store embellished pieces away from direct sunlight and moisture.'},
-  ], [descriptionHtml]);
-  const lines = selectedVariant ? [{merchandiseId: selectedVariant.id, quantity: 1, selectedVariant}] : [];
+  const accordionSections = useMemo(
+    () => [
+      {title: 'Description', body: descriptionHtml, html: true},
+      {
+        title: 'Care Instructions',
+        body: 'Follow the care instructions supplied with your order. Store embellished pieces away from direct sunlight and moisture.',
+      },
+    ],
+    [descriptionHtml],
+  );
+  const lines = selectedVariant
+    ? [{merchandiseId: selectedVariant.id, quantity: 1, selectedVariant}]
+    : [];
 
   useEffect(() => {
     const purchaseArea = purchaseAreaRef.current;
     if (!purchaseArea) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      setShowStickyCart(!entry.isIntersecting);
-    }, {threshold: 0.1});
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowStickyCart(!entry.isIntersecting);
+      },
+      {threshold: 0.1},
+    );
     observer.observe(purchaseArea);
     return () => observer.disconnect();
   }, []);
@@ -275,11 +419,26 @@ function ProductBuyBox({descriptionHtml, product, productOptions, selectedVarian
       <div ref={purchaseAreaRef} className="pdp-purchase-area">
         <div className="pdp-title-block">
           <h1>{product.title}</h1>
-          <span className="pdp-price">{selectedVariant?.price ? <Money data={selectedVariant.price} withoutTrailingZeros /> : null}</span>
+          <span className="pdp-price">
+            {selectedVariant?.price ? (
+              <Money data={selectedVariant.price} withoutTrailingZeros />
+            ) : null}
+          </span>
         </div>
-        <ProductForm className="pdp-product-form" productOptions={productOptions} />
+        <ProductForm
+          className="pdp-product-form"
+          productOptions={productOptions}
+        />
         <div className="pdp-action-row">
-          <AddToCartButton className="pdp-add-to-cart" disabled={!selectedVariant?.availableForSale} lines={lines} onClick={() => open('cart')}>{selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}</AddToCartButton>
+          <AddToCartButton
+            className="pdp-add-to-cart"
+            disabled={!selectedVariant?.availableForSale}
+            lines={lines}
+            onClick={() => open('cart')}
+          >
+            {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}
+          </AddToCartButton>
+          <WishlistToggle initialSaved={initialSaved} productId={product.id} />
         </div>
         <TrustBadges />
       </div>
@@ -288,45 +447,121 @@ function ProductBuyBox({descriptionHtml, product, productOptions, selectedVarian
           const expanded = openAccordion === index;
           return (
             <div className="pdp-accordion" key={section.title}>
-              <button aria-controls={`pdp-panel-${index}`} aria-expanded={expanded} onClick={() => setOpenAccordion(expanded ? -1 : index)} type="button"><span>{section.title}</span><span aria-hidden className={expanded ? 'is-open' : undefined}>+</span></button>
-              {expanded ? <div className="pdp-accordion-panel" id={`pdp-panel-${index}`}>
-                {section.html ? <div dangerouslySetInnerHTML={{__html: section.body}} /> : <p>{section.body}</p>}
-              </div> : null}
+              <button
+                aria-controls={`pdp-panel-${index}`}
+                aria-expanded={expanded}
+                onClick={() => setOpenAccordion(expanded ? -1 : index)}
+                type="button"
+              >
+                <span>{section.title}</span>
+                <span aria-hidden className={expanded ? 'is-open' : undefined}>
+                  +
+                </span>
+              </button>
+              {expanded ? (
+                <div className="pdp-accordion-panel" id={`pdp-panel-${index}`}>
+                  {section.html ? (
+                    <div dangerouslySetInnerHTML={{__html: section.body}} />
+                  ) : (
+                    <p>{section.body}</p>
+                  )}
+                </div>
+              ) : null}
             </div>
           );
         })}
       </div>
       <div className={`pdp-sticky-cart${showStickyCart ? ' is-visible' : ''}`}>
-        <div><span>{product.title}</span><strong>{selectedVariant?.price ? <Money data={selectedVariant.price} withoutTrailingZeros /> : null}</strong></div>
-        <AddToCartButton className="pdp-sticky-cart-button" disabled={!selectedVariant?.availableForSale} lines={lines} onClick={() => open('cart')}>{selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}</AddToCartButton>
+        <div>
+          <span>{product.title}</span>
+          <strong>
+            {selectedVariant?.price ? (
+              <Money data={selectedVariant.price} withoutTrailingZeros />
+            ) : null}
+          </strong>
+        </div>
+        <AddToCartButton
+          className="pdp-sticky-cart-button"
+          disabled={!selectedVariant?.availableForSale}
+          lines={lines}
+          onClick={() => open('cart')}
+        >
+          {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}
+        </AddToCartButton>
       </div>
     </section>
   );
 }
 
 function TrustBadges() {
-  return <div aria-label="Shopping assurances" className="pdp-trust-grid">
-    {['Secure Payment', 'Easy Returns', 'Cash on Delivery', '100% Authentic'].map((badge) => <div key={badge}><span aria-hidden>✓</span><p>{badge}</p></div>)}
-  </div>;
+  return (
+    <div aria-label="Shopping assurances" className="pdp-trust-grid">
+      {[
+        'Secure Payment',
+        'Easy Returns',
+        'Cash on Delivery',
+        '100% Authentic',
+      ].map((badge) => (
+        <div key={badge}>
+          <span aria-hidden>✓</span>
+          <p>{badge}</p>
+        </div>
+      ))}
+    </div>
+  );
 }
 
-function Recommendations({recommendations}: {recommendations: ReturnType<typeof loadDeferredData>}) {
-  return <Suspense fallback={null}><Await resolve={recommendations}>{(data) => data.recommendations.length ? (
-    <section aria-labelledby="pdp-recommendations-title" className="pdp-recommendations">
-      <h2 id="pdp-recommendations-title">You May Also Like</h2>
-      <div className="pdp-recommendation-grid">
-        {data.recommendations.slice(0, 4).map((recommendation) => {
-          const variant = recommendation.selectedOrFirstAvailableVariant;
-          const image = variant?.image ?? recommendation.featuredImage;
-          return <Link className="pdp-recommendation-card" key={recommendation.id} prefetch="intent" to={`/products/${recommendation.handle}`}>
-            <div className="pdp-recommendation-image">{image ? <Image alt={image.altText || recommendation.title} data={image} loading="lazy" sizes="(min-width: 768px) 25vw, 50vw" /> : null}</div>
-            <h3>{recommendation.title}</h3>
-            {variant?.price ? <Money data={variant.price} withoutTrailingZeros /> : null}
-          </Link>;
-        })}
-      </div>
-    </section>
-  ) : null}</Await></Suspense>;
+function Recommendations({
+  recommendations,
+}: {
+  recommendations: ReturnType<typeof loadDeferredData>;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <Await resolve={recommendations}>
+        {(data) =>
+          data.recommendations.length ? (
+            <section
+              aria-labelledby="pdp-recommendations-title"
+              className="pdp-recommendations"
+            >
+              <h2 id="pdp-recommendations-title">You May Also Like</h2>
+              <div className="pdp-recommendation-grid">
+                {data.recommendations.slice(0, 4).map((recommendation) => {
+                  const variant =
+                    recommendation.selectedOrFirstAvailableVariant;
+                  const image = variant?.image ?? recommendation.featuredImage;
+                  return (
+                    <Link
+                      className="pdp-recommendation-card"
+                      key={recommendation.id}
+                      prefetch="intent"
+                      to={`/products/${recommendation.handle}`}
+                    >
+                      <div className="pdp-recommendation-image">
+                        {image ? (
+                          <Image
+                            alt={image.altText || recommendation.title}
+                            data={image}
+                            loading="lazy"
+                            sizes="(min-width: 768px) 25vw, 50vw"
+                          />
+                        ) : null}
+                      </div>
+                      <h3>{recommendation.title}</h3>
+                      {variant?.price ? (
+                        <Money data={variant.price} withoutTrailingZeros />
+                      ) : null}
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null
+        }
+      </Await>
+    </Suspense>
+  );
 }
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
