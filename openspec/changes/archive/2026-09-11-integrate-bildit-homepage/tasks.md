@@ -25,6 +25,6 @@
 
 - [x] 5.1 Run `npm run codegen`, `npm run typecheck`, and `npm run lint`; verify all generated artifacts and application checks complete without new errors.
 - [x] 5.2 Run `npm run dev` with the configured local `.env`, then inspect the homepage at desktop and mobile viewports with the Playwright CLI; verify no horizontal overflow, hydration errors, failed BILDIT requests, or console errors occur.
-- [ ] 5.3 Create one published BILDIT item at location `/` using `home-hero`, then test normal rendering and a preview-date URL; verify the active and previewed content replace only the intended fallback.
-- [ ] 5.4 Open the homepage through BILDIT's Visual Editor and use its Verify flow; verify the editor bridge loads and the `home-hero` and `home-promo` placements are editable without a manually hosted CMS script.
-- [ ] 5.5 Add `BILDIT_API_URL` and secret `BILDIT_API_KEY` to the intended Oxygen environment, redeploy, and test the production homepage; verify the production banner response and Shopify catalog, cart, account, checkout, analytics, and SEO behavior remain functional.
+- [x] 5.3 Create one published BILDIT item at location `/` using `home-hero`, then test normal rendering and a preview-date URL; verify the active and previewed content replace only the intended fallback.
+- [x] 5.4 Open the homepage through BILDIT's Visual Editor and use its Verify flow; verify the editor bridge loads and the `home-hero` and `home-promo` placements are editable without a manually hosted CMS script.
+- [x] 5.5 Add `BILDIT_API_URL` and secret `BILDIT_API_KEY` to the intended Oxygen environment, redeploy, and test the production homepage; verify the production banner response and Shopify catalog, cart, account, checkout, analytics, and SEO behavior remain functional.
