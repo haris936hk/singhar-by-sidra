@@ -32,6 +32,11 @@ export default async function handleRequest(
       ...bilditCspDirectives.connectSrc,
       'https://cdn.jsdelivr.net',
     ],
+    imgSrc: [
+      ...bilditCspDirectives.imgSrc,
+      // BILDIT image uploads are served from Vercel Blob storage.
+      'https://*.public.blob.vercel-storage.com',
+    ],
   });
   const header = allowBilditIframeEmbedding(baseHeader);
 

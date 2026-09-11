@@ -32,6 +32,8 @@ export default [
       '**/*.generated.d.ts',
       '**/.react-router/',
       '**/packages/hydrogen/dist/',
+      // BILDIT legacy templates intentionally contain preprocessed `$()` syntax.
+      'bildit-templates/**/*.template.*',
       'singhar-by-sidra-mockup-design/project/support.js',
     ],
   },

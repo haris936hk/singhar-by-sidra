@@ -56,6 +56,7 @@ Only add code to an existing area after reading its local patterns.
 - `app/components/` — shared UI and commerce components: layout, header/footer, asides, search, product cards/forms, cart, and pagination.
 - `app/graphql/customer-account/` — Customer Account API queries, fragments, and mutations. This directory is a separate GraphQL project in `.graphqlrc.ts`.
 - `app/lib/` — shared server/client helpers: Hydrogen context and session setup, shared Storefront fragments, search types/URL tracking, variant URL handling, order filters, localized-handle redirects, and the server-only BILDIT homepage loader/CMS dependency registry.
+- `bildit-templates/` — BILDIT legacy WebCMS templates for reusable homepage slots. These `*.template.*` files contain `$()` syntax and must be validated by BILDIT tooling rather than the app compiler.
 - `app/styles/tailwind.css` — the single Tailwind v4 stylesheet entry point. It currently contains Tailwind import/preflight only; the starter visual layer was intentionally cleared for the storefront mockup.
 - `app/assets/` — imported assets such as the favicon.
 - `app/root.tsx` — root loader, global links, document layout, BILDIT provider, analytics provider, shared page layout, and root error boundary.
@@ -328,6 +329,16 @@ These are the actual npm scripts in `package.json`:
 - Generate React Router types and run TypeScript without emitting: `npm run typecheck`.
 
 There are no npm scripts for tests, formatting, or deployment. The package config does provide Prettier and the repository context says the Hydrogen CLI `h2` alias is enabled; the checked-in scripts use `shopify hydrogen ...` and are the authoritative local workflows. If using `h2` or Shopify CLI directly, inspect the installed CLI help and current Oxygen workflow first rather than inventing a deployment command. Do not treat `npm run preview` as a deployment.
+
+### BILDIT Template CLI
+
+Use the globally installed `bild` CLI for legacy WebCMS templates; the project-local alpha package may fail its dependency check because npm hoists its dependencies.
+
+- Create a starter: `bild template legacy init <name> --out bildit-templates/<name>.template.jsx`.
+- Validate syntax, preprocessing, lint, and transpilation: `bild template legacy validate bildit-templates/<name>.template.jsx`.
+- Verify authentication and website scope: run `bild token --source`, `bild token --validate`, `bild app list`, `bild use` (select the Website), then `bild library list`.
+- Upload a validated template with a required preview image: `bild library add bildit-templates/<name>.template.jsx --template-id <name> --code-type jsx --type Homepage --name "<display-name>" --description "<description>" --image <preview-image>`.
+- Confirm the upload with `bild library list --verbose`; use `bild library update` for later versions. The CLI calls the selected website resource an `app-id`, so do not switch to the similarly named app.
 
 ## Testing and Validation
 
