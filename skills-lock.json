@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "template-create": {
+      "source": "bildit-llc/template-create",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "e21ba12d1a2e42a7945d76b36afb9e54517f0dd38a60bb36e44315eaf5cfccc3"
+    }
+  }
+}
